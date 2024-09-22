@@ -25,7 +25,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((req) -> req
-                        .requestMatchers("/api/users/login","/api/users/**","/api/users/register","/api/users/change-password").permitAll()// Разрешает доступ к /api/users/*
+                        .requestMatchers("/api/users/login","/api/users/**","/api/users/register","/api/users/change-password","/cards").permitAll()// Разрешает доступ к /api/users/*
                         .anyRequest().authenticated() // Остальные запросы требуют аутентификацию
                 )
                 .formLogin((form) -> form
