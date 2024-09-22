@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Entity
@@ -30,6 +31,9 @@ public class User {
 
     @Column(name = "blocked")
     private boolean blocked = false;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
     public enum Role {
         USER, ADMIN

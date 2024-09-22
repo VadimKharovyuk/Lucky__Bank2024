@@ -14,6 +14,7 @@ public class UserMapper {
                 .email(user.getEmail())
                 .role(user.getRole().name())
                 .blocked(user.isBlocked())
+                .createdAt(user.getCreatedAt())
                 .build();
     }
 
@@ -24,7 +25,8 @@ public class UserMapper {
         user.setEmail(userDTO.getEmail());
         user.setRole(User.Role.valueOf(userDTO.getRole()));
         user.setBlocked(userDTO.isBlocked());
-        // Убедитесь, что пароль хэшируется при регистрации
+        user.setCreatedAt(userDTO.getCreatedAt());
+
         return user;
     }
 }
