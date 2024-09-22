@@ -1,6 +1,7 @@
 package com.example.web.config;
 
 import com.example.web.dto.UserDTO;
+import com.example.web.dto.UserRegistrationRequest;
 import com.example.web.repository.UserFeignClient;
 import feign.FeignException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,6 +13,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.UUID;
 
 @Component
 @Slf4j
@@ -23,29 +25,50 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         this.userFeignClient = userFeignClient;
     }
 
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-        OAuth2User oauthUser = (OAuth2User) authentication.getPrincipal();
-        String email = oauthUser.getAttribute("email");
-        String username = oauthUser.getAttribute("name"); // Убедитесь, что это правильное поле
+//    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
+//        OAuth2User oauthUser = (OAuth2User) authentication.getPrincipal();
+//        String email = oauthUser.getAttribute("email");
+//        String username = oauthUser.getAttribute("name"); // Убедитесь, что это правильное поле
+//
+//        // Проверка наличия пользователя в базе данных
+//        if (!userExists(email)) {
+//            // Создание нового пользователя
+//            UserDTO userDTO = new UserDTO();
+//            userDTO.setEmail(email);
+//            userDTO.setUsername(username); // Используйте правильное поле
+//            userDTO.setRole("USER");
+//            userDTO.setBlocked(false);
+//
+//            // Регистрация пользователя через FeignClient
+//            userFeignClient.registerUser(userDTO);
+//        }
+//        log.info("OAuth2 User Email: {}", email);
+//        log.info("OAuth2 User Name: {}", username);
+//
+//        response.sendRedirect("/");
+//    }
+public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
+    OAuth2User oauthUser = (OAuth2User) authentication.getPrincipal();
+    String email = oauthUser.getAttribute("email");
+    String username = oauthUser.getAttribute("name"); // Убедитесь, что это правильное поле
 
-        // Проверка наличия пользователя в базе данных
-        if (!userExists(email)) {
-            // Создание нового пользователя
-            UserDTO userDTO = new UserDTO();
-            userDTO.setEmail(email);
-            userDTO.setUsername(username); // Используйте правильное поле
-            userDTO.setRole("USER");
-            userDTO.setBlocked(false);
+    // Проверка наличия пользователя в базе данных
+    if (!userExists(email)) {
+        // Создание нового пользователя через UserRegistrationRequest
+        UserRegistrationRequest registrationRequest = new UserRegistrationRequest();
+        registrationRequest.setEmail(email);
+        registrationRequest.setUsername(username); // Используйте правильное поле
+        registrationRequest.setPassword("OAuth2User_" + UUID.randomUUID().toString()); // Генерируем пароль
 
-            // Регистрация пользователя через FeignClient
-            userFeignClient.registerUser(userDTO);
-        }
-        log.info("OAuth2 User Email: {}", email);
-        log.info("OAuth2 User Name: {}", username);
-
-        response.sendRedirect("/");
+        // Регистрация пользователя через FeignClient
+        userFeignClient.registerUser(registrationRequest);
     }
 
+    log.info("OAuth2 User Email: {}", email);
+    log.info("OAuth2 User Name: {}", username);
+
+    response.sendRedirect("/");
+}
 
 
 

@@ -2,13 +2,17 @@ package com.example.web.controller;
 
 import com.example.web.dto.LoginRequest;
 import com.example.web.dto.UserDTO;
+import com.example.web.dto.UserRegistrationRequest;
 import com.example.web.repository.UserFeignClient;
 import feign.FeignException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -25,29 +30,44 @@ import java.util.Map;
 public class UserController {
 
     private final UserFeignClient userFeignClient;
-
     @PostMapping("/login")
-    public String loginUser(@RequestBody LoginRequest loginRequest, RedirectAttributes redirectAttributes) {
+    public String loginUser(@ModelAttribute LoginRequest loginRequest, RedirectAttributes redirectAttributes) {
+        log.info("Attempting to log in user: {}", loginRequest.getUsername());
+
         try {
-            ResponseEntity<UserDTO> response = userFeignClient.login(loginRequest);
+            // Вызов Feign-клиента для выполнения запроса на логин
+            UserDTO userDTO = userFeignClient.login(loginRequest);
 
-            log.info("Response Status: {}", response.getStatusCode());
-            log.info("Response Body: {}", response.getBody());
-
-            if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
-                UserDTO userDTO = response.getBody();
-
-                if (userDTO.isBlocked()) {
-                    return "redirect:/blocked";
-                }
-                return "redirect:/";
-            } else {
+            if (userDTO == null) {
+                log.warn("UserDTO is null after login attempt.");
                 redirectAttributes.addFlashAttribute("error", "Неправильный логин или пароль");
                 return "redirect:/login";
             }
+
+            log.info("User logged in: {}", userDTO.getUsername());
+
+            // Проверка, если пользователь заблокирован
+            if (userDTO.isBlocked()) {
+                log.warn("User {} is blocked.", userDTO.getUsername());
+                return "redirect:/blocked";
+            }
+
+            // Создание аутентификационного токена
+            Authentication authentication = new UsernamePasswordAuthenticationToken(
+                    userDTO.getUsername(),
+                    null, // Пароль не нужен, так как аутентификация уже выполнена
+                    Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + userDTO.getRole()))
+            );
+
+            // Установка аутентификации в контексте безопасности
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            // Успешный вход, перенаправление на главную страницу
+            return "redirect:/";
         } catch (FeignException e) {
             log.error("Login failed: {}", e.getMessage(), e);
-            redirectAttributes.addFlashAttribute("error", "Ошибка входа: " + e.getMessage());
+            // Сообщение об ошибке, если логин не удался
+            redirectAttributes.addFlashAttribute("error", "Неправильный логин или пароль");
             return "redirect:/login";
         }
     }
@@ -105,14 +125,10 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public RedirectView registerUser(@ModelAttribute UserDTO userDTO) {
-        try {
-            userFeignClient.registerUser(userDTO);
-            return new RedirectView("/");
-        } catch (Exception e) {
-            log.error("Error registering user", e);
-            return new RedirectView("/error"); // Перенаправление на страницу ошибки, если нужно
-        }
+    public String registerUser(@ModelAttribute UserRegistrationRequest userDTO) {
+        userFeignClient.registerUser(userDTO);
+        log.info("Registering user: {}", userDTO);
+        return "redirect:/";
     }
 
 

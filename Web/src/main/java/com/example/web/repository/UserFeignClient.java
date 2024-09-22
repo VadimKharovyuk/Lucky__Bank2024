@@ -2,6 +2,7 @@ package com.example.web.repository;
 
 import com.example.web.dto.LoginRequest;
 import com.example.web.dto.UserDTO;
+import com.example.web.dto.UserRegistrationRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,13 +13,17 @@ import java.util.List;
 public interface UserFeignClient {
 
     @PostMapping("/api/users/login")
-    ResponseEntity<UserDTO> login(@RequestBody LoginRequest loginRequest);
+    UserDTO login(@RequestBody LoginRequest loginRequest);
+
+    @PostMapping("/api/users/register")
+    UserDTO registerUser(@RequestBody UserRegistrationRequest  request);
+
+
 
     @GetMapping("/api/users/{username}")
     UserDTO getUserByUsername(@PathVariable String username);
 
-    @PostMapping("/api/users/register")
-    UserDTO registerUser(@RequestBody UserDTO userDTO);
+
 
     @GetMapping("/api/users/by-email")
     UserDTO getUserByEmail(@RequestParam String email);

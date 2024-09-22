@@ -2,12 +2,15 @@ package com.example.lucky__bank.controller;
 
 import com.example.lucky__bank.dto.LoginRequest;
 import com.example.lucky__bank.dto.UserDTO;
+import com.example.lucky__bank.dto.UserRegistrationRequest;
+import com.example.lucky__bank.maper.UserMapper;
 import com.example.lucky__bank.model.User;
 import com.example.lucky__bank.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,11 +26,33 @@ public class UserController {
     public ResponseEntity<UserDTO> login(@RequestBody LoginRequest loginRequest) {
         try {
             UserDTO user = userService.login(loginRequest.getUsername(), loginRequest.getPassword());
+            log.info("User logged in: {}", user.getUsername());
+
             return ResponseEntity.ok(user);
-        } catch (Exception e) {
+        } catch (BadCredentialsException e) {
+            log.error("Invalid credentials for user: {}", loginRequest.getUsername());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        } catch (Exception e) {
+            log.error("Login failed: {}", e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> registerUser(@RequestBody UserRegistrationRequest request) {
+        try {
+            UserDTO newUserDTO = userService.registerUser(request);
+            return ResponseEntity.ok(newUserDTO); // Возвращаем созданного пользователя
+        } catch (RuntimeException e) {
+            log.error("Registration error: {}", e.getMessage());
+            if (e.getMessage().equals("Email already exists")) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+            }
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred.");
+        }
+    }
+
+
 
 
     @GetMapping("/{username}")
@@ -41,15 +66,6 @@ public class UserController {
         return ResponseEntity.ok(userDTO);
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody User user) {
-        if (userService.existsByEmail(user.getEmail())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
-        User newUser = userService.registerUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
-    }
-
 
     @GetMapping("/by-email")
     public ResponseEntity<UserDTO> getUserByEmail(@RequestParam String email) {
@@ -57,25 +73,6 @@ public class UserController {
                 .map(userDTO -> ResponseEntity.ok(userDTO))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
-
-
-//    @PostMapping("/login")
-//    public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
-//        UserDTO user = userService.getUserByUsername(username);
-//        if (user == null) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
-//        }
-//        if (user.isBlocked()) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User is blocked");
-//        }
-//        boolean passwordMatches = userService.getPasswordEncoder().matches(password, user.getPassword());
-//        if (!passwordMatches) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
-//        }
-//        return ResponseEntity.ok("Login successful");
-//    }
-
-
 
 
     @PutMapping("/change-password")

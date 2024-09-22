@@ -7,14 +7,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserDTO {
-    private Long id;
+public class UserRegistrationRequest {
     private String username;
     private String email;
-    private String role;
-
-    private boolean blocked;
-
-
-
+    private String password;
 }
