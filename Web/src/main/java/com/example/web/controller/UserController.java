@@ -40,7 +40,6 @@ public class UserController {
                 if (userDTO.isBlocked()) {
                     return "redirect:/blocked";
                 }
-
                 return "redirect:/";
             } else {
                 redirectAttributes.addFlashAttribute("error", "Неправильный логин или пароль");
