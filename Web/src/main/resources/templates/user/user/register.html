@@ -1,0 +1,225 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <title>Register</title>-->
+
+<!--<body>-->
+<!--<div class="container">-->
+<!--    <div id="registerForm">-->
+<!--        <h1>Register</h1>-->
+<!--        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>-->
+<!--        <form th:action="@{/register}" th:object="${userDto}" method="post">-->
+<!--            <div>-->
+<!--                <label>Логин:</label>-->
+<!--                <input type="text" th:field="*{username}" required />-->
+<!--            </div>-->
+<!--            <div>-->
+<!--                <label>Пароль:</label>-->
+<!--                <input type="password" th:field="*{password}" required />-->
+<!--            </div>-->
+<!--            <div>-->
+<!--                <label>Email:</label>-->
+<!--                <input type="email" th:field="*{email}" required />-->
+<!--            </div>-->
+<!--            <div>-->
+<!--                <button type="submit">Зарегистрироваться</button>-->
+<!--            </div>-->
+<!--        </form>-->
+<!--        <p>Уже есть аккаунт? <a th:href="@{/login}">Войти</a></p>-->
+<!--        <p><a href="/">На главную страницу</a></p>-->
+<!--    </div>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
+
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <title>Регистрация</title>-->
+<!-- -->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="container">-->
+<!--    <div id="registerForm">-->
+<!--        <h1>Регистрация</h1>-->
+<!--        <div th:if="${error}" class="alert" th:text="${error}"></div>-->
+<!--        <form th:action="@{/register}" th:object="${userDto}" method="post">-->
+<!--            <div>-->
+<!--                <label for="username">Логин:</label>-->
+<!--                <input type="text" id="username" th:field="*{username}" placeholder="Введите логин" required />-->
+<!--            </div>-->
+<!--            <div>-->
+<!--                <label for="password">Пароль:</label>-->
+<!--                <input type="password" id="password" th:field="*{password}" placeholder="Введите пароль" required />-->
+<!--            </div>-->
+<!--            <div>-->
+<!--                <label for="email">Email:</label>-->
+<!--                <input type="email" id="email" th:field="*{email}" placeholder="Введите email" required />-->
+<!--            </div>-->
+<!--            <div>-->
+<!--                <button type="submit">Зарегистрироваться</button>-->
+<!--            </div>-->
+<!--        </form>-->
+<!--        <p>Уже есть аккаунт? <a th:href="@{/login}">Войти</a></p>-->
+<!--        <p><a href="/">На главную страницу</a></p>-->
+<!--    </div>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Регистрация</title>
+    <style>
+        :root {
+            --background-color: #f4f4f9;
+            --container-background: #ffffff;
+            --text-color: #333;
+            --button-background: #007bff;
+            --button-hover: #0056b3;
+            --error-color: #e74c3c;
+            --success-color: #2ecc71;
+        }
+
+        [data-theme="dark"] {
+            --background-color: #1e1e1e;
+            --container-background: #2c2c2c;
+            --text-color: #e4e4e4;
+            --button-background: #4a90e2;
+            --button-hover: #357abd;
+            --error-color: #e74c3c;
+            --success-color: #2ecc71;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: var(--text-color);
+        }
+
+        .container {
+            background: var(--container-background);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            position: relative;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: var(--button-background);
+            color: #fff;
+            border: none;
+            padding: 15px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            outline: none; /* Убирает стандартное выделение кнопки */
+        }
+
+        button:hover {
+            background-color: var(--button-hover);
+        }
+
+        .alert {
+            color: var(--error-color);
+            margin-bottom: 20px;
+        }
+
+        .theme-toggle-button {
+            background-color: var(--button-background);
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+            outline: none; /* Убирает стандартное выделение кнопки */
+        }
+
+        .theme-toggle-button:hover {
+            background-color: var(--button-hover);
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div id="registerForm">
+        <h1>Регистрация</h1>
+        <div class="alert" th:if="${error}" th:text="${error}"></div>
+        <form th:action="@{/register}" th:object="${userDto}" method="post">
+            <div>
+                <label for="username">Логин:</label>
+                <input type="text" id="username" th:field="*{username}" placeholder="Введите логин" required />
+            </div>
+            <div>
+                <label for="password">Пароль:</label>
+                <input type="password" id="password" th:field="*{password}" placeholder="Введите пароль" required />
+            </div>
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" th:field="*{email}" placeholder="Введите email" required />
+            </div>
+            <div>
+                <button type="submit">Зарегистрироваться</button>
+            </div>
+        </form>
+        <p>Уже есть аккаунт? <a th:href="@{/login}">Войти</a></p>
+        <p><a href="/">На главную страницу</a></p>
+        <button class="theme-toggle-button" onclick="toggleTheme()">🌙 Переключить тему</button>
+    </div>
+</div>
+
+<script>
+    const themeToggleButton = document.querySelector('.theme-toggle-button');
+
+    function toggleTheme() {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        themeToggleButton.textContent = newTheme === 'dark' ? '🌞 Переключить тему' : '🌙 Переключить тему';
+        localStorage.setItem('theme', newTheme);
+    }
+
+    // Load the saved theme from localStorage
+    document.addEventListener('DOMContentLoaded', () => {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        themeToggleButton.textContent = savedTheme === 'dark' ? '🌞 Переключить тему' : '🌙 Переключить тему';
+    });
+</script>
+</body>
+</html>
