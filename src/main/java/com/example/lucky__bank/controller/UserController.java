@@ -1,10 +1,8 @@
 package com.example.lucky__bank.controller;
 
-import com.example.lucky__bank.dto.LoginRequest;
+import com.example.lucky__bank.Request.LoginRequest;
 import com.example.lucky__bank.dto.UserDTO;
-import com.example.lucky__bank.dto.UserRegistrationRequest;
-import com.example.lucky__bank.maper.UserMapper;
-import com.example.lucky__bank.model.User;
+import com.example.lucky__bank.Request.UserRegistrationRequest;
 import com.example.lucky__bank.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,14 +11,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/users")
 @AllArgsConstructor
 @Slf4j
 public class UserController {
     private final UserService userService;
+
+
+    @GetMapping("/id/{id}")
+    public ResponseEntity<UserDTO> getById(@PathVariable Long id) {
+        log.info("Fetching user with id: {}", id);
+        UserDTO userDTO = userService.findById(id);
+        return ResponseEntity.ok(userDTO); // Возвращаем 200 OK с найденным пользователем
+    }
+
 
     @PostMapping("/login")
     public ResponseEntity<UserDTO> login(@RequestBody LoginRequest loginRequest) {

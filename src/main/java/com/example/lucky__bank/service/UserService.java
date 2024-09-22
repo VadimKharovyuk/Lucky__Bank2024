@@ -1,7 +1,7 @@
 package com.example.lucky__bank.service;
 
 import com.example.lucky__bank.dto.UserDTO;
-import com.example.lucky__bank.dto.UserRegistrationRequest;
+import com.example.lucky__bank.Request.UserRegistrationRequest;
 import com.example.lucky__bank.maper.UserMapper;
 import com.example.lucky__bank.model.User;
 import com.example.lucky__bank.repository.UserRepository;
@@ -11,15 +11,11 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -30,6 +26,13 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final UserMapper userMapper;
+
+
+    public UserDTO findById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+        return userMapper.convertToDTO(user);
+    }
 
     public Optional<UserDTO> findUserByEmail(String email) {
         return userRepository.findByEmail(email).map(userMapper::convertToDTO);

@@ -1,14 +1,12 @@
 package com.example.web.controller;
 
-import com.example.web.dto.LoginRequest;
+import com.example.web.Request.LoginRequest;
 import com.example.web.dto.UserDTO;
-import com.example.web.dto.UserRegistrationRequest;
+import com.example.web.Request.UserRegistrationRequest;
 import com.example.web.repository.UserFeignClient;
 import feign.FeignException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,11 +16,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @AllArgsConstructor

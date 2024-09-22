@@ -1,8 +1,8 @@
 package com.example.web.repository;
 
-import com.example.web.dto.LoginRequest;
+import com.example.web.Request.LoginRequest;
 import com.example.web.dto.UserDTO;
-import com.example.web.dto.UserRegistrationRequest;
+import com.example.web.Request.UserRegistrationRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +11,9 @@ import java.util.List;
 
 @FeignClient(name = "lucky-bank", url = "http://192.168.1.105:1000")
 public interface UserFeignClient {
+
+    @GetMapping("/api/users/id/{id}")
+    UserDTO getById(@PathVariable Long id);
 
     @PostMapping("/api/users/login")
     UserDTO login(@RequestBody LoginRequest loginRequest);

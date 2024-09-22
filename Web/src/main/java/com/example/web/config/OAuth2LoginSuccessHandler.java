@@ -1,7 +1,7 @@
 package com.example.web.config;
 
 import com.example.web.dto.UserDTO;
-import com.example.web.dto.UserRegistrationRequest;
+import com.example.web.Request.UserRegistrationRequest;
 import com.example.web.repository.UserFeignClient;
 import feign.FeignException;
 import jakarta.servlet.http.HttpServletRequest;

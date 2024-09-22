@@ -1,4 +1,4 @@
-package com.example.lucky__bank.dto;
+package com.example.lucky__bank.Request;
 
 import lombok.Getter;
 import lombok.Setter;
