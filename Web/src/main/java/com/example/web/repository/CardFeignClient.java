@@ -16,6 +16,9 @@ public interface CardFeignClient {
 
 
 
+    @GetMapping("/api/cards/all")
+    List<CardDTO> getAllCards();
+
     @GetMapping("/api/cards/user/{id}")
     List<CardDTO> getCardsByUserId(@PathVariable("id") Long id);
     @GetMapping("/api/cards/{id}")

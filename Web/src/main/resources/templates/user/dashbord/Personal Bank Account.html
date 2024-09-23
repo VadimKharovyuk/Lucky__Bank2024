@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный Банковский Аккаунт</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+        }
+        .account-summary {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .account-item {
+            flex-basis: calc(50% - 10px);
+            margin-bottom: 20px;
+        }
+        .transaction {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #bdc3c7;
+            padding: 10px 0;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Личный Банковский Аккаунт</h1>
+
+    <section class="section">
+        <h2>1. Общая информация</h2>
+        <p><strong>Имя:</strong> Иван Иванов</p>
+        <p><strong>Номер клиента:</strong> 123456789</p>
+        <p><strong>Электронная почта:</strong> ivan@example.com</p>
+        <p><strong>Телефон:</strong> +7 (999) 123-45-67</p>
+    </section>
+
+    <section class="section">
+        <h2>2. Сводка по счетам</h2>
+        <div class="account-summary">
+            <div class="account-item">
+                <h3>Текущий счет</h3>
+                <p><strong>Номер счета:</strong> **** 1234</p>
+                <p><strong>Баланс:</strong> 50,000 ₽</p>
+            </div>
+            <div class="account-item">
+                <h3>Сберегательный счет</h3>
+                <p><strong>Номер счета:</strong> **** 5678</p>
+                <p><strong>Баланс:</strong> 100,000 ₽</p>
+                <p><strong>Процентная ставка:</strong> 5%</p>
+            </div>
+            <div class="account-item">
+                <h3>Кредитная карта</h3>
+                <p><strong>Номер карты:</strong> **** 9012</p>
+                <p><strong>Доступный лимит:</strong> 150,000 ₽</p>
+                <p><strong>Использовано:</strong> 50,000 ₽</p>
+            </div>
+            <div class="account-item">
+                <h3>Инвестиционный счет</h3>
+                <p><strong>Номер счета:</strong> **** 3456</p>
+                <p><strong>Текущая стоимость:</strong> 200,000 ₽</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2>3. Последние транзакции</h2>
+        <div class="transaction">
+            <span>Оплата в магазине "Продукты"</span>
+            <span>-1,500 ₽</span>
+        </div>
+        <div class="transaction">
+            <span>Зачисление зарплаты</span>
+            <span>+50,000 ₽</span>
+        </div>
+        <div class="transaction">
+            <span>Оплата коммунальных услуг</span>
+            <span>-5,000 ₽</span>
+        </div>
+        <div class="transaction">
+            <span>Перевод на сберегательный счет</span>
+            <span>-10,000 ₽</span>
+        </div>
+        <a href="#" class="btn">Посмотреть все транзакции</a>
+    </section>
+
+    <section class="section">
+        <h2>4. Управление аккаунтом</h2>
+        <p><a href="#" class="btn">Изменить личные данные</a></p>
+        <p><a href="#" class="btn">Настройки безопасности</a></p>
+        <p><a href="#" class="btn">Открыть новый счет</a></p>
+        <p><a href="#" class="btn">Заказать новую карту</a></p>
+    </section>
+</div>
+</body>
+</html>

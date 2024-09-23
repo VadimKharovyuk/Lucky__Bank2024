@@ -20,23 +20,11 @@ public class DashboardController {
     private final UserService userService;
 
 
+    @GetMapping
+    public String dashboard(Model model) {
 
-    @GetMapping("/{userId}")
-    public String showDashboard(@PathVariable Long userId, Model model) {
-        UserDTO user = userService.findById(userId); // Получаем данные пользователя по ID
-        List<CardDTO> cards = cardService.getCardsByUserId(userId); // Получаем все карты пользователя
-
-        model.addAttribute("user", user);
-        model.addAttribute("cards", cards);
-
-        return "user/dashbord/test";
+return "user/dashbord/Personal Bank Account";
     }
 
-    // Создание новой карты
-    @PostMapping("/create-card")
-    public String createCard(@RequestParam Long userId, @RequestParam String cardType, Model model) {
-        cardService.createCard(userId, cardType); // Создаем новую карту
 
-        return "redirect:/dashboard/" + userId; // Перенаправляем пользователя обратно на dashboard
-    }
 }

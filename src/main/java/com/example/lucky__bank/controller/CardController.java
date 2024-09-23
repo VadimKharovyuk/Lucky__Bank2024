@@ -41,5 +41,11 @@ public class CardController {
         CardDTO cardDTO = cardService.createCard(userId, cardType);
         return ResponseEntity.ok(cardDTO);
     }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<CardDTO>> getAllCards() {
+        List<CardDTO> cards = cardService.getAllCard(); // Убедитесь, что метод в сервисе назван корректно
+        return ResponseEntity.ok(cards); // Возвращаем 200 OK с списком карт
+    }
 }
 

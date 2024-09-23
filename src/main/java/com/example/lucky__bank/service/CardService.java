@@ -70,4 +70,9 @@ public class CardService {
                 .map(cardMapper::toDTO) // Преобразуем карты в DTO
                 .collect(Collectors.toList());
     }
+    public List<CardDTO>getAllCard(){
+       List<Card> card = cardRepository.findAll();
+       return card.stream().map(cardMapper::toDTO)
+               .collect(Collectors.toList());
+    }
 }

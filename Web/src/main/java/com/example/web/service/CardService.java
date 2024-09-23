@@ -31,4 +31,7 @@ public class CardService {
     return   cardFeignClient.getCardsByUserId(userId);
 
     }
+    public List<CardDTO> getAllCards (){
+        return cardFeignClient.getAllCards();
+    }
 }
