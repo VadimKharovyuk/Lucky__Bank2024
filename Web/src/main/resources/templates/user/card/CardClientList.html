@@ -22,7 +22,7 @@
 </head>
 <body>
 <div class="container">
-    <h1 class="text-center mt-5">Dashboard</h1>
+    <h1 class="text-center mt-5">Мои карты </h1>
     <p class="text-center">Here are your current cards. You can create a new one.</p>
 
     <!-- Add New Card -->
@@ -32,11 +32,17 @@
         </div>
     </div>
 
+
     <!-- Display User's Cards -->
     <div class="row">
         <div class="col-12">
             <h2>Your Cards</h2>
             <div class="row">
+                <!-- Check if the cards list is empty -->
+                <div th:if="${#lists.isEmpty(cards)}" class="alert alert-warning text-center">
+                    У вас нет карт.
+                </div>
+
                 <div class="col-md-4" th:each="card : ${cards}">
                     <div class="card mb-3">
                         <div class="card-body">
@@ -51,6 +57,7 @@
             </div>
         </div>
     </div>
+</div>
 
     <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

@@ -1,39 +1,69 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Create Card</title>
-</head>
-<body>
-<h1>Create Card</h1>
-
-<div th:if="${message}" style="color: green;">[[${message}]]</div>
-<div th:if="${error}" style="color: red;">[[${error}]]</div>
-
-<form action="#" th:action="@{/cards}" method="post">
-    <label for="cardType">Тип карты:</label>
-    <select id="cardType" name="cardType">
-        <option th:each="type : ${cardTypes}" th:value="${type}" th:text="${type}"></option>
-    </select>
-    <!-- Другие поля формы -->
-    <button type="submit">Создать карту</button>
-</form>
-
-
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <title>Create Card</title>-->
+<!--</head>-->
+<!--<body>-->
 <!--<h1>Create Card</h1>-->
 
 <!--<div th:if="${message}" style="color: green;">[[${message}]]</div>-->
 <!--<div th:if="${error}" style="color: red;">[[${error}]]</div>-->
 
-<!--<form action="#" th:action="@{/cards}" method="post">-->
-<!--    <label>Тип карты:</label>-->
-<!--    <div th:each="type : ${cardTypes}">-->
-<!--        <input type="checkbox" th:id="${type}" th:name="cardType" th:value="${type}" />-->
-<!--        <label th:for="${type}" th:text="${type}"></label>-->
-<!--    </div>-->
 
+<!--<form action="#" th:action="@{/cards/create}" method="post">-->
+<!--    <input type="hidden" name="userId" th:value="${user.id}"/>-->
+<!--    <label for="cardType">Тип карты:</label>-->
+<!--    <select id="cardType" name="cardType">-->
+<!--        <option th:each="type : ${cardTypes}" th:value="${type}" th:text="${type}"></option>-->
+<!--    </select>-->
 <!--    &lt;!&ndash; Другие поля формы &ndash;&gt;-->
 <!--    <button type="submit">Создать карту</button>-->
 <!--</form>-->
+
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Card</title>
+    <!-- Подключение CSS Bootstrap -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h1 class="text-center">Создать карту</h1>
+
+    <div th:if="${message}" class="alert alert-success" role="alert">
+        [[${message}]]
+    </div>
+    <div th:if="${error}" class="alert alert-danger" role="alert">
+        [[${error}]]
+    </div>
+
+    <form action="#" th:action="@{/cards/create}" method="post" class="mt-4">
+        <input type="hidden" name="userId" th:value="${user.id}"/>
+
+        <div class="form-group">
+            <label for="cardType">Тип карты:</label>
+            <select id="cardType" name="cardType" class="form-control">
+                <option th:each="type : ${cardTypes}" th:value="${type}" th:text="${type}"></option>
+            </select>
+        </div>
+
+        <!-- Другие поля формы можно добавить здесь -->
+
+        <button type="submit" class="btn btn-primary">Создать карту</button>
+    </form>
+</div>
+
+<!-- Подключение JS Bootstrap и зависимостей jQuery и Popper.js -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 </body>
 </html>
