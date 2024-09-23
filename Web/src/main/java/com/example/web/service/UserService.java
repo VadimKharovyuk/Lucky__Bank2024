@@ -16,4 +16,7 @@ public class UserService {
         return userFeignClient.getAllUsers();
     }
 
+    public UserDTO findById(Long userId) {
+       return userFeignClient.getById(userId);
+    }
 }
