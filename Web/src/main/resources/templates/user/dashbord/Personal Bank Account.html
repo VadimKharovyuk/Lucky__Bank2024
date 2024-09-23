@@ -64,10 +64,10 @@
 
     <section class="section">
         <h2>1. Общая информация</h2>
-        <p><strong>Имя:</strong> Иван Иванов</p>
-        <p><strong>Номер клиента:</strong> 123456789</p>
-        <p><strong>Электронная почта:</strong> ivan@example.com</p>
-        <p><strong>Телефон:</strong> +7 (999) 123-45-67</p>
+        <p><strong>Имя:</strong> <span th:text="${user.username}">Имя пользователя</span></p>
+        <p><strong>Номер клиента:</strong> <span th:text="${user.id}">Номер клиента</span></p>
+        <p><strong>Электронная почта:</strong> <span th:text="${user.email}">Электронная почта</span></p>
+        <!-- <p><strong>Телефон:</strong> <span th:text="${user.phone}">Телефон</span></p> -->
     </section>
 
     <section class="section">

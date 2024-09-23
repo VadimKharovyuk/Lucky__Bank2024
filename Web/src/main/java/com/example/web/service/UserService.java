@@ -20,4 +20,11 @@ public class UserService {
        return userFeignClient.getById(userId);
     }
 
+    public UserDTO findByUsername(String name) {
+      return   userFeignClient.getUserByUsername(name);
+    }
+
+    public UserDTO findByEmail(String email) {
+       return userFeignClient.getUserByEmail(email);
+    }
 }
