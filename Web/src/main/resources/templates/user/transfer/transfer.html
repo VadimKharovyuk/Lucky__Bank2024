@@ -19,7 +19,10 @@
         <div class="mb-3">
             <label for="fromCardNumber" class="form-label">From Card Number</label>
             <select id="fromCardNumber" name="fromCardNumber" class="form-control" th:field="*{fromCardNumber}" required>
-                <option th:each="card : ${userCards}" th:value="${card.cardNumber}" th:text="${card.cardNumber}"></option>
+                <option th:each="card : ${userCards}" th:value="${card.cardNumber}">
+                    <span th:text="${card.cardNumber} + ' (Balance: ' + ${card.balance} + ')'"></span>
+                </option>
+
             </select>
         </div>
 
@@ -40,33 +43,6 @@
 
         <button type="submit" class="btn btn-primary">Transfer Money</button>
     </form>
-
-
-
-
-<!--    <form th:action="@{/transfer}" th:object="${moneyTransferRequest}" method="post">-->
-<!--        <div class="mb-3">-->
-<!--            <label for="fromCardNumber" class="form-label">From Card Number</label>-->
-<!--            <input type="text" id="fromCardNumber" name="fromCardNumber" class="form-control" th:field="*{fromCardNumber}" required>-->
-<!--        </div>-->
-
-<!--        <div class="mb-3">-->
-<!--            <label for="toCardNumber" class="form-label">To Card Number</label>-->
-<!--            <input type="text" id="toCardNumber" name="toCardNumber" class="form-control" th:field="*{toCardNumber}" required>-->
-<!--        </div>-->
-
-<!--        <div class="mb-3">-->
-<!--            <label for="amount" class="form-label">Amount</label>-->
-<!--            <input type="number" id="amount" name="amount" class="form-control" th:field="*{amount}" required>-->
-<!--        </div>-->
-
-<!--        <div class="mb-3">-->
-<!--            <label for="description" class="form-label">Description</label>-->
-<!--            <input type="text" id="description" name="description" class="form-control" th:field="*{description}">-->
-<!--        </div>-->
-
-<!--        <button type="submit" class="btn btn-primary">Transfer Money</button>-->
-<!--    </form>-->
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
