@@ -34,7 +34,7 @@ public class DashboardController {
             String email = oauthUser.getAttribute("email");
 
             // Поищите пользователя в базе данных по email или username
-            user = userService.findByEmail(email); // Убедитесь, что у вас есть метод для поиска по email
+            user = userService.findByEmail(email);
         } else {
             String username = authentication.getName();
             user = userService.findByUsername(username); // Получаем пользователя из БД
@@ -42,13 +42,13 @@ public class DashboardController {
 
         // Проверьте, что объект user не null
         if (user != null) {
-            model.addAttribute("user", user); // Добавьте пользователя в модель
+            model.addAttribute("user", user);
         } else {
             // Обработка случая, когда пользователь не найден
             model.addAttribute("error", "User not found");
         }
 
-        return "user/dashbord/Personal Bank Account"; // Название HTML-шаблона
+        return "user/dashbord/Personal Bank Account";
     }
 }
 

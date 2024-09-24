@@ -11,10 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient(name = "lucky-bank-card-service", url = "http://192.168.1.105:1000")
+@FeignClient(name = "lucky-bank-card-service", url = "http://localhost:1000")
 public interface CardFeignClient {
-
-
 
     @GetMapping("/api/cards/all")
     List<CardDTO> getAllCards();
