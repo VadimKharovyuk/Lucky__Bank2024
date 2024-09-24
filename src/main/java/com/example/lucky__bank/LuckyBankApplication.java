@@ -11,7 +11,10 @@ public class LuckyBankApplication {
     public static void main(String[] args) {
         SpringApplication.run(LuckyBankApplication.class, args);
     }
-//-перевод денег
+
+
+
+//-перевод денег (выбраь карту свою / добавить колонку id  user для карты)
 //-//удалить карту
 ////по id ( список транзакий )
 ////личные данные клиента добавить страницу
