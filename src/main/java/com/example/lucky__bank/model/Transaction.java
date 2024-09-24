@@ -22,6 +22,7 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     private String fromCardNumber; // Номер карты отправителя
     private String toCardNumber;   // Номер карты получателя
     private BigDecimal amount;         // Сумма перевода

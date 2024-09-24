@@ -12,4 +12,6 @@ public interface CardRepository extends JpaRepository<Card,Long> {
 
     List<Card> findByUserId(Long userId);
 
+    // Правильное имя метода
+    Optional<Card> findByCardNumber(String cardNumber);
 }
