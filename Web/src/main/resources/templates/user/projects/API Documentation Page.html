@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        .endpoint {
+            background-color: #e8f4f8;
+            border-left: 5px solid #3498db;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .method {
+            font-weight: bold;
+            color: #3498db;
+        }
+        .request-body {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-top: 10px;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        /* Темные темы */
+        .dark-theme {
+            background-color: #333;
+            color: #f9f9f9;
+        }
+        .dark-theme .endpoint {
+            background-color: #444;
+        }
+        .dark-theme .request-body {
+            background-color: #555;
+        }
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+        }
+        .nav-links {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            gap: 20px;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #3498db;
+        }
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<header>
+    <nav class="container">
+        <ul class="nav-links">
+            <li><a href="/">Главная</a></li>
+            <li><a href="#services">Услуги</a></li>
+            <li><a href="#about">О нас</a></li>
+            <li><a href="#contact">Контакты</a></li>
+            <li><a href="/projects/new">Создать Api ключ</a></li>
+            <li><button id="themeToggle">🌓</button></li>
+        </ul>
+    </nav>
+</header>
+<body>
+<h1>Project Management API Documentation</h1>
+
+<p>This documentation provides information about the endpoints available for managing projects and API keys.</p>
+
+<h2>Endpoints</h2>
+
+<div class="endpoint">
+    <h3><span class="method">GET</span> /projects/new</h3>
+    <p>Displays the form for creating a new project.</p>
+    <p><strong>Authentication required:</strong> Yes</p>
+    <p><strong>Response:</strong> HTML page with project creation form</p>
+</div>
+
+<div class="endpoint">
+    <h3><span class="method">POST</span> /projects</h3>
+    <p>Creates a new project.</p>
+    <p><strong>Authentication required:</strong> Yes</p>
+    <p><strong>Request body:</strong> ProjectCreateRequest object</p>
+    <div class="request-body">
+        <h4>ProjectCreateRequest Structure:</h4>
+        <pre><code>
+public class ProjectCreateRequest {
+    private String title;
+    private String description;
+    private String tokenType;
+    private Long userId;
+}</code></pre>
+        <p><strong>Fields:</strong></p>
+        <ul>
+            <li><code>title</code>: The title of the project</li>
+            <li><code>description</code>: A description of the project</li>
+            <li><code>tokenType</code>: The type of token for the project</li>
+            <li><code>userId</code>: The ID of the user creating the project (automatically set by the server)</li>
+        </ul>
+    </div>
+    <p><strong>Response:</strong> Redirects to the project details page</p>
+</div>
+
+<div class="endpoint">
+    <h3><span class="method">GET</span> /projects/{apiKey}</h3>
+    <p>Retrieves details of a specific project.</p>
+    <p><strong>Authentication required:</strong> Yes</p>
+    <p><strong>Path parameter:</strong> apiKey - The API key of the project</p>
+    <p><strong>Response:</strong> HTML page with project details</p>
+</div>
+
+<div class="endpoint">
+    <h3><span class="method">GET</span> /user/projects</h3>
+    <p>Retrieves all projects for the authenticated user.</p>
+    <p><strong>Authentication required:</strong> Yes</p>
+    <p><strong>Response:</strong> HTML page with a list of user's projects</p>
+</div>
+
+<h2>Authentication</h2>
+<p>This API supports both OAuth2 and username/password authentication. The API key generated for a project should be included in the header of subsequent API calls for payment-related operations.</p>
+
+<h2>Error Handling</h2>
+<p>In case of errors (e.g., project not found, user not authenticated), appropriate error messages will be displayed on the corresponding HTML pages.</p>
+
+<footer>
+    <p>For more information or support, please contact the API administrator.</p>
+</footer>
+<script>
+    // Получаем элемент переключателя темы и устанавливаем текущую тему
+    const themeToggleButton = document.getElementById('themeToggle');
+    const currentTheme = localStorage.getItem('theme') || 'light-theme';
+    document.body.classList.add(currentTheme);
+
+    themeToggleButton.addEventListener('click', () => {
+        // Переключаем класс темы
+        if (document.body.classList.contains('light-theme')) {
+            document.body.classList.remove('light-theme');
+            document.body.classList.add('dark-theme');
+            localStorage.setItem('theme', 'dark-theme');
+        } else {
+            document.body.classList.remove('dark-theme');
+            document.body.classList.add('light-theme');
+            localStorage.setItem('theme', 'light-theme');
+        }
+    });
+</script>
+</body>
+</html>

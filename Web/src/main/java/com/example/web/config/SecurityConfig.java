@@ -25,8 +25,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/api/users/register", "/api/users/login", "/blocked","/login").permitAll()
                         .requestMatchers("/register", "/", "/pic/**").permitAll()
-                        .requestMatchers("/projects/new","/projects").permitAll()
-                        .requestMatchers("/dashboard", "/account/**", "/transfer", "/cart").authenticated()
+                        .requestMatchers("/projects","/api/document").permitAll()
+                        .requestMatchers("/dashboard", "/account/**", "/transfer", "/cart","/projects/new").authenticated()
                         .anyRequest().permitAll()
                 )
                 .formLogin(form -> form

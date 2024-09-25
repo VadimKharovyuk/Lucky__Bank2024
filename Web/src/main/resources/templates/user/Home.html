@@ -199,6 +199,14 @@
             flex: 1;
             margin-right: 2rem;
         }
+        .footer-section ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .footer-section ul li a:hover {
+            text-decoration: underline;
+        }
 
         .footer-section h3 {
             margin-bottom: 1rem;
@@ -210,6 +218,7 @@
 
         .footer-section ul li {
             margin-bottom: 0.5rem;
+
         }
 
         .footer-bottom {
@@ -250,7 +259,7 @@
             <li><a href="#about">О нас</a></li>
             <li><a href="#contact">Контакты</a></li>
             <li><a href="/login">Войти</a></li>
-            <li><a href="/logout">Выйти</a></li>
+
             <li><button id="themeToggle">🌓</button></li>
         </ul>
     </nav>
@@ -289,7 +298,15 @@
                     <h3>Мобильный банк</h3>
                     <p>Банк в вашем кармане - совершайте операции через наше мобильное приложение.</p>
                 </div>
+                <div class="service-card card p-3 mb-4 shadow-sm">
+                    <h3 class="card-title">API для оплаты</h3>
+                    <p class="card-text">
+                        Мы предоставляем гибкие решения для бизнеса, поддерживая высокие стандарты безопасности и производительности.
+                    </p>
+<!--                    <a href="/api/document" class="btn btn-primary">Смотреть документацию</a>-->
+                </div>
             </div>
+
         </div>
     </section>
 </main>
@@ -307,6 +324,7 @@
                 <li><a href="#">Карьера</a></li>
                 <li><a href="#">Новости</a></li>
                 <li><a href="#">Партнерам</a></li>
+                <li><a href="/api/document">Api</a></li>
             </ul>
         </div>
         <div class="footer-section">

@@ -4,28 +4,57 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Создание проекта</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+    <a class="navbar-brand" href="/">Логотип</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="/">Главная</a></li>
+        <li class="nav-item"><a class="nav-link" href="/user/projects">Мои Проекты</a></li>
+        <li class="nav-item"><a class="nav-link" href="#about">О нас</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contact">Контакты</a></li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
 <body>
-<h1>Создание нового проекта</h1>
-<form action="/projects" method="post" th:action="@{/projects}" th:object="${projectCreateRequest}">
-  <input type="hidden" name="userId" th:value="${user.id}"/>
+<div class="container mt-5">
+  <h1>Создание нового проекта</h1>
+  <form action="/projects" method="post" th:action="@{/projects}" th:object="${projectCreateRequest}">
+    <input type="hidden" name="userId" th:value="${user.id}"/>
 
-  <label for="title">Название:</label>
-  <input type="text" id="title" name="title" th:field="*{title}" required>
-  <br>
+    <div class="form-group">
+      <label for="title">Название:</label>
+      <input type="text" id="title" class="form-control" name="title" th:field="*{title}" required>
+    </div>
 
-  <label for="description">Описание:</label>
-  <textarea id="description" name="description" th:field="*{description}" required></textarea>
-  <br>
+    <div class="form-group">
+      <label for="description">Описание:</label>
+      <textarea id="description" class="form-control" name="description" th:field="*{description}" required></textarea>
+    </div>
 
-  <label for="tokenType">Тип токена:</label>
-  <select id="tokenType" name="tokenType" th:field="*{tokenType}" required>
-    <option value="LIMITED">Лимитированный</option>
-    <option value="UNLIMITED">Безлимитный</option>
-  </select>
-  <br>
+    <div class="form-group">
+      <label for="tokenType">Тип токена:</label>
+      <select id="tokenType" class="form-control" name="tokenType" th:field="*{tokenType}" required>
+        <option value="LIMITED">Лимитированный</option>
+        <option value="UNLIMITED">Безлимитный</option>
+      </select>
+    </div>
 
-  <button type="submit">Создать проект</button>
-</form>
+    <button type="submit" class="btn btn-primary">Создать проект</button>
+  </form>
+</div>
+
+<!-- Bootstrap JS and dependencies (optional) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

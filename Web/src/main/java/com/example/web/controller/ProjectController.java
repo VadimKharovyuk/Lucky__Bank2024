@@ -119,6 +119,11 @@ public class ProjectController {
         List<ProjectDto> userProjects = apiPaymentService.getProjectsByUserId(userId);
         model.addAttribute("projects", userProjects);
 
-        return "user/projects/userProjects"; // Путь к HTML-шаблону
+        return "user/projects/userProjects";
+    }
+
+    @GetMapping("/api/document")
+    public String document (){
+        return "user/projects/API Documentation Page";
     }
 }
