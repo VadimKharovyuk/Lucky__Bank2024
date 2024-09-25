@@ -34,4 +34,7 @@ public class CardService {
     public List<CardDTO> getAllCards (){
         return cardFeignClient.getAllCards();
     }
+    public void deleteCardById(Long id){
+        cardFeignClient.deleteCardById(id);
+    }
 }

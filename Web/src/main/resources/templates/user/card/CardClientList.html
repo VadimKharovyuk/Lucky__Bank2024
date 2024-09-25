@@ -1,3 +1,72 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Dashboard</title>-->
+<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">-->
+<!--    <style>-->
+
+<!--        .card {-->
+<!--            transition: box-shadow 0.3s, border 0.3s;-->
+<!--            border: 1px solid transparent; /* Прозрачный ободок по умолчанию */-->
+<!--        }-->
+<!--        .card:hover {-->
+<!--            border: 1px solid #60a2e8; /* Цвет ободка при наведении */-->
+<!--            box-shadow: 0 0 15px rgba(48, 241, 212, 0.9); /* Светящийся эффект */-->
+<!--        }-->
+<!--        .card-create-new {-->
+<!--            cursor: pointer;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="container">-->
+<!--    <h1 class="text-center mt-5">Мои карты </h1>-->
+<!--    <p class="text-center">Here are your current cards. You can create a new one.</p>-->
+
+<!--    &lt;!&ndash; Add New Card &ndash;&gt;-->
+<!--    <div class="card card-block card-create-new mb-3" onclick="window.location.href='/cards/create'">-->
+<!--        <div class="card-body">-->
+<!--            <h5 class="card-title">+ Create New Card</h5>-->
+<!--        </div>-->
+<!--    </div>-->
+
+
+<!--    &lt;!&ndash; Display User's Cards &ndash;&gt;-->
+<!--    <div class="row">-->
+<!--        <div class="col-12">-->
+<!--            <h2>Your Cards</h2>-->
+<!--            <div class="row">-->
+<!--                &lt;!&ndash; Check if the cards list is empty &ndash;&gt;-->
+<!--                <div th:if="${#lists.isEmpty(cards)}" class="alert alert-warning text-center">-->
+<!--                    У вас нет карт.-->
+<!--                </div>-->
+
+<!--                <div class="col-md-4" th:each="card : ${cards}">-->
+<!--                    <div class="card mb-3">-->
+<!--                        <div class="card-body">-->
+<!--                            <h5 class="card-title" th:text="${card.cardType}">Card Type</h5>-->
+<!--                            <p class="card-text">Card Number: <span th:text="${card.cardNumber}"></span></p>-->
+<!--                            <p class="card-text">Balance: <span th:text="${card.balance}"></span></p>-->
+<!--                            <p class="card-text">Expiration Date: <span th:text="${card.expirationDate}"></span></p>-->
+<!--                            <p class="card-text">CVV: <span th:text="${card.cvv}"></span></p>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--    &lt;!&ndash; Bootstrap JS and dependencies &ndash;&gt;-->
+<!--    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>-->
+<!--    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +75,6 @@
     <title>Dashboard</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-
         .card {
             transition: box-shadow 0.3s, border 0.3s;
             border: 1px solid transparent; /* Прозрачный ободок по умолчанию */
@@ -22,7 +90,7 @@
 </head>
 <body>
 <div class="container">
-    <h1 class="text-center mt-5">Мои карты </h1>
+    <h1 class="text-center mt-5">Мои карты</h1>
     <p class="text-center">Here are your current cards. You can create a new one.</p>
 
     <!-- Add New Card -->
@@ -31,7 +99,6 @@
             <h5 class="card-title">+ Create New Card</h5>
         </div>
     </div>
-
 
     <!-- Display User's Cards -->
     <div class="row">
@@ -43,6 +110,7 @@
                     У вас нет карт.
                 </div>
 
+                <!-- Display each card -->
                 <div class="col-md-4" th:each="card : ${cards}">
                     <div class="card mb-3">
                         <div class="card-body">
@@ -51,18 +119,23 @@
                             <p class="card-text">Balance: <span th:text="${card.balance}"></span></p>
                             <p class="card-text">Expiration Date: <span th:text="${card.expirationDate}"></span></p>
                             <p class="card-text">CVV: <span th:text="${card.cvv}"></span></p>
+                            <!-- Delete Button -->
+                            <form th:action="@{'/cards/delete/' + ${card.id}}" method="post" class="mt-2">
+                                <button type="submit" class="btn btn-danger">Удалить</button>
+                            </form>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
 </div>
 
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </div>
 </body>
 </html>

@@ -25,5 +25,6 @@ public interface CardFeignClient {
     @PostMapping("/api/cards")
     CardDTO createCard(@RequestParam("userId") Long userId, @RequestParam("cardType") String cardType);
 
-
+    @PostMapping("/api/cards/delete/{id}")
+    void deleteCardById(@PathVariable Long id);
 }

@@ -66,15 +66,22 @@ public class CardService {
     }
 
     public List<CardDTO> getCardsByUserId(Long userId) {
-        List<Card> cards = cardRepository.findByUserId(userId); // Получаем карты из репозитория
+        List<Card> cards = cardRepository.findByUserId(userId);
         return cards.stream()
-                .map(cardMapper::toDTO) // Преобразуем карты в DTO
+                .map(cardMapper::toDTO)
                 .collect(Collectors.toList());
     }
     public List<CardDTO>getAllCard(){
        List<Card> card = cardRepository.findAll();
        return card.stream().map(cardMapper::toDTO)
                .collect(Collectors.toList());
+    }
+    public CardDTO deleteCardById(Long id) {
+        Card card = cardRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Карта с ID " + id + " не найдена"));
+
+        cardRepository.deleteById(id);
+
+        return cardMapper.toDTO(card);
     }
 
 

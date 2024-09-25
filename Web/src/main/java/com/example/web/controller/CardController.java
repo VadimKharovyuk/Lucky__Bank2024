@@ -25,6 +25,13 @@ public class CardController {
 
     private final CardService cardService;
     private final UserService userService;
+
+
+    @PostMapping("delete/{id}")
+    public String deleteCardById(@PathVariable Long id){
+        cardService.deleteCardById(id);
+        return "redirect:/cards";
+    }
     @GetMapping
     public String showDashboard(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -114,4 +121,6 @@ public class CardController {
             return "redirect:/cards/create"; // Перенаправление в случае ошибки
         }
     }
+
+
 }

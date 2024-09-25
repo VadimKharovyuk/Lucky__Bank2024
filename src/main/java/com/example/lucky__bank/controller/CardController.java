@@ -5,6 +5,7 @@ import com.example.lucky__bank.maper.CardMapper;
 import com.example.lucky__bank.model.Card;
 import com.example.lucky__bank.service.CardService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,10 +16,19 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/cards")
 @RequiredArgsConstructor
+@Slf4j
 public class CardController {
 
 
     private final CardService cardService;
+
+    //удаление карты
+    @PostMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteCard(@PathVariable Long id) {
+        log.info("карта пользователя удалена с id "+ id);
+        cardService.deleteCardById(id);
+        return ResponseEntity.noContent().build();
+    }
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<CardDTO>> getCardsByUserId(@PathVariable Long userId) {
