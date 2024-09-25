@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface ProjectRepository extends JpaRepository<Project,Long> {
     Optional<Project> findByApiKey(String apiKey);
+    Optional<Project> getProjectsById(Long id);
 }

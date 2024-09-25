@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Создание проекта</title>
+</head>
+<body>
+<h1>Создание нового проекта</h1>
+<form action="/projects" method="post">
+  <label for="title">Название:</label>
+  <input type="text" id="title" name="title" required>
+  <br>
+  <label for="description">Описание:</label>
+  <textarea id="description" name="description" required></textarea>
+  <br>
+  <label for="tokenType">Тип токена:</label>
+  <select id="tokenType" name="tokenType" required>
+    <option value="LIMITED">Лимитированный</option>
+    <option value="UNLIMITED">Безлимитный</option>
+  </select>
+  <br>
+  <button type="submit">Создать проект</button>
+</form>
+</body>
+</html>

@@ -25,6 +25,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/api/users/register", "/api/users/login", "/blocked","/login").permitAll()
                         .requestMatchers("/register", "/", "/pic/**").permitAll()
+                        .requestMatchers("/projects/new","/projects").permitAll()
                         .requestMatchers("/dashboard", "/account/**", "/transfer", "/cart").authenticated()
                         .anyRequest().permitAll()
                 )

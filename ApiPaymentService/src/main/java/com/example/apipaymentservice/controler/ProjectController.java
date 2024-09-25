@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/projects")
@@ -19,6 +20,18 @@ public class ProjectController {
 
     private final ProjectService projectService;
     private final ProjectMapper projectMapper;
+
+    @GetMapping("project/{id}")
+    public ResponseEntity<ProjectDto> getProjectById(@PathVariable Long id){
+         ProjectDto projectDto =projectService.getProjectById(id);
+         return ResponseEntity.ok(projectDto);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<ProjectDto>> getAllProjects() {
+        List<ProjectDto> projectDtoList = projectService.projectList();
+        return ResponseEntity.ok(projectDtoList);
+    }
 
     @PostMapping
     public ResponseEntity<ProjectDto> createProject(@RequestBody ProjectCreateRequestDto projectRequest) {
@@ -35,15 +48,6 @@ public class ProjectController {
         return new ResponseEntity<>(createdProject, HttpStatus.CREATED);
     }
 
-//    @PostMapping
-//    public ResponseEntity<ProjectDto> createProject(@RequestParam String title,
-//                                                    @RequestParam String description,
-//                                                    @RequestParam String tokenType) {
-//        // Преобразуем строковый параметр в enum
-//        TokenType type = TokenType.valueOf(tokenType.toUpperCase());
-//        ProjectDto createdProject = projectService.createProject(title, description, type);
-//        return new ResponseEntity<>(createdProject, HttpStatus.CREATED);
-//    }
 
     @GetMapping("/{apiKey}")
     public ResponseEntity<ProjectDto> getProjectByApiKey(@PathVariable String apiKey) {
