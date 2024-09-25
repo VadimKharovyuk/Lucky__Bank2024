@@ -1,45 +1,65 @@
 package com.example.apipaymentservice.controler;
 
 import com.example.apipaymentservice.model.Project;
-import com.example.apipaymentservice.repository.ProjectRepository;
 import com.example.apipaymentservice.request.PaymentRequest;
-import com.example.apipaymentservice.service.ApiKeyFilter;
+import com.example.apipaymentservice.service.ProjectService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping("/api/payment")
+@RequestMapping("/payment")
 @RequiredArgsConstructor
 public class PaymentController {
 
+    private final ProjectService projectService;
 
-    private  final  ProjectRepository projectRepository;
-    private final ApiKeyFilter apiKeyFilter;
+    @PostMapping("/pay")
+    public ResponseEntity<String> makePayment(@RequestHeader("api-key") String apiKey, @RequestBody PaymentRequest paymentRequest) {
+        Project project = projectService.getProjectByApiKey(apiKey);
 
-    @PostMapping("/process")
-    public ResponseEntity<String> processPayment(@RequestHeader("X-API-KEY") String apiKey,
-                                                 @RequestBody PaymentRequest paymentRequest) {
-
-        // Поиск проекта по API-ключу
-        Project project = projectRepository.findByApiKey(apiKey)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Неверный API ключ"));
-
-        // Если тип токенов лимитированный, уменьшаем количество токенов
-        if (project.getTokenType() == Project.TokenType.LIMITED) {
-            if (project.getTokens() <= 0) {
-                return new ResponseEntity<>("Лимит токенов исчерпан", HttpStatus.PAYMENT_REQUIRED);
-            }
-            project.setTokens(project.getTokens() - 1);
-            projectRepository.save(project); // Обновляем количество токенов в базе данных
+        // Проверяем, что проект существует
+        if (project == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Проект не найден");
         }
 
-        // Логика обработки платежа
-        // Например, сохранение транзакции или взаимодействие с платежной системой
+        // Используем токены для оплаты
+        boolean tokenUsed = projectService.useToken(project);
 
-        return new ResponseEntity<>("Оплата успешно обработана", HttpStatus.OK);
+        if (tokenUsed) {
+            // Здесь вы можете добавить логику для выполнения оплаты
+            // Например, вызвать метод для обработки самой оплаты (если у вас есть такая логика)
+            // boolean paymentSuccess = paymentService.processPayment(paymentRequest);
+
+            // Предположим, что оплата прошла успешно
+            return ResponseEntity.ok("Оплата прошла успешно");
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Недостаточно токенов для выполнения операции.");
+        }
     }
+
+//    @PostMapping("/{apiKey}/pay")
+//    public ResponseEntity<String> makePayment(@PathVariable String apiKey, @RequestBody PaymentRequest paymentRequest) {
+//        Project project = projectService.getProjectByApiKey(apiKey);
+//
+//        // Проверяем, что проект существует
+//        if (project == null) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Проект не найден");
+//        }
+//
+//        // Используем токены для оплаты
+//        boolean tokenUsed = projectService.useToken(project);
+//
+//        if (tokenUsed) {
+//            // Здесь вы можете добавить логику для выполнения оплаты
+//            // Например, вызвать метод для обработки самой оплаты (если у вас есть такая логика)
+//            // boolean paymentSuccess = paymentService.processPayment(paymentRequest);
+//
+//            // Предположим, что оплата прошла успешно
+//            return ResponseEntity.ok("Оплата прошла успешно");
+//        } else {
+//            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Недостаточно токенов для выполнения операции.");
+//        }
+//    }
 }

@@ -5,10 +5,13 @@ import com.example.apipaymentservice.maper.ProjectMapper;
 import com.example.apipaymentservice.model.Project;
 
 import com.example.apipaymentservice.repository.ProjectRepository;
+import com.example.apipaymentservice.request.PaymentRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.BitSet;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -95,4 +98,6 @@ public class ProjectService {
                 .map(projectMapper::convertToDTO) // Преобразование сущности в DTO
                 .collect(Collectors.toList());
     }
+
+
 }
