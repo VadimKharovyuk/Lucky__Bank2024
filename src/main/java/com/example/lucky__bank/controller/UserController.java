@@ -3,6 +3,7 @@ package com.example.lucky__bank.controller;
 import com.example.lucky__bank.Request.LoginRequest;
 import com.example.lucky__bank.dto.UserDTO;
 import com.example.lucky__bank.Request.UserRegistrationRequest;
+import com.example.lucky__bank.service.EmailService;
 import com.example.lucky__bank.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class UserController {
     private final UserService userService;
+    private final EmailService emailService;
 
 
     @GetMapping("/id/{id}")
@@ -42,11 +44,31 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+//
+//    @PostMapping("/register")
+//    public ResponseEntity<?> registerUser(@RequestBody UserRegistrationRequest request) {
+//
+//        try {
+//            UserDTO newUserDTO = userService.registerUser(request);
+//            return ResponseEntity.ok(newUserDTO); // Возвращаем созданного пользователя
+//        } catch (RuntimeException e) {
+//            log.error("Registration error: {}", e.getMessage());
+//            if (e.getMessage().equals("Email already exists")) {
+//                return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+//            }
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred.");
+//        }
+//    }
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody UserRegistrationRequest request) {
         try {
+            // Регистрируем пользователя и получаем информацию о новом пользователе
             UserDTO newUserDTO = userService.registerUser(request);
+
+            // Отправляем письмо приветствия новому пользователю
+            emailService.sendRegistrationEmail(newUserDTO.getEmail());
+
             return ResponseEntity.ok(newUserDTO); // Возвращаем созданного пользователя
         } catch (RuntimeException e) {
             log.error("Registration error: {}", e.getMessage());
