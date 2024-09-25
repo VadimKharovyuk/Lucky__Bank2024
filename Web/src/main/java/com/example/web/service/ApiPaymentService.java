@@ -6,6 +6,8 @@ import com.example.web.repository.ApiPaymentServiceClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ApiPaymentService {
@@ -20,7 +22,13 @@ public class ApiPaymentService {
         return apiPaymentServiceClient.getProjectByApiKey(apiKey);
     }
 
+
     public String useToken(String apiKey) {
         return apiPaymentServiceClient.useToken(apiKey);
+    }
+
+
+    public List<ProjectDto> getProjectsByUserId(Long userId) {
+        return apiPaymentServiceClient.getProjectbyUserId(userId);
     }
 }

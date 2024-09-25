@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class CardDTO {
     private Long id;
+
     private String cardNumber;
     private String cardType;
     private BigDecimal balance;

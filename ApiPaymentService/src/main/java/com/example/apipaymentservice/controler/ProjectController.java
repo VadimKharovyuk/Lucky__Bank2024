@@ -21,10 +21,18 @@ public class ProjectController {
     private final ProjectService projectService;
     private final ProjectMapper projectMapper;
 
+    //поиск проекта по id юзера
+    @GetMapping("/user/{id}")
+    public ResponseEntity<List<ProjectDto>> getProjectByUserId(@PathVariable Long id) {
+        List<ProjectDto> projectDto = projectService.getProjectsByUserId(id); // Получаем проект по userId
+        return ResponseEntity.ok(projectDto); // Возвращаем ответ
+    }
+
+    //поиск проекта по id
     @GetMapping("project/{id}")
-    public ResponseEntity<ProjectDto> getProjectById(@PathVariable Long id){
-         ProjectDto projectDto =projectService.getProjectById(id);
-         return ResponseEntity.ok(projectDto);
+    public ResponseEntity<ProjectDto> getProjectById(@PathVariable Long id) {
+        ProjectDto projectDto = projectService.getProjectById(id);
+        return ResponseEntity.ok(projectDto);
     }
 
     @GetMapping("/all")
@@ -42,13 +50,14 @@ public class ProjectController {
         ProjectDto createdProject = projectService.createProject(
                 projectRequest.getTitle(),
                 projectRequest.getDescription(),
-                type
+                type,
+                projectRequest.getUserId()
         );
 
         return new ResponseEntity<>(createdProject, HttpStatus.CREATED);
     }
 
-
+    //поиск по ключу
     @GetMapping("/{apiKey}")
     public ResponseEntity<ProjectDto> getProjectByApiKey(@PathVariable String apiKey) {
         Project project = projectService.getProjectByApiKey(apiKey);
@@ -56,6 +65,7 @@ public class ProjectController {
         return ResponseEntity.ok(projectDto);
     }
 
+    //использтвать токен
     @PostMapping("/{apiKey}/use-token")
     public ResponseEntity<String> useToken(@PathVariable String apiKey) {
         Project project = projectService.getProjectByApiKey(apiKey);

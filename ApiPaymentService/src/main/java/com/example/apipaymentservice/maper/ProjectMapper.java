@@ -17,6 +17,7 @@ public class ProjectMapper {
                 .updatedAt(project.getUpdatedAt()) // передаем время последнего обновления
                 .tokens(project.getTokens())
                 .tokenType(project.getTokenType())
+                .userId(project.getUserId())
                 .build();
     }
 }

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Проекты пользователя</title>
+</head>
+<body>
+<h1>Ваши проекты</h1>
+<table>
+  <thead>
+  <tr>
+    <th>Название</th>
+    <th>Описание</th>
+    <th>API-ключ</th>
+    <th>Тип токена</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="project : ${projects}">
+    <td th:text="${project.title}"></td>
+    <td th:text="${project.description}"></td>
+    <td th:text="${project.apiKey}"></td>
+    <td th:text="${project.tokenType}"></td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>

@@ -7,19 +7,24 @@
 </head>
 <body>
 <h1>Создание нового проекта</h1>
-<form action="/projects" method="post">
+<form action="/projects" method="post" th:action="@{/projects}" th:object="${projectCreateRequest}">
+  <input type="hidden" name="userId" th:value="${user.id}"/>
+
   <label for="title">Название:</label>
-  <input type="text" id="title" name="title" required>
+  <input type="text" id="title" name="title" th:field="*{title}" required>
   <br>
+
   <label for="description">Описание:</label>
-  <textarea id="description" name="description" required></textarea>
+  <textarea id="description" name="description" th:field="*{description}" required></textarea>
   <br>
+
   <label for="tokenType">Тип токена:</label>
-  <select id="tokenType" name="tokenType" required>
+  <select id="tokenType" name="tokenType" th:field="*{tokenType}" required>
     <option value="LIMITED">Лимитированный</option>
     <option value="UNLIMITED">Безлимитный</option>
   </select>
   <br>
+
   <button type="submit">Создать проект</button>
 </form>
 </body>

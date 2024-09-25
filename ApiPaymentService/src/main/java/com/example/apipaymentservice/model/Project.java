@@ -19,6 +19,9 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
+
+    private Long userId;
     private String title;
     private String description;
     private String apiKey;
@@ -33,10 +36,10 @@ public class Project {
     private LocalDate lastResetDate;
 
     // Поле для хранения токенов
-    private Integer tokens; // Например, 100 или Integer.MAX_VALUE для безлимита
+    private Integer tokens;
 
     @Enumerated(EnumType.STRING)
-    private TokenType tokenType; // Тип токенов: лимитированные или безлимитные
+    private TokenType tokenType;
 
 
 
@@ -51,7 +54,7 @@ public class Project {
     }
 
     public enum TokenType {
-        LIMITED,  // Ограниченное количество токенов (например, 100)
+        LIMITED,
         UNLIMITED // Безлимитное количество токенов
     }
 }

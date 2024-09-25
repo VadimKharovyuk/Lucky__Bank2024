@@ -15,6 +15,8 @@ public class ProjectDto {
     private LocalDate lastResetDate;
     private Integer tokens; // Количество токенов
     private String tokenType;
+
+    private Long userId;
     public enum TokenType {
         LIMITED,
         UNLIMITED // Безлимитное количество токенов

@@ -14,8 +14,12 @@ import java.util.List;
 public interface ApiPaymentServiceClient {
 
 
+    @GetMapping("/api/projects/user/{id}")
+    List<ProjectDto> getProjectbyUserId(@PathVariable Long id);
+
     @GetMapping("api/projects/all")
-    List<ProjectDto> getAll ();
+    List<ProjectDto> getAll();
+
     @PostMapping("/api/projects")
     ProjectDto createProject(@RequestBody ProjectCreateRequest projectCreateRequest);
 
@@ -24,7 +28,6 @@ public interface ApiPaymentServiceClient {
 
     @PostMapping("/api/projects/{apiKey}/use-token")
     String useToken(@PathVariable("apiKey") String apiKey);
-
 
 
 }

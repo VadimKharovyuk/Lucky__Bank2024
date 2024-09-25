@@ -7,4 +7,5 @@ public class ProjectCreateRequest {
     private String title;
     private String description;
     private String tokenType;
+    private Long userId;
 }

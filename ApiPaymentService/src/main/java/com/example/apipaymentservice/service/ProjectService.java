@@ -21,13 +21,15 @@ public class ProjectService {
     private final ProjectMapper projectMapper;
 
 
+
     // Метод для создания проекта
-    public ProjectDto createProject(String title, String description, Project.TokenType tokenType) {
+    public ProjectDto createProject(String title, String description, Project.TokenType tokenType,Long userId) {
         Project project = new Project();
         project.setTitle(title);
         project.setDescription(description);
         project.setApiKey(generateApiKey());
         project.setTokenType(tokenType);
+        project.setUserId(userId);
 
         // Устанавливаем количество токенов в зависимости от типа
         if (tokenType == Project.TokenType.LIMITED) {
@@ -69,21 +71,28 @@ public class ProjectService {
         return true; // Для безлимитного количества токенов всегда true
     }
 
+    public List<ProjectDto> projectList (){
+        List<Project> project = projectRepository.findAll();
+        return  project.stream()
+                .map(projectMapper::convertToDTO)
+                .collect(Collectors.toList());
+    }
 
+    public ProjectDto getProjectById(Long id){
+        Project project = projectRepository.getProjectsById(id)
+                .orElseThrow(()-> new RuntimeException("Проект с таким id не найден" + id));
+        return projectMapper.convertToDTO(project);
+    }
 
     public Project getProjectByApiKey(String apiKey) {
         return projectRepository.findByApiKey(apiKey)
                 .orElseThrow(() -> new RuntimeException("Проект с таким API-ключом не найден"));
     }
-    public List<ProjectDto> projectList (){
-       List<Project> project = projectRepository.findAll();
-       return  project.stream()
-               .map(projectMapper::convertToDTO)
-               .collect(Collectors.toList());
-    }
-    public ProjectDto getProjectById(Long id){
-        Project project = projectRepository.getProjectsById(id)
-                .orElseThrow(()-> new RuntimeException("Проект с таким id не найден" + id));
-        return projectMapper.convertToDTO(project);
+
+    public List<ProjectDto> getProjectsByUserId(Long userId) {
+        List<Project> projects = projectRepository.findByUserId(userId);
+        return projects.stream()
+                .map(projectMapper::convertToDTO) // Преобразование сущности в DTO
+                .collect(Collectors.toList());
     }
 }

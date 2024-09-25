@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 @Builder
 public class ProjectDto {
     private Long id;
+
+
     private String title;
     private String description;
     private String apiKey;
@@ -19,4 +21,5 @@ public class ProjectDto {
     private LocalDate lastResetDate;
     private Integer tokens; // Количество токенов
     private Project.TokenType tokenType; // Тип токенов: лимитированные или безлимитные
+    private Long userId;
 }
