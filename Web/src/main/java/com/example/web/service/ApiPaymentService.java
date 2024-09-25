@@ -13,6 +13,7 @@ import java.util.List;
 public class ApiPaymentService {
     private final ApiPaymentServiceClient apiPaymentServiceClient;
 
+
     public ProjectDto createProject(ProjectCreateRequest projectCreateRequest){
     return   apiPaymentServiceClient.createProject(projectCreateRequest);
 
@@ -31,4 +32,9 @@ public class ApiPaymentService {
     public List<ProjectDto> getProjectsByUserId(Long userId) {
         return apiPaymentServiceClient.getProjectbyUserId(userId);
     }
+
+    public void deleteProjectById(Long id) {
+        apiPaymentServiceClient.deleteProject(id);
+    }
+
 }

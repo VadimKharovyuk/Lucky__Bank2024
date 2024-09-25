@@ -29,5 +29,9 @@ public interface ApiPaymentServiceClient {
     @PostMapping("/api/projects/{apiKey}/use-token")
     String useToken(@PathVariable("apiKey") String apiKey);
 
+    //удалить
+    @PostMapping("/api/projects/delete/{id}")
+    void deleteProject(@PathVariable("id") Long id);
+
 
 }

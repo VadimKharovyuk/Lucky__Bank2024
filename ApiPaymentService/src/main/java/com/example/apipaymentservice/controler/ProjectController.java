@@ -76,4 +76,10 @@ public class ProjectController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Недостаточно токенов");
         }
     }
+    //удалить
+    @PostMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
+        projectService.deleteProject(id);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -98,6 +98,12 @@ public class ProjectService {
                 .map(projectMapper::convertToDTO) // Преобразование сущности в DTO
                 .collect(Collectors.toList());
     }
+    public ProjectDto deleteProject(Long id) {
+        Project project = projectRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Проект с ID " + id + " не найден"));
+        projectRepository.deleteById(id);
+        return projectMapper.convertToDTO(project);
+    }
 
 
 }

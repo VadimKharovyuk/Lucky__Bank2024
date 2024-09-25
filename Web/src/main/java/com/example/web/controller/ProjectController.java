@@ -126,4 +126,9 @@ public class ProjectController {
     public String document (){
         return "user/projects/API Documentation Page";
     }
+    @PostMapping("/projects/delete/{id}")
+    public String deleteByIdProject(@PathVariable Long id) {
+        apiPaymentService.deleteProjectById(id);
+        return "redirect:/user/projects";
+    }
 }

@@ -34,7 +34,8 @@
       <th>Описание</th>
       <th>API-ключ</th>
       <th>Тип токена</th>
-      <th>Детали</th> <!-- Новый заголовок для ссылки на детали проекта -->
+      <th>Детали</th> <!-- Ссылка на детали проекта -->
+      <th>Удалить</th> <!-- Новый заголовок для кнопки удаления -->
     </tr>
     </thead>
     <tbody>
@@ -48,9 +49,40 @@
           Смотреть
         </a>
       </td>
+      <td>
+        <form th:action="@{/projects/delete/{id}(id=${project.id})}" method="post">
+          <button type="submit" class="btn btn-danger" onclick="return confirm('Вы уверены, что хотите удалить проект?');">
+            Удалить
+          </button>
+        </form>
+      </td>
     </tr>
     </tbody>
   </table>
+<!--  <table class="table table-bordered">-->
+<!--    <thead class="thead-light">-->
+<!--    <tr>-->
+<!--      <th>Название</th>-->
+<!--      <th>Описание</th>-->
+<!--      <th>API-ключ</th>-->
+<!--      <th>Тип токена</th>-->
+<!--      <th>Детали</th> &lt;!&ndash; Новый заголовок для ссылки на детали проекта &ndash;&gt;-->
+<!--    </tr>-->
+<!--    </thead>-->
+<!--    <tbody>-->
+<!--    <tr th:each="project : ${projects}">-->
+<!--      <td th:text="${project.title}"></td>-->
+<!--      <td th:text="${project.description}"></td>-->
+<!--      <td th:text="${project.apiKey}"></td>-->
+<!--      <td th:text="${project.tokenType}"></td>-->
+<!--      <td>-->
+<!--        <a th:href="@{/projects/{apiKey}(apiKey=${project.apiKey})}" class="btn btn-info">-->
+<!--          Смотреть-->
+<!--        </a>-->
+<!--      </td>-->
+<!--    </tr>-->
+<!--    </tbody>-->
+<!--  </table>-->
 </div>
 
 <!-- Bootstrap JS and dependencies (optional) -->
