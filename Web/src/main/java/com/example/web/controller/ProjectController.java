@@ -124,7 +124,7 @@ public class ProjectController {
 
     @GetMapping("/api/document")
     public String document (){
-        return "user/projects/API Documentation Page";
+        return "APIDocumentationPage";
     }
     @PostMapping("/projects/delete/{id}")
     public String deleteByIdProject(@PathVariable Long id) {
