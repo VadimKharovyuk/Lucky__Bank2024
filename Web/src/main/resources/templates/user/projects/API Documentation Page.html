@@ -1,246 +1,246 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API Documentation</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        h1, h2, h3 {
-            color: #2c3e50;
-        }
-        code {
-            background-color: #f4f4f4;
-            padding: 2px 5px;
-            border-radius: 3px;
-        }
-        .endpoint {
-            background-color: #e8f4f8;
-            border-left: 5px solid #3498db;
-            padding: 10px;
-            margin-bottom: 20px;
-        }
-        .method {
-            font-weight: bold;
-            color: #3498db;
-        }
-        .request-body {
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
-            padding: 10px;
-            margin-top: 10px;
-        }
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        /* Темные темы */
-        .dark-theme {
-            background-color: #333;
-            color: #f9f9f9;
-        }
-        .dark-theme .endpoint {
-            background-color: #444;
-        }
-        .dark-theme .request-body {
-            background-color: #555;
-        }
-        .nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-        }
-        .nav-links {
-            list-style: none;
-            padding: 0;
-            display: flex;
-            gap: 20px;
-        }
-        .nav-links a {
-            text-decoration: none;
-            color: #3498db;
-        }
-        .nav-links a:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<header>
-    <nav class="container">
-        <ul class="nav-links">
-            <li><a href="/">Главная</a></li>
-            <li><a href="#services">Услуги</a></li>
-            <li><a href="#about">О нас</a></li>
-            <li><a href="#contact">Контакты</a></li>
-            <li><a href="/projects/new">Создать Api ключ</a></li>
-            <li><button id="themeToggle">🌓</button></li>
-        </ul>
-    </nav>
-</header>
-<body>
-<h1>Project Management API Documentation</h1>
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>API Documentation</title>-->
+<!--    <style>-->
+<!--        body {-->
+<!--            font-family: Arial, sans-serif;-->
+<!--            line-height: 1.6;-->
+<!--            color: #333;-->
+<!--            max-width: 800px;-->
+<!--            margin: 0 auto;-->
+<!--            padding: 20px;-->
+<!--            transition: background-color 0.3s, color 0.3s;-->
+<!--        }-->
+<!--        h1, h2, h3 {-->
+<!--            color: #2c3e50;-->
+<!--        }-->
+<!--        code {-->
+<!--            background-color: #f4f4f4;-->
+<!--            padding: 2px 5px;-->
+<!--            border-radius: 3px;-->
+<!--        }-->
+<!--        .endpoint {-->
+<!--            background-color: #e8f4f8;-->
+<!--            border-left: 5px solid #3498db;-->
+<!--            padding: 10px;-->
+<!--            margin-bottom: 20px;-->
+<!--        }-->
+<!--        .method {-->
+<!--            font-weight: bold;-->
+<!--            color: #3498db;-->
+<!--        }-->
+<!--        .request-body {-->
+<!--            background-color: #f9f9f9;-->
+<!--            border: 1px solid #ddd;-->
+<!--            padding: 10px;-->
+<!--            margin-top: 10px;-->
+<!--        }-->
+<!--        .container {-->
+<!--            width: 90%;-->
+<!--            max-width: 1200px;-->
+<!--            margin: 0 auto;-->
+<!--            padding: 0 20px;-->
+<!--        }-->
+<!--        /* Темные темы */-->
+<!--        .dark-theme {-->
+<!--            background-color: #333;-->
+<!--            color: #f9f9f9;-->
+<!--        }-->
+<!--        .dark-theme .endpoint {-->
+<!--            background-color: #444;-->
+<!--        }-->
+<!--        .dark-theme .request-body {-->
+<!--            background-color: #555;-->
+<!--        }-->
+<!--        .nav {-->
+<!--            display: flex;-->
+<!--            justify-content: space-between;-->
+<!--            align-items: center;-->
+<!--            padding: 10px 0;-->
+<!--        }-->
+<!--        .nav-links {-->
+<!--            list-style: none;-->
+<!--            padding: 0;-->
+<!--            display: flex;-->
+<!--            gap: 20px;-->
+<!--        }-->
+<!--        .nav-links a {-->
+<!--            text-decoration: none;-->
+<!--            color: #3498db;-->
+<!--        }-->
+<!--        .nav-links a:hover {-->
+<!--            text-decoration: underline;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<header>-->
+<!--    <nav class="container">-->
+<!--        <ul class="nav-links">-->
+<!--            <li><a href="/">Главная</a></li>-->
+<!--            <li><a href="#services">Услуги</a></li>-->
+<!--            <li><a href="#about">О нас</a></li>-->
+<!--            <li><a href="#contact">Контакты</a></li>-->
+<!--            <li><a href="/projects/new">Создать Api ключ</a></li>-->
+<!--            <li><button id="themeToggle">🌓</button></li>-->
+<!--        </ul>-->
+<!--    </nav>-->
+<!--</header>-->
+<!--<body>-->
+<!--<h1>Project Management API Documentation</h1>-->
 
-<p>This documentation provides information about the endpoints available for managing projects and API keys.</p>
+<!--<p>This documentation provides information about the endpoints available for managing projects and API keys.</p>-->
 
-<h2>Authentication</h2>
-<p>This API supports both OAuth2 and username/password authentication. The API key generated for a project should be included in the header of subsequent API calls for payment-related operations.</p>
+<!--<h2>Authentication</h2>-->
+<!--<p>This API supports both OAuth2 and username/password authentication. The API key generated for a project should be included in the header of subsequent API calls for payment-related operations.</p>-->
 
-<h2>Error Handling</h2>
-<p>In case of errors (e.g., project not found, user not authenticated), appropriate error messages will be displayed on the corresponding HTML pages.</p>
+<!--<h2>Error Handling</h2>-->
+<!--<p>In case of errors (e.g., project not found, user not authenticated), appropriate error messages will be displayed on the corresponding HTML pages.</p>-->
 
-<h2>Payment API</h2>
+<!--<h2>Payment API</h2>-->
 
-<h3>Make a Payment</h3>
-<p>Executes a payment transaction using the provided payment details.</p>
+<!--<h3>Make a Payment</h3>-->
+<!--<p>Executes a payment transaction using the provided payment details.</p>-->
 
-<div class="endpoint">
-    <p><span class="method">POST</span> /payment/pay</p>
-</div>
+<!--<div class="endpoint">-->
+<!--    <p><span class="method">POST</span> /payment/pay</p>-->
+<!--</div>-->
 
-<h4>Headers</h4>
-<ul>
-    <li><code>api-key</code>: Your project's API key for authentication</li>
-</ul>
+<!--<h4>Headers</h4>-->
+<!--<ul>-->
+<!--    <li><code>api-key</code>: Your project's API key for authentication</li>-->
+<!--</ul>-->
 
-<h4>Request Body</h4>
-<pre class="request-body">
-{
-  "cardNumber": "1234567890123456",
-  "expirationDate": "2025-12-31",
-  "cvv": "123",
-  "amount": 100.50
-}
-</pre>
+<!--<h4>Request Body</h4>-->
+<!--<pre class="request-body">-->
+<!--{-->
+<!--  "cardNumber": "1234567890123456",-->
+<!--  "expirationDate": "2025-12-31",-->
+<!--  "cvv": "123",-->
+<!--  "amount": 100.50-->
+<!--}-->
+<!--</pre>-->
 
-<h4>Fields:</h4>
-<ul>
-    <li><code>cardNumber</code> (string, required): The 16-digit card number.</li>
-    <li><code>expirationDate</code> (string, required): The card's expiration date in YYYY-MM-DD format.</li>
-    <li><code>cvv</code> (string, required): The 3-digit CVV code.</li>
-    <li><code>amount</code> (number, required): The payment amount.</li>
-</ul>
+<!--<h4>Fields:</h4>-->
+<!--<ul>-->
+<!--    <li><code>cardNumber</code> (string, required): The 16-digit card number.</li>-->
+<!--    <li><code>expirationDate</code> (string, required): The card's expiration date in YYYY-MM-DD format.</li>-->
+<!--    <li><code>cvv</code> (string, required): The 3-digit CVV code.</li>-->
+<!--    <li><code>amount</code> (number, required): The payment amount.</li>-->
+<!--</ul>-->
 
-<h4>Responses</h4>
+<!--<h4>Responses</h4>-->
 
-<h5>Successful Payment</h5>
-<p>Status Code: 200 OK</p>
-<pre class="request-body">
-{
-  "message": "Оплата прошла успешно"
-}
-</pre>
+<!--<h5>Successful Payment</h5>-->
+<!--<p>Status Code: 200 OK</p>-->
+<!--<pre class="request-body">-->
+<!--{-->
+<!--  "message": "Оплата прошла успешно"-->
+<!--}-->
+<!--</pre>-->
 
-<h5>Invalid Card Number</h5>
-<p>Status Code: 400 Bad Request</p>
-<pre class="request-body">
-{
-  "error": "Ошибка в номере карты: [детали ошибки]"
-}
-</pre>
+<!--<h5>Invalid Card Number</h5>-->
+<!--<p>Status Code: 400 Bad Request</p>-->
+<!--<pre class="request-body">-->
+<!--{-->
+<!--  "error": "Ошибка в номере карты: [детали ошибки]"-->
+<!--}-->
+<!--</pre>-->
 
-<h5>Invalid CVV</h5>
-<p>Status Code: 400 Bad Request</p>
-<pre class="request-body">
-{
-  "error": "Ошибка в CVV: [детали ошибки]"
-}
-</pre>
+<!--<h5>Invalid CVV</h5>-->
+<!--<p>Status Code: 400 Bad Request</p>-->
+<!--<pre class="request-body">-->
+<!--{-->
+<!--  "error": "Ошибка в CVV: [детали ошибки]"-->
+<!--}-->
+<!--</pre>-->
 
-<h5>Project Not Found</h5>
-<p>Status Code: 404 Not Found</p>
-<pre class="request-body">
-{
-  "error": "Проект не найден"
-}
-</pre>
+<!--<h5>Project Not Found</h5>-->
+<!--<p>Status Code: 404 Not Found</p>-->
+<!--<pre class="request-body">-->
+<!--{-->
+<!--  "error": "Проект не найден"-->
+<!--}-->
+<!--</pre>-->
 
-<h5>Insufficient Tokens</h5>
-<p>Status Code: 403 Forbidden</p>
-<pre class="request-body">
-{
-  "error": "Недостаточно токенов для выполнения операции."
-}
-</pre>
+<!--<h5>Insufficient Tokens</h5>-->
+<!--<p>Status Code: 403 Forbidden</p>-->
+<!--<pre class="request-body">-->
+<!--{-->
+<!--  "error": "Недостаточно токенов для выполнения операции."-->
+<!--}-->
+<!--</pre>-->
 
-<h4>Example Usage (Java)</h4>
-<pre class="request-body">
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.net.URI;
-import java.time.Duration;
+<!--<h4>Example Usage (Java)</h4>-->
+<!--<pre class="request-body">-->
+<!--import java.net.http.HttpClient;-->
+<!--import java.net.http.HttpRequest;-->
+<!--import java.net.http.HttpResponse;-->
+<!--import java.net.URI;-->
+<!--import java.time.Duration;-->
 
-public class PaymentExample {
-    public static void main(String[] args) throws Exception {
-        String apiUrl = "http://localhost:1001/apy/payment";
-        String apiKey = "your_api_key_here";
-        String jsonBody = """
-                {
-                    "cardNumber": "1234567890123456",
-                    "expirationDate": "2025-12-31",
-                    "cvv": "123",
-                    "amount": 100.50
-                }
-                """;
+<!--public class PaymentExample {-->
+<!--    public static void main(String[] args) throws Exception {-->
+<!--        String apiUrl = "http://localhost:1001/apy/payment";-->
+<!--        String apiKey = "your_api_key_here";-->
+<!--        String jsonBody = """-->
+<!--                {-->
+<!--                    "cardNumber": "1234567890123456",-->
+<!--                    "expirationDate": "2025-12-31",-->
+<!--                    "cvv": "123",-->
+<!--                    "amount": 100.50-->
+<!--                }-->
+<!--                """;-->
 
-        HttpClient client = HttpClient.newBuilder()
-                .connectTimeout(Duration.ofSeconds(10))
-                .build();
+<!--        HttpClient client = HttpClient.newBuilder()-->
+<!--                .connectTimeout(Duration.ofSeconds(10))-->
+<!--                .build();-->
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(apiUrl))
-                .header("Content-Type", "application/json")
-                .header("api-key", apiKey)
-                .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
-                .build();
+<!--        HttpRequest request = HttpRequest.newBuilder()-->
+<!--                .uri(URI.create(apiUrl))-->
+<!--                .header("Content-Type", "application/json")-->
+<!--                .header("api-key", apiKey)-->
+<!--                .POST(HttpRequest.BodyPublishers.ofString(jsonBody))-->
+<!--                .build();-->
 
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+<!--        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());-->
 
-        System.out.println("Status code: " + response.statusCode());
-        System.out.println("Response body: " + response.body());
-    }
-}
-</pre>
+<!--        System.out.println("Status code: " + response.statusCode());-->
+<!--        System.out.println("Response body: " + response.body());-->
+<!--    }-->
+<!--}-->
+<!--</pre>-->
 
-<h4>Notes</h4>
-<ul>
-    <li>Ensure that your API key is valid and has sufficient tokens for the operation.</li>
-    <li>All card information should be transmitted securely.</li>
-    <li>The API uses token-based charging for each successful payment transaction.</li>
-</ul>
+<!--<h4>Notes</h4>-->
+<!--<ul>-->
+<!--    <li>Ensure that your API key is valid and has sufficient tokens for the operation.</li>-->
+<!--    <li>All card information should be transmitted securely.</li>-->
+<!--    <li>The API uses token-based charging for each successful payment transaction.</li>-->
+<!--</ul>-->
 
-<footer>
-    <p>For more information or support, please contact the API administrator.</p>
-</footer>
-<script>
-    // Получаем элемент переключателя темы и устанавливаем текущую тему
-    const themeToggleButton = document.getElementById('themeToggle');
-    const currentTheme = localStorage.getItem('theme') || 'light-theme';
-    document.body.classList.add(currentTheme);
+<!--<footer>-->
+<!--    <p>For more information or support, please contact the API administrator.</p>-->
+<!--</footer>-->
+<!--<script>-->
+<!--    // Получаем элемент переключателя темы и устанавливаем текущую тему-->
+<!--    const themeToggleButton = document.getElementById('themeToggle');-->
+<!--    const currentTheme = localStorage.getItem('theme') || 'light-theme';-->
+<!--    document.body.classList.add(currentTheme);-->
 
-    themeToggleButton.addEventListener('click', () => {
-        // Переключаем класс темы
-        if (document.body.classList.contains('light-theme')) {
-            document.body.classList.remove('light-theme');
-            document.body.classList.add('dark-theme');
-            localStorage.setItem('theme', 'dark-theme');
-        } else {
-            document.body.classList.remove('dark-theme');
-            document.body.classList.add('light-theme');
-            localStorage.setItem('theme', 'light-theme');
-        }
-    });
-</script>
-</body>
-</html>
+<!--    themeToggleButton.addEventListener('click', () => {-->
+<!--        // Переключаем класс темы-->
+<!--        if (document.body.classList.contains('light-theme')) {-->
+<!--            document.body.classList.remove('light-theme');-->
+<!--            document.body.classList.add('dark-theme');-->
+<!--            localStorage.setItem('theme', 'dark-theme');-->
+<!--        } else {-->
+<!--            document.body.classList.remove('dark-theme');-->
+<!--            document.body.classList.add('light-theme');-->
+<!--            localStorage.setItem('theme', 'light-theme');-->
+<!--        }-->
+<!--    });-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
