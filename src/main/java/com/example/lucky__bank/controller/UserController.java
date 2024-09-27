@@ -62,8 +62,6 @@ public class UserController {
     }
 
 
-
-
     @GetMapping("/{username}")
     public ResponseEntity<UserDTO> getUserByUsername(@PathVariable String username) {
         log.info("Received request to get user by username: {}", username);

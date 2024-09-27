@@ -13,11 +13,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface ProfileServiceClient {
 
 
+    @PostMapping("/api/profiles/update/{userId}")
+    ProfileDTO update(@PathVariable Long userId ,@RequestBody ProfileRequest profileRequest);
+
+
+
     @GetMapping("/api/profiles/{userId}")
     ProfileDTO getProfileByUserId(@PathVariable Long userId);
 
     @PostMapping("/api/profiles")
     ProfileDTO createProfile(@RequestBody ProfileRequest profileRequest );
+
 
 
 

@@ -15,20 +15,30 @@ public class ProfileController {
 
     private final ProfileService profileService;
 
+//update
+    @PostMapping("/update/{userId}")
+    public ResponseEntity<ProfileDTO> updateProfile(@PathVariable Long userId, @RequestBody ProfileRequest request) {
+        ProfileDTO updatedProfile = profileService.updateProfile(userId, request);
+        return ResponseEntity.ok(updatedProfile);
+    }
+//create
     @PostMapping
     public ResponseEntity<ProfileDTO> createOrUpdateProfile(@RequestBody ProfileRequest request) {
         ProfileDTO profileDTO = profileService.createOrUpdateProfile(request);
         return new ResponseEntity<>(profileDTO, HttpStatus.CREATED);
     }
-
+//поиск профиля
     @GetMapping("/{userId}")
     public ResponseEntity<ProfileDTO> getProfileByUserId(@PathVariable Long userId) {
         ProfileDTO profileDTO = profileService.getProfileByUserId(userId);
         return ResponseEntity.ok(profileDTO);
     }
 
+
+
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<String> handleRuntimeException(RuntimeException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
+
 }

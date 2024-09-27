@@ -43,4 +43,24 @@ public class ProfileService {
                 .orElseThrow(() -> new RuntimeException());
         return profileMapper.toDTO(profile);
     }
+   // метод для обновления профиля
+    public ProfileDTO updateProfile(Long userId, ProfileRequest request) {
+        Profile profile = profileRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Profile not found"));
+
+        // Обновление данных профиля
+        profile.setPhoneNumber(request.getPhoneNumber());
+        profile.setAddress(request.getAddress());
+        profile.setFullName(request.getFullName());
+        profile.setDateOfBirth(String.valueOf(request.getDateOfBirth()));
+        profile.setPassportNumber(request.getPassportNumber());
+        profile.setEmploymentWorkPlace(request.getEmploymentWorkPlace());
+        profile.setGender(Profile.Gender.valueOf(request.getGender()));
+        profile.setMaritalStatus(Profile.MaritalStatus.valueOf(request.getMaritalStatus()));
+        profile.setCitizenship(Profile.Citizenship.valueOf(request.getCitizenship()));
+
+        // Сохранение обновленного профиля
+        Profile updatedProfile = profileRepository.save(profile);
+        return profileMapper.toDTO(updatedProfile);
+    }
 }

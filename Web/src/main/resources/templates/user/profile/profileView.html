@@ -23,6 +23,8 @@
 
             <p><strong>Семейное положение:</strong> <span th:text="${profile.maritalStatus}"></span></p>
         </div>
+        <a th:href="@{/profile/profiles/{userId}/edit(userId=${user.id})}" class="btn btn-primary">Редактировать профиль</a>
+
     </div>
 
     <div th:if="${profile == null}" class="alert alert-warning mt-4">

@@ -119,41 +119,6 @@
 
     <input type="submit" value="Сохранить профиль"/>
 </form>
-
-<!--<form th:action="@{/profile/profiles}" th:object="${profileRequest}" method="post">-->
-<!--    <input type="hidden" name="userId" th:value="${user.id}"/>-->
-<!--    <label for="fullName">Полное имя:</label>-->
-<!--    <input type="text" id="fullName" th:field="*{fullName}" required/>-->
-
-<!--    <label for="phoneNumber">Номер телефона:</label>-->
-<!--    <input type="tel" id="phoneNumber" th:field="*{phoneNumber}" required/>-->
-
-<!--    <label for="address">Адрес:</label>-->
-<!--    <input type="text" id="address" th:field="*{address}" required/>-->
-
-<!--    <label for="dateOfBirth">Дата рождения:</label>-->
-<!--    <input type="date" id="dateOfBirth" th:field="*{dateOfBirth}" required/>-->
-
-<!--    <label for="passportNumber">Номер паспорта:</label>-->
-<!--    <input type="text" id="passportNumber" th:field="*{passportNumber}" required/>-->
-
-<!--    <label for="employmentWorkPlace">Место работы:</label>-->
-<!--    <input type="text" id="employmentWorkPlace" th:field="*{employmentWorkPlace}" required/>-->
-
-<!--    <label for="gender">Пол:</label>-->
-<!--    <select id="gender" th:field="*{gender}">-->
-<!--        <option th:each="gender : ${Gender}" th:value="${gender}" th:text="${gender}"></option>-->
-<!--    </select>-->
-
-<!--    <label for="maritalStatus">Семейное положение:</label>-->
-<!--    <select id="maritalStatus" th:field="*{maritalStatus}">-->
-<!--        <option th:each="status : ${MaritalStatus}" th:value="${status}" th:text="${status}"></option>-->
-<!--    </select>-->
-<!--    -->
-
-<!--    <input type="submit" value="Сохранить профиль"/>-->
-<!--</form>-->
-
 <footer>
     <p th:if="${error}" th:text="${error}">Ошибка: Пользователь не найден</p>
 </footer>

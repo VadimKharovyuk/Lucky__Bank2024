@@ -18,6 +18,10 @@ public class ProfileService {
     public ProfileDTO crateProfile(ProfileRequest profileRequest) {
         return profileServiceClient.createProfile(profileRequest);
     }
+    public ProfileDTO update(Long userId, ProfileRequest profileRequest) {
+        ProfileDTO profileDTO = profileServiceClient.getProfileByUserId(userId);
+        return profileServiceClient.update(userId, profileRequest);
+    }
 
 
 
