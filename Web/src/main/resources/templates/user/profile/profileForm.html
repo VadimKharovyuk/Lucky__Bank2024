@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Создать или обновить профиль</title>
+    <link rel="stylesheet" href="/css/styles.css"> <!-- Добавьте ваш стиль -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        h2 {
+            color: #666;
+            text-align: center;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="tel"],
+        input[type="date"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        footer p {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<h1>Создать или обновить профиль</h1>
+
+<div th:if="${user != null}">
+    <h2>Добро пожаловать, <span th:text="${user.username}">Имя пользователя</span>!</h2>
+</div>
+
+
+<form th:action="@{/profile/profiles}" th:object="${profileRequest}" method="post">
+    <input type="hidden" name="userId" th:value="${user.id}"/>
+
+    <label for="fullName">Полное имя:</label>
+    <input type="text" id="fullName" th:field="*{fullName}" required/>
+
+    <label for="phoneNumber">Номер телефона:</label>
+    <input type="tel" id="phoneNumber" th:field="*{phoneNumber}" required/>
+
+    <label for="address">Адрес:</label>
+    <input type="text" id="address" th:field="*{address}" required/>
+
+    <label for="dateOfBirth">Дата рождения:</label>
+    <input type="date" id="dateOfBirth" th:field="*{dateOfBirth}" required/>
+
+    <label for="passportNumber">Номер паспорта:</label>
+    <input type="text" id="passportNumber" th:field="*{passportNumber}" required/>
+
+    <label for="employmentWorkPlace">Место работы:</label>
+    <input type="text" id="employmentWorkPlace" th:field="*{employmentWorkPlace}" required/>
+
+    <label for="gender">Пол:</label>
+    <select id="gender" th:field="*{gender}">
+        <option th:each="gender : ${Gender}" th:value="${gender}" th:text="${gender}"></option>
+    </select>
+
+    <label for="maritalStatus">Семейное положение:</label>
+    <select id="maritalStatus" th:field="*{maritalStatus}">
+        <option th:each="status : ${MaritalStatus}" th:value="${status}" th:text="${status}"></option>
+    </select>
+
+    <label for="citizenship">Гражданство:</label>
+    <select id="citizenship" th:field="*{citizenship}">
+        <option th:each="country : ${citizenship}" th:value="${country}" th:text="${country}"></option>
+    </select>
+
+    <input type="submit" value="Сохранить профиль"/>
+</form>
+
+<!--<form th:action="@{/profile/profiles}" th:object="${profileRequest}" method="post">-->
+<!--    <input type="hidden" name="userId" th:value="${user.id}"/>-->
+<!--    <label for="fullName">Полное имя:</label>-->
+<!--    <input type="text" id="fullName" th:field="*{fullName}" required/>-->
+
+<!--    <label for="phoneNumber">Номер телефона:</label>-->
+<!--    <input type="tel" id="phoneNumber" th:field="*{phoneNumber}" required/>-->
+
+<!--    <label for="address">Адрес:</label>-->
+<!--    <input type="text" id="address" th:field="*{address}" required/>-->
+
+<!--    <label for="dateOfBirth">Дата рождения:</label>-->
+<!--    <input type="date" id="dateOfBirth" th:field="*{dateOfBirth}" required/>-->
+
+<!--    <label for="passportNumber">Номер паспорта:</label>-->
+<!--    <input type="text" id="passportNumber" th:field="*{passportNumber}" required/>-->
+
+<!--    <label for="employmentWorkPlace">Место работы:</label>-->
+<!--    <input type="text" id="employmentWorkPlace" th:field="*{employmentWorkPlace}" required/>-->
+
+<!--    <label for="gender">Пол:</label>-->
+<!--    <select id="gender" th:field="*{gender}">-->
+<!--        <option th:each="gender : ${Gender}" th:value="${gender}" th:text="${gender}"></option>-->
+<!--    </select>-->
+
+<!--    <label for="maritalStatus">Семейное положение:</label>-->
+<!--    <select id="maritalStatus" th:field="*{maritalStatus}">-->
+<!--        <option th:each="status : ${MaritalStatus}" th:value="${status}" th:text="${status}"></option>-->
+<!--    </select>-->
+<!--    -->
+
+<!--    <input type="submit" value="Сохранить профиль"/>-->
+<!--</form>-->
+
+<footer>
+    <p th:if="${error}" th:text="${error}">Ошибка: Пользователь не найден</p>
+</footer>
+</body>
+</html>

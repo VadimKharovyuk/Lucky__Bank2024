@@ -2,6 +2,7 @@ package com.example.lucky__bank.dto;
 
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
@@ -17,7 +18,5 @@ public class UserDTO {
     private String role;
     private boolean blocked;
     private LocalDateTime createdAt;
-
-
 
 }

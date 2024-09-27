@@ -43,4 +43,9 @@ public class User {
     public enum Role {
         USER, ADMIN
     }
+
+
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Profile profile;
 }

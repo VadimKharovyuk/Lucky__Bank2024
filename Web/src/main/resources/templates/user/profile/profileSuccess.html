@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Профиль успешно создан</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/styles.css"> <!-- Добавьте ваш стиль -->
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="text-center">Профиль успешно создан!</h1>
+
+    <div class="mt-4">
+        <h2>Ваш профиль:</h2>
+        <div class="list-group">
+            <p class="list-group-item"><strong>Полное имя:</strong> <span th:text="${profile.fullName}"></span></p>
+            <p class="list-group-item"><strong>Номер телефона:</strong> <span th:text="${profile.phoneNumber}"></span></p>
+            <p class="list-group-item"><strong>Адрес:</strong> <span th:text="${profile.address}"></span></p>
+            <p class="list-group-item"><strong>Дата рождения:</strong> <span th:text="${profile.dateOfBirth}"></span></p>
+            <p class="list-group-item"><strong>Номер паспорта:</strong> <span th:text="${profile.passportNumber}"></span></p>
+            <p class="list-group-item"><strong>Место работы:</strong> <span th:text="${profile.employmentWorkPlace}"></span></p>
+            <p class="list-group-item"><strong>Пол:</strong> <span th:text="${profile.gender}"></span></p>
+            <p class="list-group-item"><strong>Гражданство:</strong> <span th:text="${profile.citizenship}"></span></p>
+            <p class="list-group-item"><strong>Семейное положение:</strong> <span th:text="${profile.maritalStatus}"></span></p>
+        </div>
+    </div>
+
+</div>
+
+<!-- Bootstrap JS and dependencies (optional) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

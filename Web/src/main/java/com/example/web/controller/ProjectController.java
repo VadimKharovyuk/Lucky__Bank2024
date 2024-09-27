@@ -69,7 +69,6 @@ public class ProjectController {
             user = userService.findByUsername(username);
         }
 
-        // Проверьте, что объект user не null
         if (user != null) {
             projectCreateRequest.setUserId(user.getId()); // Устанавливаем userId в объект запроса
             ProjectDto createdProject = apiPaymentService.createProject(projectCreateRequest);
@@ -78,7 +77,7 @@ public class ProjectController {
             return "redirect:/projects/" + createdProject.getApiKey();
         } else {
             model.addAttribute("error", "User not found");
-            return "user/projects/createProject"; // Вернуть на страницу создания проекта с ошибкой
+            return "user/projects/createProject";
         }
     }
 
@@ -124,7 +123,7 @@ public class ProjectController {
 
     @GetMapping("/api/document")
     public String document (){
-        return "APIDocumentationPage";
+        return "/user/projects/APIDocumentationPage";
     }
     @PostMapping("/projects/delete/{id}")
     public String deleteByIdProject(@PathVariable Long id) {

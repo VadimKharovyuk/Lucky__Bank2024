@@ -44,21 +44,6 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-//
-//    @PostMapping("/register")
-//    public ResponseEntity<?> registerUser(@RequestBody UserRegistrationRequest request) {
-//
-//        try {
-//            UserDTO newUserDTO = userService.registerUser(request);
-//            return ResponseEntity.ok(newUserDTO); // Возвращаем созданного пользователя
-//        } catch (RuntimeException e) {
-//            log.error("Registration error: {}", e.getMessage());
-//            if (e.getMessage().equals("Email already exists")) {
-//                return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-//            }
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred.");
-//        }
-//    }
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody UserRegistrationRequest request) {

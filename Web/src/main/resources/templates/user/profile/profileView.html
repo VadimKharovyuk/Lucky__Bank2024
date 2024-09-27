@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Просмотр профиля</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/css/styles.css"> <!-- Ваш стиль -->
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="text-center">Профиль пользователя</h1>
+
+    <div th:if="${profile != null}" class="card mt-4">
+        <div class="card-body">
+            <h2 class="card-title">Добро пожаловать, <span th:text="${profile.fullName}">Имя пользователя</span>!</h2>
+            <p><strong>Номер телефона:</strong> <span th:text="${profile.phoneNumber}"></span></p>
+            <p><strong>Адрес:</strong> <span th:text="${profile.address}"></span></p>
+            <p><strong>Дата рождения:</strong> <span th:text="${profile.dateOfBirth}"></span></p>
+            <p><strong>Номер паспорта:</strong> <span th:text="${profile.passportNumber}"></span></p>
+            <p><strong>Место работы:</strong> <span th:text="${profile.employmentWorkPlace}"></span></p>
+            <p><strong>Гражданство:</strong> <span th:text="${profile.citizenship}"></span></p>
+            <p><strong>Пол:</strong> <span th:text="${profile.gender}"></span></p>
+
+            <p><strong>Семейное положение:</strong> <span th:text="${profile.maritalStatus}"></span></p>
+        </div>
+    </div>
+
+    <div th:if="${profile == null}" class="alert alert-warning mt-4">
+        <strong>Данные отсутствуют!</strong> Профиль пользователя не найден.
+    </div>
+
+    <footer class="mt-4">
+        <p th:if="${error}" th:text="${error}" class="text-danger">Ошибка: Не удалось загрузить профиль</p>
+    </footer>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

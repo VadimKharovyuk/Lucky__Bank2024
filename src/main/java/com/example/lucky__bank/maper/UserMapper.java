@@ -4,6 +4,8 @@ import com.example.lucky__bank.dto.UserDTO;
 import com.example.lucky__bank.model.User;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+
 @Component
 public class UserMapper {
 
