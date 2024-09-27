@@ -25,7 +25,7 @@ public class UserController {
     public ResponseEntity<UserDTO> getById(@PathVariable Long id) {
         log.info("Fetching user with id: {}", id);
         UserDTO userDTO = userService.findById(id);
-        return ResponseEntity.ok(userDTO); // Возвращаем 200 OK с найденным пользователем
+        return ResponseEntity.ok(userDTO);
     }
 
 
@@ -48,18 +48,15 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody UserRegistrationRequest request) {
         try {
-            // Регистрируем пользователя и получаем информацию о новом пользователе
-            UserDTO newUserDTO = userService.registerUser(request);
-
-            // Отправляем письмо приветствия новому пользователю
-            emailService.sendRegistrationEmail(newUserDTO.getEmail());
-
-            return ResponseEntity.ok(newUserDTO); // Возвращаем созданного пользователя
-        } catch (RuntimeException e) {
-            log.error("Registration error: {}", e.getMessage());
-            if (e.getMessage().equals("Email already exists")) {
-                return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+            // Проверка существования email
+            if (userService.existsByEmail(request.getEmail())) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already exists");
             }
+            UserDTO newUserDTO = userService.registerUser(request);
+            emailService.sendRegistrationEmail(newUserDTO.getEmail());
+            return ResponseEntity.ok(newUserDTO);
+        } catch (Exception e) {
+            log.error("Ошибка регистрации: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred.");
         }
     }

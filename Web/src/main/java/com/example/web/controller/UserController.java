@@ -68,36 +68,6 @@ public class UserController {
         }
     }
 
-
-    @GetMapping("/ac")
-    public String accountUser(Model model, Authentication authentication) {
-        String username;
-
-        if (authentication.getPrincipal() instanceof OAuth2User) {
-            OAuth2User oauthUser = (OAuth2User) authentication.getPrincipal();
-            username = oauthUser.getAttribute("name");
-        } else {
-            username = authentication.getName();
-        }
-
-        System.out.println("Retrieved username: " + username);
-
-        try {
-            UserDTO userDTO = userFeignClient.getUserByUsername(username);
-            if (userDTO == null) {
-                return "redirect:/error";
-            }
-            model.addAttribute("user", userDTO);
-            return "user/ac";
-        } catch (Exception e) {
-            log.error("Error retrieving user details", e);
-            return "redirect:/error";
-        }
-    }
-
-
-
-
     @GetMapping("/user/{username}")
     public String testGetUserByUsername(@PathVariable String username, Model model) {
         try {
@@ -119,12 +89,21 @@ public class UserController {
             return "error"; // Назначьте соответствующую страницу ошибки
         }
     }
-
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute UserRegistrationRequest userDTO) {
-        userFeignClient.registerUser(userDTO);
-        log.info("Registering user: {}", userDTO);
-        return "redirect:/";
+    public String registerUser(@ModelAttribute UserRegistrationRequest userDTO, Model model) {
+        try {
+            userFeignClient.registerUser(userDTO);
+            return "redirect:/login";
+        } catch (FeignException e) {
+            // Обработка ошибок от Feign клиента
+            if (e.status() == 409) { // Если сервер вернул 409 (Email already exists)
+                model.addAttribute("error", "Этот email уже занят.");
+            } else {
+                model.addAttribute("error", "Ошибка регистрации. Попробуйте снова.");
+            }
+            model.addAttribute("userDto", userDTO); // Добавляем объект в модель для повторного отображения
+            return "/user/user/register";
+        }
     }
 
 

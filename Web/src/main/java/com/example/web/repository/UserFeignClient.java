@@ -9,16 +9,16 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-//@FeignClient(name = "lucky-bank", url = "http://192.168.1.105:1000")
 @FeignClient(name = "lucky-bank", url = "http://localhost:1000")
 public interface UserFeignClient {
 
+    @PostMapping("/api/users/register")
+    void registerUser(UserRegistrationRequest request);
 
     @PostMapping("/api/users/login")
     UserDTO login(@RequestBody LoginRequest loginRequest);
 
-    @PostMapping("/api/users/register")
-    UserDTO registerUser(@RequestBody UserRegistrationRequest  request);
+
 
     @GetMapping("/api/users/id/{id}")
     UserDTO getById(@PathVariable Long id);

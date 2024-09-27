@@ -72,6 +72,7 @@ public class UserService {
         return user != null ? userMapper.convertToDTO(user) : null;
     }
 
+
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
     }

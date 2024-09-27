@@ -84,9 +84,7 @@
     <section class="section">
         <h2>1. Общая информация</h2>
         <p><strong>Имя:</strong> <span th:text="${user.username}">Имя пользователя</span></p>
-        <p><strong>Номер клиента:</strong> <span th:text="${user.id}">Номер клиента</span></p>
         <p><strong>Электронная почта:</strong> <span th:text="${user.email}">Электронная почта</span></p>
-        <!-- <p><strong>Телефон:</strong> <span th:text="${user.phone}">Телефон</span></p> -->
     </section>
 
     <section class="section">
@@ -126,7 +124,7 @@
     </section>
     <section class="section">
         <div class="account-item">
-            <h3>Перводы</h3>
+            <h3>Переводы</h3>
             <a href="/transfer" class="btn">Перевод денег </a>
         </div>
 
@@ -159,7 +157,7 @@
         <p><a href="/profile/view" class="btn">Личные данные</a></p>
         <p><a href="/profile/profiles/new" class="btn">Заполнить анкету</a></p>
         <p><a href="#" class="btn">Открыть новый счет</a></p>
-        <p><a href="#" class="btn">Заказать новую карту</a></p>
+        <p><a href="/cards/create" class="btn">Заказать новую карту</a></p>
     </section>
 </div>
 </body>
