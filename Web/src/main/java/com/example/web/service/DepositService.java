@@ -6,6 +6,8 @@ import com.example.web.dto.UserDTO;
 import com.example.web.repository.DepositServiceClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -30,6 +32,9 @@ public class DepositService {
         return depositServiceClient.withdrawAllFromDeposit(userId, cardId);
     }
 
+    public DepositDto getDepositById (Long depositId){
+        return depositServiceClient.getDepositById(depositId);
+    }
 
 }
 

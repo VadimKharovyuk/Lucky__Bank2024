@@ -1,5 +1,7 @@
 package com.example.lucky__bank.service;
 
+import com.example.lucky__bank.model.PaymentSchedule;
+import com.example.lucky__bank.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -11,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class EmailService {
 
 
-    private  final  JavaMailSender mailSender;
+    private final JavaMailSender mailSender;
 
     public void sendRegistrationEmail(String to) {
         String subject = "Добро пожаловать в наш банк!";
@@ -28,6 +30,19 @@ public class EmailService {
         message.setText(text);
         message.setFrom("vadimkh17@gmail.com");
 
+        mailSender.send(message);
+    }
+
+    public void sendPaymentNotification(User user, PaymentSchedule payment) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(user.getEmail()); // Получаем адрес электронной почты пользователя
+        message.setSubject("Уведомление о платеже");
+        message.setText("Уважаемый(ая) " + user.getUsername() + ",\n\n" +
+                "Ваш платеж на сумму " + payment.getPaymentAmount() + " был успешно обработан.\n" +
+                "Дата платежа: " + payment.getPaymentDate() + "\n" +
+                "С уважением,\nВаш банк.");
+
+        // Отправляем сообщение
         mailSender.send(message);
     }
 }

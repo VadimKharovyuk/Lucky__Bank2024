@@ -36,8 +36,6 @@ public class Deposit {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-//    // Добавим поле для процента
-//    private static final BigDecimal INTEREST_RATE = new BigDecimal("0.02");
 
 
 }

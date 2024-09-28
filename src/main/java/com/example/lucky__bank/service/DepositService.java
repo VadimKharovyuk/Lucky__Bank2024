@@ -31,11 +31,8 @@ public class DepositService {
 
     @Transactional
     public DepositDto createDeposit(Long userId, Long cardId, BigDecimal amount) {
-        // Ищем пользователя по ID
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
-
-        // Ищем карту по ID
         Card card = cardRepository.findById(cardId)
                 .orElseThrow(() -> new IllegalArgumentException("Card not found"));
 
@@ -51,7 +48,7 @@ public class DepositService {
 
         // Снимаем деньги с карты
         card.setBalance(card.getBalance().subtract(amount));
-        cardRepository.save(card);  // Сохраняем изменения баланса карты
+        cardRepository.save(card);
 
         // Создаем новый депозит
         Deposit deposit = new Deposit();
@@ -61,30 +58,24 @@ public class DepositService {
         deposit.setCreatedAt(LocalDateTime.now());
         deposit.setUpdatedAt(LocalDateTime.now());
 
-        // Сохраняем депозит в базе данных
-        depositRepository.save(deposit);
 
-        // Преобразуем и возвращаем DTO
+        depositRepository.save(deposit);
         return depositMapper.toDto(deposit);
     }
 
     @Transactional(readOnly = true)
     public DepositDto getDepositById(Long depositId) {
-        // Получаем депозит из базы данных
         Deposit deposit = depositRepository.findById(depositId)
                 .orElseThrow(() -> new IllegalArgumentException("Deposit not found"));
 
-        // Преобразуем сущность в DTO и возвращаем
         return depositMapper.toDto(deposit);
     }
 
     @Transactional
     public DepositDto withdrawAllFromDeposit(Long userId, Long cardId) {
-        // Получаем пользователя из базы данных
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        // Получаем карту из базы данных
         Card card = cardRepository.findById(cardId)
                 .orElseThrow(() -> new IllegalArgumentException("Card not found"));
 
@@ -110,16 +101,13 @@ public class DepositService {
 
         // Обновляем время последнего изменения карты
         card.setUpdatedAt(LocalDateTime.now());
-        cardRepository.save(card); // Сохраняем изменения в балансе карты
-
-        // Возвращаем информацию о снятом депозите в виде DTO
+        cardRepository.save(card);
         return depositMapper.toDto(deposit);
     }
 
 
     @Transactional(readOnly = true)
     public List<DepositDto> findByUserAndCard(Long userId, Long cardId) {
-        // Проверяем существование пользователя по ID
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
@@ -130,7 +118,6 @@ public class DepositService {
         // Поиск депозитов по пользователю и карте
         List<Deposit> deposits = depositRepository.findByUserIdAndCardId(userId, cardId);
 
-        // Преобразуем список депозитов в список DTO
         return deposits.stream()
                 .map(depositMapper::toDto)
                 .collect(Collectors.toList());

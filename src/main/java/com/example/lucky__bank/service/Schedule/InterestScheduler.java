@@ -1,5 +1,6 @@
-package com.example.lucky__bank.service;
+package com.example.lucky__bank.service.Schedule;
 
+import com.example.lucky__bank.service.DepositService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;

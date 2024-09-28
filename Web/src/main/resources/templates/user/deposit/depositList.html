@@ -141,29 +141,15 @@
 </head>
 <body>
 <div class="container mt-5">
-    <h1>Your Deposits</h1>
+    <h1>Ваши депозиты</h1>
 
     <!-- Сообщение об ошибке -->
     <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
-
-<!--    <span th:text="${card.cardNumber} + ' (Balance: ' + ${card.balance} + ')'"></span>-->
-<!--    <div class="mb-4">-->
-<!--        <form th:action="@{/deposits/find}" method="get">-->
-<!--            <select name="cardId" class="form-control" onchange="this.form.submit()">-->
-<!--                <option value="">Select a card</option>-->
-<!--                <option th:each="card : ${userCards}"-->
-<!--                        th:value="${card.id}"-->
-<!--                        th:text="${card.cardNumber } "-->
-<!--                        th:selected="${card.id == selectedCardId}">-->
-<!--                </option>-->
-<!--            </select>-->
-<!--        </form>-->
-<!--    </div>-->
     <div class="mb-4">
         <form th:action="@{/deposits/find}" method="get">
             <select name="cardId" class="form-control" onchange="this.form.submit()">
-                <option value="">Select a card</option>
+                <option value="">Выберите карту</option>
                 <option th:each="card : ${userCards}"
                         th:value="${card.id}"
                         th:text="${card.cardNumber} + ' (Balance: ' + ${card.balance} + ')' "
@@ -185,12 +171,12 @@
                         <h5 class="card-title" th:text="'Deposit ID: ' + ${deposit.id}"></h5>
                         <p class="card-text">
                             <strong>Amount:</strong> <span th:text="${#numbers.formatDecimal(deposit.amount, 1, 2)}"></span><br>
-                            <strong>Created At:</strong> <span th:text="${#temporals.format(deposit.createdAt, 'yyyy-MM-dd HH:mm')}"></span><br>
-                            <strong>Updated At:</strong> <span th:text="${#temporals.format(deposit.updatedAt, 'yyyy-MM-dd HH:mm')}"></span>
+                            <strong>Депозит создан :</strong> <span th:text="${#temporals.format(deposit.createdAt, 'yyyy-MM-dd HH:mm')}"></span><br>
+                            <strong> Депозит обновлен:</strong> <span th:text="${#temporals.format(deposit.updatedAt, 'yyyy-MM-dd HH:mm')}"></span>
                         </p>
                         <form th:action="@{/deposits/withdraw-all}" method="post">
                             <input type="hidden" name="cardId" th:value="${selectedCardId}" />
-                            <button type="submit" class="btn btn-primary">Withdraw All</button>
+                            <button type="submit" class="btn btn-primary">Вывести все</button>
                         </form>
                     </div>
                 </div>
