@@ -1,0 +1,235 @@
+
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <title>Deposits</title>-->
+<!--</head>-->
+<!--<style>-->
+<!--    .alert {-->
+<!--        padding: 15px;-->
+<!--        margin-bottom: 20px;-->
+<!--        border: 1px solid transparent;-->
+<!--        border-radius: 4px;-->
+<!--    }-->
+
+<!--    .alert-danger {-->
+<!--        color: #721c24;-->
+<!--        background-color: #f8d7da;-->
+<!--        border-color: #f5c6cb;-->
+<!--    }-->
+
+<!--    select {-->
+<!--        padding: 8px;-->
+<!--        margin-bottom: 20px;-->
+<!--        border-radius: 4px;-->
+<!--        border: 1px solid #ccc;-->
+<!--    }-->
+
+<!--    table {-->
+<!--        width: 100%;-->
+<!--        border-collapse: collapse;-->
+<!--    }-->
+
+<!--    th, td {-->
+<!--        padding: 12px;-->
+<!--        text-align: left;-->
+<!--        border-bottom: 1px solid #ddd;-->
+<!--    }-->
+
+<!--    button {-->
+<!--        padding: 8px 16px;-->
+<!--        background-color: #007bff;-->
+<!--        color: white;-->
+<!--        border: none;-->
+<!--        border-radius: 4px;-->
+<!--        cursor: pointer;-->
+<!--    }-->
+
+<!--    button:hover {-->
+<!--        background-color: #0056b3;-->
+<!--    }-->
+<!--</style>-->
+<!--<body>-->
+
+<!--<h1>Your Deposits</h1>-->
+
+<!--&lt;!&ndash; Сообщение об ошибке &ndash;&gt;-->
+<!--<div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>-->
+
+<!--<div >-->
+<!--    <form th:action="@{/deposits/find}" method="get">-->
+<!--        <select name="cardId" onchange="this.form.submit()">-->
+<!--            <option value="">Select a card</option>-->
+<!--            <option th:each="card : ${userCards}"-->
+<!--                    th:value="${card.id}"-->
+<!--                    th:text="${card.cardNumber}"-->
+<!--                    th:selected="${card.id == selectedCardId}">-->
+<!--            </option>-->
+<!--        </select>-->
+<!--    </form>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; Список депозитов &ndash;&gt;-->
+<!--<div th:if="${deposits != null}">-->
+<!--    <div th:if="${deposits.empty}">-->
+<!--        <p>No deposits found for this card.</p>-->
+<!--    </div>-->
+<!--    <div th:if="${!deposits.empty}">-->
+<!--        <table>-->
+<!--            <thead>-->
+<!--            <tr>-->
+<!--                <th>ID</th>-->
+<!--                <th>Amount</th>-->
+<!--                <th>Created At</th>-->
+<!--                <th>Updated At</th>-->
+<!--                <th>Actions</th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--            <tr th:each="deposit : ${deposits}">-->
+<!--                <td th:text="${deposit.id}"></td>-->
+<!--                <td th:text="${#numbers.formatDecimal(deposit.amount, 1, 2)}"></td>-->
+<!--                <td th:text="${#temporals.format(deposit.createdAt, 'yyyy-MM-dd HH:mm')}"></td>-->
+<!--                <td th:text="${#temporals.format(deposit.updatedAt, 'yyyy-MM-dd HH:mm')}"></td>-->
+<!--                <td>-->
+<!--                    <form th:action="@{/deposits/withdraw-all}" method="post">-->
+<!--                        <input type="hidden" name="cardId" th:value="${selectedCardId}" />-->
+<!--                        <button type="submit">Withdraw All</button>-->
+<!--                    </form>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            </tbody>-->
+<!--        </table>-->
+<!--    </div>-->
+<!--</div>-->
+<!--</body>-->
+<!--<script>-->
+<!--    document.addEventListener('DOMContentLoaded', function() {-->
+<!--        const cardSelect = document.querySelector('select[name="cardId"]');-->
+
+<!--        cardSelect.addEventListener('change', function(e) {-->
+<!--            e.preventDefault();  // Предотвращаем отправку формы-->
+
+<!--            const cardId = this.value;-->
+
+<!--            fetch(`/deposits/find?cardId=${cardId}`)-->
+<!--                .then(response => response.text())-->
+<!--                .then(html => {-->
+<!--                    const parser = new DOMParser();-->
+<!--                    const newDoc = parser.parseFromString(html, 'text/html');-->
+
+<!--                    // Обновляем только таблицу с депозитами-->
+<!--                    const currentTable = document.querySelector('table');-->
+<!--                    const newTable = newDoc.querySelector('table');-->
+
+<!--                    if (currentTable && newTable) {-->
+<!--                        currentTable.parentNode.replaceChild(newTable, currentTable);-->
+<!--                    }-->
+<!--                })-->
+<!--                .catch(error => console.error('Error:', error));-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Deposits</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h1>Your Deposits</h1>
+
+    <!-- Сообщение об ошибке -->
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+
+<!--    <span th:text="${card.cardNumber} + ' (Balance: ' + ${card.balance} + ')'"></span>-->
+<!--    <div class="mb-4">-->
+<!--        <form th:action="@{/deposits/find}" method="get">-->
+<!--            <select name="cardId" class="form-control" onchange="this.form.submit()">-->
+<!--                <option value="">Select a card</option>-->
+<!--                <option th:each="card : ${userCards}"-->
+<!--                        th:value="${card.id}"-->
+<!--                        th:text="${card.cardNumber } "-->
+<!--                        th:selected="${card.id == selectedCardId}">-->
+<!--                </option>-->
+<!--            </select>-->
+<!--        </form>-->
+<!--    </div>-->
+    <div class="mb-4">
+        <form th:action="@{/deposits/find}" method="get">
+            <select name="cardId" class="form-control" onchange="this.form.submit()">
+                <option value="">Select a card</option>
+                <option th:each="card : ${userCards}"
+                        th:value="${card.id}"
+                        th:text="${card.cardNumber} + ' (Balance: ' + ${card.balance} + ')' "
+                        th:selected="${card.id == selectedCardId}">
+                </option>
+            </select>
+        </form>
+    </div>
+
+    <!-- Список депозитов -->
+    <div th:if="${deposits != null}">
+        <div th:if="${deposits.empty}">
+            <p>No deposits found for this card.</p>
+        </div>
+        <div th:if="${!deposits.empty}" class="row">
+            <div th:each="deposit : ${deposits}" class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="'Deposit ID: ' + ${deposit.id}"></h5>
+                        <p class="card-text">
+                            <strong>Amount:</strong> <span th:text="${#numbers.formatDecimal(deposit.amount, 1, 2)}"></span><br>
+                            <strong>Created At:</strong> <span th:text="${#temporals.format(deposit.createdAt, 'yyyy-MM-dd HH:mm')}"></span><br>
+                            <strong>Updated At:</strong> <span th:text="${#temporals.format(deposit.updatedAt, 'yyyy-MM-dd HH:mm')}"></span>
+                        </p>
+                        <form th:action="@{/deposits/withdraw-all}" method="post">
+                            <input type="hidden" name="cardId" th:value="${selectedCardId}" />
+                            <button type="submit" class="btn btn-primary">Withdraw All</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const cardSelect = document.querySelector('select[name="cardId"]');
+
+        cardSelect.addEventListener('change', function(e) {
+            e.preventDefault();  // Prevent form submission
+
+            const cardId = this.value;
+
+            fetch(`/deposits/find?cardId=${cardId}`)
+                .then(response => response.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const newDoc = parser.parseFromString(html, 'text/html');
+
+                    // Update only the cards with deposits
+                    const currentCards = document.querySelector('.row');
+                    const newCards = newDoc.querySelector('.row');
+
+                    if (currentCards && newCards) {
+                        currentCards.parentNode.replaceChild(newCards, currentCards);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    });
+</script>
+</body>
+</html>

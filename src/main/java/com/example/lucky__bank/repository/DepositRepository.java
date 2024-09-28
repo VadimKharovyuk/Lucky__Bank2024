@@ -5,8 +5,14 @@ import com.example.lucky__bank.model.Deposit;
 import com.example.lucky__bank.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
+
 public interface DepositRepository extends JpaRepository<Deposit,Long> {
-    Optional<Deposit> findByUserAndCard(User user, Card card);
+//    Optional<Deposit> findByUserAndCard(User user, Card card);
+
+
+    List<Deposit> findByUserIdAndCardId(Long userId, Long cardId);
+
 }

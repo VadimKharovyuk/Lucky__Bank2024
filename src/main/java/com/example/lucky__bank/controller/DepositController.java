@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -46,15 +47,18 @@ public class DepositController {
         depositService.applyDailyInterest();
         return ResponseEntity.ok().build();
     }
-    @GetMapping("/find")
-    public ResponseEntity<DepositDto> findDepositByUserAndCard(@RequestParam Long userId,
-                                                               @RequestParam Long cardId) {
-        // Ищем депозит
-        Optional<DepositDto> depositDto = depositService.findByUserAndCard(userId, cardId);
 
-        return depositDto
-                .map(ResponseEntity::ok)  // Если депозит найден, возвращаем его
-                .orElseGet(() -> ResponseEntity.notFound().build());  // Если депозит не найден, возвращаем 404
+    //депозиты пользователя
+    @GetMapping("/find")
+    public ResponseEntity<List<DepositDto>> findDepositsByUserAndCard(@RequestParam Long userId,
+                                                                      @RequestParam Long cardId) {
+        List<DepositDto> deposits = depositService.findByUserAndCard(userId, cardId);
+
+        if (deposits.isEmpty()) {
+            return ResponseEntity.noContent().build();  // Возвращаем 204 No Content, если список пуст
+        } else {
+            return ResponseEntity.ok(deposits);
+        }
     }
 
 }

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Deposit</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h1 class="mb-4">Create Deposit</h1>
+
+    <form action="/deposits/create" method="post">
+        <!-- Скрытое поле с userId, чтобы не показывать его пользователю -->
+        <input type="hidden" name="userId" th:value="${user.id}"/>
+        <!-- Поле для выбора карты пользователя -->
+        <div class="form-group">
+            <label for="cardId">Select Card:</label>
+            <select name="cardId" id="cardId" class="form-control" required>
+                <option value="" disabled selected>Select your card</option>
+                <option th:each="card : ${cards}"
+                        th:value="${card.id}"
+                        th:text="${card.cardNumber} + ' (Balance: ' + ${card.balance} + ')' ">
+                </option>
+            </select>
+        </div>
+
+        <!-- Поле для ввода суммы депозита -->
+        <div class="form-group">
+            <label for="amount">Deposit Amount:</label>
+            <input type="number" name="amount" id="amount" class="form-control" step="0.01" required/>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Create Deposit</button>
+    </form>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

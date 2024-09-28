@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -87,9 +88,16 @@ public class DepositService {
         Card card = cardRepository.findById(cardId)
                 .orElseThrow(() -> new IllegalArgumentException("Card not found"));
 
-        // Получаем депозит пользователя и карты
-        Deposit deposit = depositRepository.findByUserAndCard(user, card)
-                .orElseThrow(() -> new IllegalArgumentException("No active deposit found for user and card"));
+        // Получаем список депозитов пользователя и карты
+        List<Deposit> deposits = depositRepository.findByUserIdAndCardId(userId, cardId);
+
+        // Проверяем, есть ли депозиты
+        if (deposits.isEmpty()) {
+            throw new IllegalArgumentException("No active deposits found for user and card");
+        }
+
+        // Предположим, что мы хотим снять средства с первого депозита в списке
+        Deposit deposit = deposits.get(0);
 
         // Получаем полную сумму депозита
         BigDecimal amountToWithdraw = deposit.getAmount();
@@ -110,18 +118,22 @@ public class DepositService {
 
 
     @Transactional(readOnly = true)
-    public Optional<DepositDto> findByUserAndCard(Long userId, Long cardId) {
-        // Получаем пользователя из базы данных
+    public List<DepositDto> findByUserAndCard(Long userId, Long cardId) {
+        // Проверяем существование пользователя по ID
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        // Получаем карту из базы данных
+        // Проверяем существование карты по ID
         Card card = cardRepository.findById(cardId)
                 .orElseThrow(() -> new IllegalArgumentException("Card not found"));
 
-        // Поиск депозита по пользователю и карте
-        return depositRepository.findByUserAndCard(user, card)
-                .map(depositMapper::toDto);
+        // Поиск депозитов по пользователю и карте
+        List<Deposit> deposits = depositRepository.findByUserIdAndCardId(userId, cardId);
+
+        // Преобразуем список депозитов в список DTO
+        return deposits.stream()
+                .map(depositMapper::toDto)
+                .collect(Collectors.toList());
     }
 
 
