@@ -10,6 +10,7 @@ import com.example.lucky__bank.repository.PaymentScheduleRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -74,5 +75,16 @@ public class CreditService {
 
         // Преобразуем сущность в DTO и возвращаем
         return creditMapper.toDto(savedCredit);
+    }
+
+
+    @Transactional
+    public void deleteCredit(Long creditId) {
+        Credit credit = creditRepository.findById(creditId)
+                .orElseThrow(() -> new RuntimeException("Credit not found with id: " + creditId));
+
+        credit.getPaymentSchedules().clear();
+
+        creditRepository.delete(credit);
     }
 }

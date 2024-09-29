@@ -43,6 +43,7 @@ public class CreditController {
         return ResponseEntity.ok(credits);
     }
 
+
     // Метод для одобрения кредита
     @PutMapping("/{creditId}/approve")
     public ResponseEntity<CreditDto> approveCredit(@PathVariable Long creditId) {
@@ -56,6 +57,14 @@ public class CreditController {
     public ResponseEntity<Void> makePayment(@PathVariable Long creditId, @RequestParam BigDecimal paymentAmount) {
         creditCreationService.makePayment(creditId, paymentAmount);
         return ResponseEntity.ok().build();
+    }
+
+
+    //удалить
+    @PostMapping("/delete/{creditId}")
+    public ResponseEntity<Void> deleteCreditId(@PathVariable Long creditId){
+        creditService.deleteCredit(creditId);
+        return ResponseEntity.noContent().build();
     }
 
     // Обработка исключений
