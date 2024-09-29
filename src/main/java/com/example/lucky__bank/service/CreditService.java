@@ -1,6 +1,7 @@
 package com.example.lucky__bank.service;
 
 import com.example.lucky__bank.dto.CreditDto;
+import com.example.lucky__bank.dto.PaymentScheduleDto;
 import com.example.lucky__bank.maper.CreditMapper;
 import com.example.lucky__bank.model.Credit;
 import com.example.lucky__bank.model.PaymentSchedule;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -86,5 +89,40 @@ public class CreditService {
         credit.getPaymentSchedules().clear();
 
         creditRepository.delete(credit);
+    }
+
+    public void updateCredit(CreditDto updatedCreditDto) {
+        // Получаем существующий кредит из базы данных
+        Credit existingCredit = creditRepository.findById(updatedCreditDto.getId())
+                .orElseThrow(() -> new RuntimeException("Credit not found with id: " + updatedCreditDto.getId()));
+
+        // Обновляем поля кредита
+        existingCredit.setMonthlyPayment(updatedCreditDto.getAmount());
+        existingCredit.setTermInMonths(updatedCreditDto.getTermInMonths());
+        existingCredit.setPurpose(updatedCreditDto.getPurpose());
+        existingCredit.setMonthlyPayment(updatedCreditDto.getMonthlyPayment());
+        existingCredit.setInterestRate(updatedCreditDto.getInterestRate());
+        existingCredit.setUpdatedAt(LocalDateTime.now());
+
+        // Обновляем график платежей
+        List<PaymentSchedule> updatedPaymentSchedules = new ArrayList<>();
+        for (PaymentScheduleDto scheduleDto : updatedCreditDto.getPaymentSchedules()) {
+            PaymentSchedule schedule = existingCredit.getPaymentSchedules().stream()
+                    .filter(ps -> ps.getId().equals(scheduleDto.getId()))
+                    .findFirst()
+                    .orElseGet(PaymentSchedule::new);
+
+            schedule.setPaymentDate(scheduleDto.getPaymentDate());
+            schedule.setPaymentAmount(scheduleDto.getPaymentAmount());
+            schedule.setPaid(scheduleDto.isPaid());
+            schedule.setCredit(existingCredit);
+
+            updatedPaymentSchedules.add(schedule);
+        }
+        existingCredit.setPaymentSchedules(updatedPaymentSchedules);
+
+        // Сохраняем обновленный кредит в базе данных
+        Credit savedCredit = creditRepository.save(existingCredit);
+
     }
 }

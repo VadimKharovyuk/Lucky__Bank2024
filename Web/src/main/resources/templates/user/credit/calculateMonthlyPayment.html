@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Кредитный калькулятор</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; }
+        label { display: block; margin-top: 10px; }
+        input { width: 100%; padding: 5px; margin-top: 5px; }
+        button { width: 100%; padding: 10px; margin-top: 20px; }
+        #result { margin-top: 20px; font-weight: bold; }
+    </style>
+</head>
+<body>
+<h1>Кредитный калькулятор</h1>
+<form id="creditForm">
+    <label for="loanAmount">Сумма кредита:</label>
+    <input type="number" id="loanAmount" required>
+
+    <label for="interestRate">Годовая процентная ставка (%):</label>
+    <input type="number" id="interestRate" step="0.1" required>
+
+    <label for="termInMonths">Срок кредита (в месяцах):</label>
+    <input type="number" id="termInMonths" required>
+
+    <button type="submit">Рассчитать</button>
+</form>
+<div id="result"></div>
+
+<script>
+    document.getElementById('creditForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const loanAmount = parseFloat(document.getElementById('loanAmount').value);
+        const interestRate = parseFloat(document.getElementById('interestRate').value) / 100 / 12;
+        const termInMonths = parseInt(document.getElementById('termInMonths').value);
+
+        if (isNaN(loanAmount) || isNaN(interestRate) || isNaN(termInMonths)) {
+            alert('Пожалуйста, введите корректные числовые значения');
+            return;
+        }
+
+        const onePlusRate = 1 + interestRate;
+        const powerFactor = Math.pow(onePlusRate, termInMonths);
+        const numerator = loanAmount * interestRate * powerFactor;
+        const denominator = powerFactor - 1;
+        const monthlyPayment = numerator / denominator;
+
+        document.getElementById('result').textContent = `Ежемесячный платеж: ${monthlyPayment.toFixed(2)} UAH.`;
+    });
+</script>
+</body>
+</html>
