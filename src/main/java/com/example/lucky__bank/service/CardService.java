@@ -83,6 +83,4 @@ public class CardService {
 
         return cardMapper.toDTO(card);
     }
-
-
 }

@@ -8,6 +8,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 @Service
 @RequiredArgsConstructor
 public class EmailService {
@@ -43,6 +45,30 @@ public class EmailService {
                 "С уважением,\nВаш банк.");
 
         // Отправляем сообщение
+        mailSender.send(message);
+    }
+
+    public void sendLateFeeNotification(String email, PaymentSchedule payment) {
+        // Создание сообщения
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("Уведомление о штрафе за просроченный платеж");
+
+        // Формирование содержимого письма
+        String emailBody = String.format(
+                "Уважаемый клиент,\n\n" +
+                        "Это уведомление о том, что ваш платеж по кредиту за %s просрочен.\n" +
+                        "Сумма штрафа составляет: %s.\n" +
+                        "Общая сумма, которую вам необходимо оплатить: %s.\n\n" +
+                        "Пожалуйста, произведите оплату как можно скорее, чтобы избежать дальнейших санкций.\n\n" +
+                        "С уважением,\n" +
+                        "Ваша кредитная организация.",
+                payment.getPaymentDate(),
+                payment.getPaymentAmount().subtract(payment.getPaymentAmount().divide(new BigDecimal("1.05"))), // Штраф
+                payment.getPaymentAmount()
+        );
+
+        message.setText(emailBody);
         mailSender.send(message);
     }
 }

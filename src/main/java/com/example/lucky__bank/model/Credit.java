@@ -25,6 +25,11 @@ public class Credit {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;  // Владелец кредита
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "card_id")  // Привязываем карту
+    private Card card;
+
     private BigDecimal loanAmount;  //сумма кредита
     private double interestRate;  // Процентная ставка
     private int termInMonths;   //Срок кредита

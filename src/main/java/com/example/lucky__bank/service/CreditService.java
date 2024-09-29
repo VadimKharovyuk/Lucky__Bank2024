@@ -20,22 +20,21 @@ public class CreditService {
     private final PaymentScheduleRepository paymentRepository ;
     private final CreditRepository creditRepository;
     private final CreditMapper creditMapper;
+    private final EmailService emailService;
 
 
-//штраф
+    //штраф
     public void applyLateFee(PaymentSchedule payment) {
         // Определите фиксированный штраф за просрочку или процент
 //        BigDecimal lateFee = new BigDecimal("50.00"); // Фиксированный штраф
         // Или можно использовать процент от платежа
-         BigDecimal lateFee = payment.getPaymentAmount().multiply(new BigDecimal("0.05")); // 5% от суммы
+        BigDecimal lateFee = payment.getPaymentAmount().multiply(new BigDecimal("0.05")); // 5% от суммы
 
         // Обновите сумму платежа, добавив штраф
         payment.setPaymentAmount(payment.getPaymentAmount().add(lateFee));
 
         // Сохраните обновленный платеж в базе данных
         paymentRepository.save(payment);
-
-        // Логика уведомления клиента (если необходимо)
         // Например, отправка уведомления о просрочке
         notifyCustomer(payment);
     }
@@ -45,7 +44,7 @@ public class CreditService {
         Credit credit = payment.getCredit();
         User user = credit.getUser();
         // Отправка уведомления (например, по электронной почте или через систему уведомлений)
-        // emailService.sendLateFeeNotification(user.getEmail(), payment);
+         emailService.sendLateFeeNotification(user.getEmail(), payment);
     }
 
     public List<CreditDto> getAllCredits() {

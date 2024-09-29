@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CardMapper {
 
+
     public CardDTO toDTO(Card card) {
         return CardDTO.builder()
                 .id(card.getId())

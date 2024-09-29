@@ -2,9 +2,11 @@ package com.example.lucky__bank.service;
 
 import com.example.lucky__bank.dto.CreditDto;
 import com.example.lucky__bank.maper.CreditMapper;
+import com.example.lucky__bank.model.Card;
 import com.example.lucky__bank.model.Credit;
 import com.example.lucky__bank.model.PaymentSchedule;
 import com.example.lucky__bank.model.User;
+import com.example.lucky__bank.repository.CardRepository;
 import com.example.lucky__bank.repository.CreditRepository;
 import com.example.lucky__bank.repository.PaymentScheduleRepository;
 import com.example.lucky__bank.repository.UserRepository;
@@ -27,14 +29,22 @@ public class CreditCreationService {
     private final PaymentScheduleRepository paymentScheduleRepository;
     private final CreditMapper creditMapper;
     private final PaymentService paymentService;
+    private final CardRepository cardRepository;
+
+
+    public void makePayment(Long creditId, BigDecimal paymentAmount) {
+        paymentService.processPayment(creditId, paymentAmount);
+    }
+
 
     @Transactional
-    public CreditDto createCredit(Long userId, BigDecimal loanAmount, double interestRate, int termInMonths, String purpose) {
+    public CreditDto createCredit(Long userId, Long cardId, BigDecimal loanAmount, double interestRate, int termInMonths, String purpose) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
 
         Credit credit = new Credit();
         credit.setUser(user);
+        credit.setCard(cardId != null ? cardRepository.findById(cardId).orElseThrow(() -> new RuntimeException("Card not found with id: " + cardId)) : null); // Устанавливаем карту
         credit.setLoanAmount(loanAmount);
         credit.setInterestRate(interestRate);
         credit.setTermInMonths(termInMonths);
