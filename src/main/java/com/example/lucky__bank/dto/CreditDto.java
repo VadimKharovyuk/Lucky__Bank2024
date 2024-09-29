@@ -19,12 +19,15 @@ import java.util.List;
 public class CreditDto {
 
     private Long id;
-    private Long userId;  // ID пользователя
-    private Long cardId;  // ID карты
+    private Long userId;
+
+    private Long cardId;
     private BigDecimal amount;
+    private Integer termInMonths;
+    private String purpose;
+    private BigDecimal monthlyPayment;
+    private double interestRate;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-
-    // Если нужно передавать информацию о платежах
     private List<PaymentScheduleDto> paymentSchedules;
 }

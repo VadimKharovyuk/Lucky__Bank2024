@@ -43,6 +43,7 @@ public class CardService {
         card.setCvv(generateCvv());
         card.setUser(user); // Устанавливаем связь с пользователем
 
+
         // Сохранить карту в базе данных
         cardRepository.save(card);
 

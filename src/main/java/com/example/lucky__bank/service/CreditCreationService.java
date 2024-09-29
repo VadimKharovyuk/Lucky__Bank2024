@@ -41,10 +41,9 @@ public class CreditCreationService {
     public CreditDto createCredit(Long userId, Long cardId, BigDecimal loanAmount, double interestRate, int termInMonths, String purpose) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
-
         Credit credit = new Credit();
         credit.setUser(user);
-        credit.setCard(cardId != null ? cardRepository.findById(cardId).orElseThrow(() -> new RuntimeException("Card not found with id: " + cardId)) : null); // Устанавливаем карту
+        credit.setCard(cardId != null ? cardRepository.findById(cardId).orElseThrow(() -> new RuntimeException("Card not found with id: " + cardId)) : null);
         credit.setLoanAmount(loanAmount);
         credit.setInterestRate(interestRate);
         credit.setTermInMonths(termInMonths);
@@ -62,7 +61,8 @@ public class CreditCreationService {
 
         // Создание графика платежей
         createPaymentSchedule(savedCredit);
-
+        // Логирование для отладки
+        System.out.println("Saved Credit: " + savedCredit);
         // Используем CreditMapper для преобразования сущности в DTO
         return creditMapper.toDto(savedCredit);
     }

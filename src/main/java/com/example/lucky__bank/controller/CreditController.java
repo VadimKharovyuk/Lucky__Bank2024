@@ -27,7 +27,7 @@ public class CreditController {
     public ResponseEntity<CreditDto> createCredit(@RequestBody @Valid CreditRequestDto requestDto) {
         CreditDto createdCredit = creditCreationService.createCredit(
                 requestDto.getUserId(),
-                requestDto.getCardId(),  // Теперь передаем cardId
+                requestDto.getCardId(),
                 requestDto.getLoanAmount(),
                 requestDto.getInterestRate(),
                 requestDto.getTermInMonths(),
@@ -49,6 +49,7 @@ public class CreditController {
         CreditDto approvedCredit = creditService.approveCredit(creditId);
         return ResponseEntity.ok(approvedCredit);
     }
+
 
     // Оплата кредита
     @PostMapping("/makePayment/{creditId}")
