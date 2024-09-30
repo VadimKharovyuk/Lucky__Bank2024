@@ -1,0 +1,89 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Оформление кредита</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h1>Оформление кредита</h1>-->
+<!--<form th:action="@{/credit}" th:object="${creditForm}" method="post">-->
+<!--    <input type="hidden" th:field="*{userId}" th:value="${user.id}" />-->
+
+<!--    <div>-->
+<!--        <label for="cardId">Выберите карту:</label>-->
+<!--        <select id="cardId" th:field="*{cardId}" required>-->
+<!--            <option value="">Выберите карту</option>-->
+<!--            <option th:each="card : ${cards}" th:value="${card.id}" th:text="${card.cardNumber}"></option>-->
+<!--        </select>-->
+<!--    </div>-->
+
+<!--    <div>-->
+<!--        <label for="loanAmount">Сумма кредита:</label>-->
+<!--        <input type="number" id="loanAmount" th:field="*{loanAmount}" required step="0.01" min="0" />-->
+<!--    </div>-->
+
+<!--    <div>-->
+<!--        <label for="interestRate">Процентная ставка:</label>-->
+<!--        <input type="number" id="interestRate" th:field="*{interestRate}" required step="0.01" min="0" max="100" />-->
+<!--    </div>-->
+
+<!--    <div>-->
+<!--        <label for="termInMonths">Срок кредита (в месяцах):</label>-->
+<!--        <input type="number" id="termInMonths" th:field="*{termInMonths}" required min="1" />-->
+<!--    </div>-->
+
+<!--    <div>-->
+<!--        <label for="purpose">Цель кредита:</label>-->
+<!--        <input type="text" id="purpose" th:field="*{purpose}" required />-->
+<!--    </div>-->
+
+<!--    <div>-->
+<!--        <button type="submit">Оформить кредит</button>-->
+<!--    </div>-->
+
+<!--    <div th:if="${errorMessage}" class="error-message">-->
+<!--        <p th:text="${errorMessage}"></p>-->
+<!--    </div>-->
+<!--</form>-->
+<!--</body>-->
+<!--</html>-->
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Создание кредита</title>
+</head>
+<body>
+<h1>Создание кредита</h1>
+<form th:action="@{/credits/create}" th:object="${creditForm}" method="post">
+    <input type="hidden" name="userId" th:value="${user.id}"/>
+    <div>
+        <label for="cardId">Выберите карту:</label>
+        <select id="cardId" th:field="*{cardId}">
+            <option th:each="card : ${cards}"
+                    th:value="${card.id}"
+                    th:text="${card.cardNumber}">
+            </option>
+        </select>
+    </div>
+    <div>
+        <label for="loanAmount">Сумма кредита:</label>
+        <input type="number" id="loanAmount" th:field="*{loanAmount}" step="0.01" required />
+    </div>
+    <div>
+        <label for="interestRate">Процентная ставка:</label>
+        <input type="number" id="interestRate" th:field="*{interestRate}" step="0.01" required />
+    </div>
+    <div>
+        <label for="termInMonths">Срок (в месяцах):</label>
+        <input type="number" id="termInMonths" th:field="*{termInMonths}" required />
+    </div>
+    <div>
+        <label for="purpose">Цель кредита:</label>
+        <input type="text" id="purpose" th:field="*{purpose}" required />
+    </div>
+    <button type="submit">Создать кредит</button>
+</form>
+</body>
+</html>

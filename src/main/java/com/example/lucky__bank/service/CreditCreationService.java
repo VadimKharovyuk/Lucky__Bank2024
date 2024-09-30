@@ -76,7 +76,6 @@ public class CreditCreationService {
     }
 
 
-
     private void createPaymentSchedule(Credit credit) {
         LocalDate currentDate = LocalDate.now();
         BigDecimal remainingBalance = credit.getLoanAmount();
@@ -85,14 +84,45 @@ public class CreditCreationService {
             PaymentSchedule payment = new PaymentSchedule();
             payment.setCredit(credit);
             payment.setPaymentDate(currentDate.plusMonths(i));
-            payment.setPaymentAmount(credit.getMonthlyPayment());
-            payment.setPaid(false);
 
+            // Рассчитываем процент на остаток кредита
             BigDecimal interest = remainingBalance.multiply(BigDecimal.valueOf(credit.getInterestRate() / 12 / 100));
+
+            // Основная часть платежа
             BigDecimal principal = credit.getMonthlyPayment().subtract(interest);
+
+            // Устанавливаем сумму платежа
+            payment.setPaymentAmount(credit.getMonthlyPayment());
+
+            // Устанавливаем процентную часть и основную часть (для более точного учета)
+            payment.setInterestAmount(interest);  // нужно добавить это поле в PaymentSchedule
+            payment.setPrincipalAmount(principal);  // нужно добавить это поле в PaymentSchedule
+
+            // Уменьшаем остаток по кредиту
             remainingBalance = remainingBalance.subtract(principal);
+
+            payment.setPaid(false);
 
             paymentScheduleRepository.save(payment);
         }
     }
+
+//    private void createPaymentSchedule(Credit credit) {
+//        LocalDate currentDate = LocalDate.now();
+//        BigDecimal remainingBalance = credit.getLoanAmount();
+//
+//        for (int i = 1; i <= credit.getTermInMonths(); i++) {
+//            PaymentSchedule payment = new PaymentSchedule();
+//            payment.setCredit(credit);
+//            payment.setPaymentDate(currentDate.plusMonths(i));
+//            payment.setPaymentAmount(credit.getMonthlyPayment());
+//            payment.setPaid(false);
+//
+//            BigDecimal interest = remainingBalance.multiply(BigDecimal.valueOf(credit.getInterestRate() / 12 / 100));
+//            BigDecimal principal = credit.getMonthlyPayment().subtract(interest);
+//            remainingBalance = remainingBalance.subtract(principal);
+//
+//            paymentScheduleRepository.save(payment);
+//        }
+//    }
 }

@@ -29,6 +29,7 @@ public class DepositController {
 
     @GetMapping("/create-form")
     public String showCreateDepositForm(Model model) {
+
         UserDTO currentUser = getCurrentUser(SecurityContextHolder.getContext().getAuthentication());
 
         if (currentUser == null) {
@@ -37,8 +38,9 @@ public class DepositController {
 
         List<CardDTO> userCards = cardService.getCardsByUserId(currentUser.getId());
 
-        model.addAttribute("user", currentUser);
+
         model.addAttribute("cards", userCards);
+        model.addAttribute("user", currentUser);
 
         return "/user/deposit/createDeposit";
     }

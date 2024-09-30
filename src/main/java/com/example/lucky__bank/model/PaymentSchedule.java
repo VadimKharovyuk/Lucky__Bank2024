@@ -22,9 +22,13 @@ public class PaymentSchedule {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "credit_id")
-    private Credit credit; // Связь с кредитом
+    private Credit credit;
 
     private LocalDate paymentDate; // Дата платежа
     private BigDecimal paymentAmount; // Сумма платежа
     private boolean paid; // Статус платежа
+
+
+    private BigDecimal interestAmount; // Процентная часть платежа
+    private BigDecimal principalAmount; // Основная часть платежа
 }

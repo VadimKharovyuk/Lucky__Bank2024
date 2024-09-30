@@ -24,7 +24,7 @@ public class CreditController {
 
     // Создание кредита
     @PostMapping
-    public ResponseEntity<CreditDto> createCredit(@RequestBody @Valid CreditRequestDto requestDto) {
+    public ResponseEntity<CreditDto> createCredit(@RequestBody  CreditRequestDto requestDto) {
         CreditDto createdCredit = creditCreationService.createCredit(
                 requestDto.getUserId(),
                 requestDto.getCardId(),
@@ -52,11 +52,19 @@ public class CreditController {
     }
 
 
+
     // Оплата кредита
     @PostMapping("/makePayment/{creditId}")
     public ResponseEntity<Void> makePayment(@PathVariable Long creditId, @RequestParam BigDecimal paymentAmount) {
-        creditCreationService.makePayment(creditId, paymentAmount);
-        return ResponseEntity.ok().build();
+        try {
+            creditCreationService.makePayment(creditId, paymentAmount);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            // Логируем ошибку
+            System.err.println("Ошибка при обработке платежа: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
     }
 
 

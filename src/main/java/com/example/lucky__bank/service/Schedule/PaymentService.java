@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,103 +30,47 @@ import java.util.List;
 public class PaymentService {
 
     private final CreditService creditService;
-    private final PaymentScheduleRepository paymentRepository;
     private final CreditMapper creditMapper;
     private final CreditRepository creditRepository ;
     private final  EmailService emailService ;
-    private final UserRepository userRepository;
-    private final CardRepository cardRepository;
 
     public void processPayment(Long creditId, BigDecimal paymentAmount) {
-        CreditDto creditDto = creditService.getCreditById(creditId);
+        Credit credit = creditRepository.findById(creditId)
+                .orElseThrow(() -> new RuntimeException("Credit not found for ID: " + creditId));
 
-        User user = userRepository.findById(creditDto.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found for credit ID: " + creditId));
+        boolean paymentProcessed = false;
 
-        Card card = cardRepository.findById(creditDto.getCardId())
-                .orElseThrow(() -> new RuntimeException("Card not found for card ID: " + creditDto.getCardId()));
+        // Работаем напрямую с коллекцией PaymentSchedule
+        for (PaymentSchedule payment : credit.getPaymentSchedules()) {
+            if (!payment.isPaid() && paymentAmount.compareTo(BigDecimal.ZERO) > 0) {
+                BigDecimal paymentToApply = payment.getPaymentAmount().min(paymentAmount); // Определяем сумму, которая будет использована
 
-        Credit credit = creditMapper.toEntity(creditDto, user, card);
+                payment.setPaid(true);
+                payment.setPaymentAmount(paymentToApply); // Обновляем сумму платежа
 
-        for (PaymentScheduleDto paymentDto : creditDto.getPaymentSchedules()) {
-            if (!paymentDto.isPaid()) {
-                if (paymentAmount.compareTo(paymentDto.getPaymentAmount()) >= 0) {
-                    PaymentSchedule payment = PaymentScheduleMapper.toEntity(paymentDto, credit);
-                    payment.setPaid(true);
+                BigDecimal newLoanAmount = credit.getLoanAmount().subtract(paymentToApply);
+                credit.setLoanAmount(newLoanAmount);
 
-                    paymentRepository.save(payment);
+                paymentAmount = paymentAmount.subtract(paymentToApply); // Уменьшаем сумму оставшегося платежа
+                paymentProcessed = true;
 
-                    // Обновляем статус в DTO
-                    paymentDto.setPaid(true);
+                // Здесь можно добавить логику отправки уведомления
+                // emailService.sendPaymentNotification(user, payment);
+            }
 
-                    System.out.println("Проверка платежа: " + paymentDto.getPaymentAmount() + " на сумму " + paymentAmount);
-
-                    BigDecimal newLoanAmount = credit.getLoanAmount().subtract(payment.getPaymentAmount());
-                    credit.setLoanAmount(newLoanAmount);
-
-                    credit.setUpdatedAt(LocalDateTime.now());
-
-                    creditRepository.save(credit);
-
-                    // Обновляем CreditDto в сервисе
-                    creditService.updateCredit(creditMapper.toDto(credit));
-
-                    emailService.sendPaymentNotification(user, payment);
-                    break;
-                } else {
-                    throw new RuntimeException("Недостаточная сумма для оплаты. Требуется: " + paymentDto.getPaymentAmount());
-                }
+            if (paymentAmount.compareTo(BigDecimal.ZERO) <= 0) {
+                break; // Если весь платёж обработан, выходим из цикла
             }
         }
+
+        if (!paymentProcessed) {
+            throw new RuntimeException("Не найдено неоплаченных платежей для обработки");
+        }
+
+        credit.setUpdatedAt(LocalDateTime.now());
+        creditRepository.save(credit); // Сохраняем изменения в кредите и связанных платежах
     }
 
-//    public void processPayment(Long creditId, BigDecimal paymentAmount) {
-//        CreditDto creditDto = creditService.getCreditById(creditId);
-//
-//        // Получаем пользователя
-//        User user = userRepository.findById(creditDto.getUserId())
-//                .orElseThrow(() -> new RuntimeException("User not found for credit ID: " + creditId));
-//
-//        // Получите карту по cardId, если необходимо
-//        Card card = cardRepository.findById(creditDto.getCardId())
-//                .orElseThrow(() -> new RuntimeException("Card not found for card ID: " + creditDto.getCardId()));
-//
-//        // Преобразуем CreditDto в Credit
-//        Credit credit = creditMapper.toEntity(creditDto, user, card);
-//
-//        // Найдем первый неоплаченный платеж
-//        for (PaymentScheduleDto paymentDto : creditDto.getPaymentSchedules()) {
-//            if (!paymentDto.isPaid()) {
-//                // Проверяем, достаточно ли суммы для оплаты
-//                if (paymentAmount.compareTo(paymentDto.getPaymentAmount()) >= 0) {
-//                    // Преобразуем DTO в сущность для сохранения
-//                    PaymentSchedule payment = PaymentScheduleMapper.toEntity(paymentDto, credit);
-//                    payment.setPaid(true); // Отметить платеж как оплаченный
-//
-//                    // Сохраняем изменения в базе данных
-//                    paymentRepository.save(payment);
-//                    System.out.println("Проверка платежа: " + paymentDto.getPaymentAmount() + " на сумму " + paymentAmount);
-//
-//                    // Уменьшаем оставшийся долг по кредиту
-//                    BigDecimal newLoanAmount = credit.getLoanAmount().subtract(payment.getPaymentAmount());
-//                    credit.setLoanAmount(newLoanAmount);
-//
-//                    // Обновляем дату последнего обновления кредита
-//                    credit.setUpdatedAt(LocalDateTime.now());
-//
-//                    // Сохраняем обновленный кредит
-//                    creditRepository.save(credit);
-//
-//                    // Логика уведомления клиента
-//                    emailService.sendPaymentNotification(user, payment);
-//                    break; // Выходим после первого успешного платежа
-//                } else {
-//                    // Логика обработки недостаточной суммы
-//                    throw new RuntimeException("Недостаточная сумма для оплаты. Требуется: " + paymentDto.getPaymentAmount());
-//                }
-//            }
-//        }
-//    }
 
     // Проверка всех кредитов
     @Scheduled(cron = "0 0 1 * * ?") // Каждый первый день месяца в 1:00

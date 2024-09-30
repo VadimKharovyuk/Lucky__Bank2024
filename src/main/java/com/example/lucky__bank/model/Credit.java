@@ -41,9 +41,8 @@ public class Credit {
     private LocalDateTime updatedAt;
 
 
+
     @OneToMany(mappedBy = "credit", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PaymentSchedule> paymentSchedules = new ArrayList<>();
-
-
 
 }

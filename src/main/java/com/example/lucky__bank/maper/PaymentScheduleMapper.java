@@ -5,6 +5,8 @@ import com.example.lucky__bank.model.Credit;
 import com.example.lucky__bank.model.PaymentSchedule;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+
 @Component
 public class PaymentScheduleMapper {
 
@@ -16,6 +18,9 @@ public class PaymentScheduleMapper {
                 .paymentAmount(paymentSchedule.getPaymentAmount())
                 .paymentDate(paymentSchedule.getPaymentDate())
                 .paid(paymentSchedule.isPaid())
+
+                .interestAmount(paymentSchedule.getInterestAmount())//новое поле
+                .principalAmount(paymentSchedule.getPrincipalAmount())//новое поле
                 .build();
     }
 
@@ -28,6 +33,8 @@ public class PaymentScheduleMapper {
         paymentSchedule.setPaymentAmount(dto.getPaymentAmount());
         paymentSchedule.setPaymentDate(dto.getPaymentDate());
         paymentSchedule.setPaid(dto.isPaid());
+        paymentSchedule.setInterestAmount(dto.getInterestAmount());
+        paymentSchedule.setPrincipalAmount(dto.getPrincipalAmount());
         return paymentSchedule;
     }
 }
