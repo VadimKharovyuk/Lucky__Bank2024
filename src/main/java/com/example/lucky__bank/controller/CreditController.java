@@ -1,9 +1,16 @@
 package com.example.lucky__bank.controller;
 
 import com.example.lucky__bank.Request.CreditRequestDto;
+import com.example.lucky__bank.dto.CardDTO;
 import com.example.lucky__bank.dto.CreditDto;
+import com.example.lucky__bank.dto.UserDTO;
+import com.example.lucky__bank.model.Card;
+import com.example.lucky__bank.model.Credit;
+import com.example.lucky__bank.model.User;
+import com.example.lucky__bank.service.CardService;
 import com.example.lucky__bank.service.CreditCreationService;
 import com.example.lucky__bank.service.CreditService;
+import com.example.lucky__bank.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,6 +27,7 @@ public class CreditController {
 
     private final CreditCreationService creditCreationService;
     private final CreditService creditService;
+
 
 
     // Создание кредита
@@ -73,6 +81,23 @@ public class CreditController {
     public ResponseEntity<Void> deleteCreditId(@PathVariable Long creditId){
         creditService.deleteCredit(creditId);
         return ResponseEntity.noContent().build();
+    }
+
+
+
+    @GetMapping("/list")
+    public ResponseEntity<List<CreditDto>> getCreditsByUserAndCard(
+            @RequestParam Long userId,
+            @RequestParam Long cardId) {
+
+        UserDTO userDto = new UserDTO();
+        userDto.setId(userId);
+
+        CardDTO cardDto = new CardDTO();
+        cardDto.setId(cardId);
+
+        List<CreditDto> credits = creditService.getCreditsByUserAndCard(userDto, cardDto);
+        return ResponseEntity.ok(credits);
     }
 
     // Обработка исключений

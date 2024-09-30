@@ -122,4 +122,11 @@ public class UserService {
         User user = userRepository.findByUsername(username);
         return user != null ? userMapper.convertToDTO(user) : null;
     }
+
+
+
+    public User findEntityById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+    }
 }

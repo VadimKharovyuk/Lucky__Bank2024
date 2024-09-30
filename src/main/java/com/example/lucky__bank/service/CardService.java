@@ -84,4 +84,9 @@ public class CardService {
 
         return cardMapper.toDTO(card);
     }
+
+    public Card findEntityById(Long id) {
+        return cardRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Card not found with ID: " + id));
+    }
 }

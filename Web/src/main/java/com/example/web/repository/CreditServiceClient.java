@@ -20,16 +20,20 @@ public interface CreditServiceClient {
 
     // Метод для одобрения кредита
     @PutMapping("/api/credits/{creditId}/approve")
-    CreditDto approveCredit (@PathVariable Long creditId);
+    CreditDto approveCredit(@PathVariable Long creditId);
 
 
     // Оплата кредита
     @PostMapping("/api/credits/makePayment/{creditId}")
-    void makePayment (@PathVariable Long creditId ,@RequestParam BigDecimal paymentAmount);
+    void makePayment(@PathVariable Long creditId, @RequestParam BigDecimal paymentAmount);
 
 
     @PostMapping("/api/credits/delete/{creditId}")
     void deleteCreditById(@PathVariable Long creditId);
+
+
+    @GetMapping("/api/credits/list")
+    List<CreditDto> getCreditsByUserAndCard(@RequestParam Long userId, @RequestParam  Long cardId);
 
 
 }

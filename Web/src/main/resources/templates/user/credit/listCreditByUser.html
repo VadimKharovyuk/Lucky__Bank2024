@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-4">
+    <h2 class="mb-4">Список кредитов</h2>
+    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+    <form action="#" th:action="@{/list}" method="get" class="mb-4">
+        <div class="form-group">
+            <label for="cardSelect">Выберите карту:</label>
+            <select id="cardSelect" name="cardId" class="form-control" onchange="this.form.submit()">
+                <option th:each="card : ${cards}"
+                        th:value="${card.id}"
+                        th:text="${card.cardNumber}"
+                        th:selected="${card.id == selectedCardId}"></option>
+            </select>
+        </div>
+    </form>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Сумма кредита</th>
+            <th>Цель кредита</th>
+            <!-- Добавьте другие заголовки по необходимости -->
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="credit : ${list}">
+            <td th:text="${credit.id}"></td>
+            <td th:text="${credit.amount}"></td>
+            <td th:text="${credit.purpose}"></td>
+            <!-- Добавьте другие столбцы по необходимости -->
+        </tr>
+        <tr th:if="${#lists.isEmpty(list)}">
+            <td colspan="3" class="text-center">Нет доступных кредитов.</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

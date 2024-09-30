@@ -1,8 +1,11 @@
 package com.example.lucky__bank.service;
 
+import com.example.lucky__bank.dto.CardDTO;
 import com.example.lucky__bank.dto.CreditDto;
 import com.example.lucky__bank.dto.PaymentScheduleDto;
+import com.example.lucky__bank.dto.UserDTO;
 import com.example.lucky__bank.maper.CreditMapper;
+import com.example.lucky__bank.model.Card;
 import com.example.lucky__bank.model.Credit;
 import com.example.lucky__bank.model.PaymentSchedule;
 import com.example.lucky__bank.model.User;
@@ -16,15 +19,19 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class CreditService {
-    private final PaymentScheduleRepository paymentRepository ;
+    private final PaymentScheduleRepository paymentRepository;
     private final CreditRepository creditRepository;
     private final CreditMapper creditMapper;
     private final EmailService emailService;
+    private final UserService userService;
+    private final CardService cardService;
 
 
     //штраф
@@ -48,7 +55,7 @@ public class CreditService {
         Credit credit = payment.getCredit();
         User user = credit.getUser();
         // Отправка уведомления (например, по электронной почте или через систему уведомлений)
-         emailService.sendLateFeeNotification(user.getEmail(), payment);
+        emailService.sendLateFeeNotification(user.getEmail(), payment);
     }
 
     public List<CreditDto> getAllCredits() {
@@ -124,5 +131,25 @@ public class CreditService {
         // Сохраняем обновленный кредит в базе данных
         Credit savedCredit = creditRepository.save(existingCredit);
 
+    }
+
+
+    public List<CreditDto> getCreditsByUserAndCard(UserDTO userDto, CardDTO cardDto) {
+        // Получаем сущности User и Card по их идентификаторам
+        User user = userService.findEntityById(userDto.getId());
+        Card card = cardService.findEntityById(cardDto.getId());
+
+        // Проверяем, что пользователь и карта не null
+        if (user == null || card == null) {
+            throw new RuntimeException("User or Card not found");
+        }
+
+        // Получаем кредиты из репозитория
+        List<Credit> credits = creditRepository.findByUserAndCard(user, card);
+
+        // Преобразуем кредиты в CreditDto
+        return credits.stream()
+                .map(creditMapper::toDto)
+                .collect(Collectors.toList());
     }
 }

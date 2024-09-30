@@ -1,62 +1,166 @@
+<!--&lt;!&ndash;<!DOCTYPE html>&ndash;&gt;-->
+<!--&lt;!&ndash;<html xmlns:th="http://www.thymeleaf.org">&ndash;&gt;-->
+<!--&lt;!&ndash;<head>&ndash;&gt;-->
+<!--&lt;!&ndash;    <meta charset="UTF-8">&ndash;&gt;-->
+<!--&lt;!&ndash;    <title>Оформление кредита</title>&ndash;&gt;-->
+<!--&lt;!&ndash;</head>&ndash;&gt;-->
+<!--&lt;!&ndash;<body>&ndash;&gt;-->
+<!--&lt;!&ndash;<h1>Оформление кредита</h1>&ndash;&gt;-->
+<!--&lt;!&ndash;<form th:action="@{/credit}" th:object="${creditForm}" method="post">&ndash;&gt;-->
+<!--&lt;!&ndash;    <input type="hidden" th:field="*{userId}" th:value="${user.id}" />&ndash;&gt;-->
+
+<!--&lt;!&ndash;    <div>&ndash;&gt;-->
+<!--&lt;!&ndash;        <label for="cardId">Выберите карту:</label>&ndash;&gt;-->
+<!--&lt;!&ndash;        <select id="cardId" th:field="*{cardId}" required>&ndash;&gt;-->
+<!--&lt;!&ndash;            <option value="">Выберите карту</option>&ndash;&gt;-->
+<!--&lt;!&ndash;            <option th:each="card : ${cards}" th:value="${card.id}" th:text="${card.cardNumber}"></option>&ndash;&gt;-->
+<!--&lt;!&ndash;        </select>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    <div>&ndash;&gt;-->
+<!--&lt;!&ndash;        <label for="loanAmount">Сумма кредита:</label>&ndash;&gt;-->
+<!--&lt;!&ndash;        <input type="number" id="loanAmount" th:field="*{loanAmount}" required step="0.01" min="0" />&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    <div>&ndash;&gt;-->
+<!--&lt;!&ndash;        <label for="interestRate">Процентная ставка:</label>&ndash;&gt;-->
+<!--&lt;!&ndash;        <input type="number" id="interestRate" th:field="*{interestRate}" required step="0.01" min="0" max="100" />&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    <div>&ndash;&gt;-->
+<!--&lt;!&ndash;        <label for="termInMonths">Срок кредита (в месяцах):</label>&ndash;&gt;-->
+<!--&lt;!&ndash;        <input type="number" id="termInMonths" th:field="*{termInMonths}" required min="1" />&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    <div>&ndash;&gt;-->
+<!--&lt;!&ndash;        <label for="purpose">Цель кредита:</label>&ndash;&gt;-->
+<!--&lt;!&ndash;        <input type="text" id="purpose" th:field="*{purpose}" required />&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    <div>&ndash;&gt;-->
+<!--&lt;!&ndash;        <button type="submit">Оформить кредит</button>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    <div th:if="${errorMessage}" class="error-message">&ndash;&gt;-->
+<!--&lt;!&ndash;        <p th:text="${errorMessage}"></p>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;</form>&ndash;&gt;-->
+<!--&lt;!&ndash;</body>&ndash;&gt;-->
+<!--&lt;!&ndash;</html>&ndash;&gt;-->
+
+
 <!--<!DOCTYPE html>-->
 <!--<html xmlns:th="http://www.thymeleaf.org">-->
 <!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <title>Оформление кредита</title>-->
+<!--    <title>Создание кредита</title>-->
 <!--</head>-->
 <!--<body>-->
-<!--<h1>Оформление кредита</h1>-->
-<!--<form th:action="@{/credit}" th:object="${creditForm}" method="post">-->
-<!--    <input type="hidden" th:field="*{userId}" th:value="${user.id}" />-->
-
+<!--<h1>Создание кредита</h1>-->
+<!--<form th:action="@{/credits/create}" th:object="${creditForm}" method="post">-->
+<!--    <input type="hidden" name="userId" th:value="${user.id}"/>-->
 <!--    <div>-->
 <!--        <label for="cardId">Выберите карту:</label>-->
-<!--        <select id="cardId" th:field="*{cardId}" required>-->
-<!--            <option value="">Выберите карту</option>-->
-<!--            <option th:each="card : ${cards}" th:value="${card.id}" th:text="${card.cardNumber}"></option>-->
+<!--        <select id="cardId" th:field="*{cardId}">-->
+<!--            <option th:each="card : ${cards}"-->
+<!--                    th:value="${card.id}"-->
+<!--                    th:text="${card.cardNumber}">-->
+<!--            </option>-->
 <!--        </select>-->
 <!--    </div>-->
-
 <!--    <div>-->
 <!--        <label for="loanAmount">Сумма кредита:</label>-->
-<!--        <input type="number" id="loanAmount" th:field="*{loanAmount}" required step="0.01" min="0" />-->
+<!--        <input type="number" id="loanAmount" th:field="*{loanAmount}" step="0.01" required />-->
 <!--    </div>-->
-
 <!--    <div>-->
 <!--        <label for="interestRate">Процентная ставка:</label>-->
-<!--        <input type="number" id="interestRate" th:field="*{interestRate}" required step="0.01" min="0" max="100" />-->
+<!--        <input type="number" id="interestRate" th:field="*{interestRate}" step="0.01" required />-->
 <!--    </div>-->
-
 <!--    <div>-->
-<!--        <label for="termInMonths">Срок кредита (в месяцах):</label>-->
-<!--        <input type="number" id="termInMonths" th:field="*{termInMonths}" required min="1" />-->
+<!--        <label for="termInMonths">Срок (в месяцах):</label>-->
+<!--        <input type="number" id="termInMonths" th:field="*{termInMonths}" required />-->
 <!--    </div>-->
-
 <!--    <div>-->
 <!--        <label for="purpose">Цель кредита:</label>-->
 <!--        <input type="text" id="purpose" th:field="*{purpose}" required />-->
 <!--    </div>-->
-
-<!--    <div>-->
-<!--        <button type="submit">Оформить кредит</button>-->
-<!--    </div>-->
-
-<!--    <div th:if="${errorMessage}" class="error-message">-->
-<!--        <p th:text="${errorMessage}"></p>-->
-<!--    </div>-->
+<!--    <button type="submit">Создать кредит</button>-->
 <!--</form>-->
 <!--</body>-->
 <!--</html>-->
-
 
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Создание кредита</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        div {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+        input[type="number"],
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+        input[type="number"]:focus,
+        input[type="text"]:focus,
+        select:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e8f6fe;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
 <h1>Создание кредита</h1>
-<form th:action="@{/credits/create}" th:object="${creditForm}" method="post">
+<form th:action="@{/credits/create}" th:object="${creditForm}" method="post" id="creditForm">
     <input type="hidden" name="userId" th:value="${user.id}"/>
     <div>
         <label for="cardId">Выберите карту:</label>
@@ -83,7 +187,30 @@
         <label for="purpose">Цель кредита:</label>
         <input type="text" id="purpose" th:field="*{purpose}" required />
     </div>
+    <button type="button" id="calculateButton">Рассчитать ежемесячный платеж</button>
+    <div id="result"></div>
     <button type="submit">Создать кредит</button>
 </form>
+
+<script>
+    document.getElementById('calculateButton').addEventListener('click', function() {
+        const loanAmount = parseFloat(document.getElementById('loanAmount').value);
+        const interestRate = parseFloat(document.getElementById('interestRate').value) / 100 / 12;
+        const termInMonths = parseInt(document.getElementById('termInMonths').value);
+
+        if (isNaN(loanAmount) || isNaN(interestRate) || isNaN(termInMonths)) {
+            alert('Пожалуйста, введите корректные числовые значения');
+            return;
+        }
+
+        const onePlusRate = 1 + interestRate;
+        const powerFactor = Math.pow(onePlusRate, termInMonths);
+        const numerator = loanAmount * interestRate * powerFactor;
+        const denominator = powerFactor - 1;
+        const monthlyPayment = numerator / denominator;
+
+        document.getElementById('result').textContent = `Ежемесячный платеж: ${monthlyPayment.toFixed(2)} UAH`;
+    });
+</script>
 </body>
 </html>

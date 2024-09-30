@@ -1,6 +1,7 @@
 package com.example.web.controller;
 
 import com.example.web.Request.CreditRequestDto;
+import com.example.web.dto.CardDTO;
 import com.example.web.dto.CreditDto;
 import com.example.web.dto.UserDTO;
 import com.example.web.service.CardService;
@@ -41,6 +42,7 @@ public class CreditWebController {
         return "user/credit/creditForm";
     }
 
+
     @PostMapping("/create")
     public String createCredit(@ModelAttribute("creditForm") CreditRequestDto creditRequestDto,
                                BindingResult bindingResult,
@@ -57,7 +59,7 @@ public class CreditWebController {
         creditRequestDto.setUserId(currentUser.getId());
         CreditDto createdCredit = creditService.create(creditRequestDto);
         redirectAttributes.addFlashAttribute("message", "Кредит успешно создан");
-        return "redirect:/credits";
+        return "redirect:/credits/list";
     }
 
     @PostMapping("/{creditId}/approve")
@@ -94,6 +96,41 @@ public class CreditWebController {
         redirectAttributes.addFlashAttribute("message", "Кредит удален");
         return "redirect:/credits";
     }
+
+
+
+    @GetMapping("/list")
+    public String getCreditsByUserId(Model model, @RequestParam(required = false) Long cardId) {
+        UserDTO currentUser = getCurrentUser();
+        if (currentUser == null) {
+            return "redirect:/login";
+        }
+
+        // Получаем список карт пользователя
+        List<CardDTO> userCards = cardService.getCardsByUserId(currentUser.getId());
+
+        // Проверяем, есть ли карты у пользователя
+        if (userCards.isEmpty()) {
+            model.addAttribute("errorMessage", "У вас нет карт для получения кредитов.");
+            return "user/credit/listCreditByUser"; // Верните на страницу с сообщением об ошибке
+        }
+
+        // Если карта не выбрана, используем первую карту
+        if (cardId == null && !userCards.isEmpty()) {
+            cardId = userCards.get(0).getId(); // Получаем ID первой карты
+        }
+
+        // Получаем кредиты для пользователя и карты
+        List<CreditDto> creditList = creditService.getCreditsByUserAndCard(currentUser.getId(), cardId);
+        model.addAttribute("cards", userCards);
+        model.addAttribute("selectedCardId", cardId);
+        model.addAttribute("list", creditList);
+        model.addAttribute("user", currentUser);
+
+        return "user/credit/listCreditByUser";
+    }
+
+
 
     private UserDTO getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

@@ -5,9 +5,12 @@ import com.example.web.dto.CreditDto;
 import com.example.web.repository.CreditServiceClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +31,10 @@ public class CreditService {
 
     public void deleteCreditById(Long creditId) {
         creditServiceClient.deleteCreditById(creditId);
+    }
+
+    public List<CreditDto> getCreditsByUserAndCard(Long userId, Long cardId) {
+        return creditServiceClient.getCreditsByUserAndCard(userId, cardId);
     }
 
 
