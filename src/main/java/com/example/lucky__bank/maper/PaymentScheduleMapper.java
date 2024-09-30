@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 @Component
 public class PaymentScheduleMapper {
 
+
     // Преобразование из сущности PaymentSchedule в DTO PaymentScheduleDto
     public static PaymentScheduleDto toDto(PaymentSchedule paymentSchedule) {
         return PaymentScheduleDto.builder()

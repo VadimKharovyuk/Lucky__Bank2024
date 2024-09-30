@@ -3,9 +3,11 @@ package com.example.lucky__bank.controller;
 import com.example.lucky__bank.Request.CreditRequestDto;
 import com.example.lucky__bank.dto.CardDTO;
 import com.example.lucky__bank.dto.CreditDto;
+import com.example.lucky__bank.dto.PaymentScheduleDto;
 import com.example.lucky__bank.dto.UserDTO;
 import com.example.lucky__bank.model.Card;
 import com.example.lucky__bank.model.Credit;
+import com.example.lucky__bank.model.PaymentSchedule;
 import com.example.lucky__bank.model.User;
 import com.example.lucky__bank.service.CardService;
 import com.example.lucky__bank.service.CreditCreationService;
@@ -76,6 +78,7 @@ public class CreditController {
     }
 
 
+
     //удалить
     @PostMapping("/delete/{creditId}")
     public ResponseEntity<Void> deleteCreditId(@PathVariable Long creditId){
@@ -84,7 +87,7 @@ public class CreditController {
     }
 
 
-
+//cписок кредитов юзера по карте
     @GetMapping("/list")
     public ResponseEntity<List<CreditDto>> getCreditsByUserAndCard(
             @RequestParam Long userId,
@@ -99,6 +102,17 @@ public class CreditController {
         List<CreditDto> credits = creditService.getCreditsByUserAndCard(userDto, cardDto);
         return ResponseEntity.ok(credits);
     }
+
+    @GetMapping("/schedule")
+    public ResponseEntity<List<PaymentScheduleDto>> getAllByCredit(@RequestParam Long creditId) {
+        CreditDto creditDto = new CreditDto();
+        creditDto.setId(creditId);
+
+        List<PaymentScheduleDto> schedules = creditService.getAllByCredit(creditDto);
+        return ResponseEntity.ok(schedules);
+    }
+
+
 
     // Обработка исключений
     @ExceptionHandler(RuntimeException.class)

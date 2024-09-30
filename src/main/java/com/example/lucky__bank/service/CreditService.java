@@ -5,6 +5,7 @@ import com.example.lucky__bank.dto.CreditDto;
 import com.example.lucky__bank.dto.PaymentScheduleDto;
 import com.example.lucky__bank.dto.UserDTO;
 import com.example.lucky__bank.maper.CreditMapper;
+import com.example.lucky__bank.maper.PaymentScheduleMapper;
 import com.example.lucky__bank.model.Card;
 import com.example.lucky__bank.model.Credit;
 import com.example.lucky__bank.model.PaymentSchedule;
@@ -21,6 +22,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,6 +34,7 @@ public class CreditService {
     private final EmailService emailService;
     private final UserService userService;
     private final CardService cardService;
+    private final PaymentScheduleMapper paymentScheduleMapper;
 
 
     //штраф
@@ -150,6 +153,26 @@ public class CreditService {
         // Преобразуем кредиты в CreditDto
         return credits.stream()
                 .map(creditMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+
+    public List<PaymentScheduleDto> getAllByCredit(CreditDto creditDto) {
+        // Получаем сущность Credit по её идентификатору
+        Optional<Credit> optionalCredit = creditRepository.findById(creditDto.getId());
+
+        if (!optionalCredit.isPresent()) {
+            throw new EntityNotFoundException("Кредит с ID " + creditDto.getId() + " не найден");
+        }
+
+        Credit credit = optionalCredit.get();
+
+        // Используем репозиторий для поиска графиков платежей по кредиту
+        List<PaymentSchedule> scheduleList = paymentRepository.findByCredit(credit);
+
+        // Преобразуем список PaymentSchedule в список PaymentScheduleDto
+        return scheduleList.stream()
+                .map(PaymentScheduleMapper::toDto)
                 .collect(Collectors.toList());
     }
 }

@@ -107,22 +107,5 @@ public class CreditCreationService {
         }
     }
 
-//    private void createPaymentSchedule(Credit credit) {
-//        LocalDate currentDate = LocalDate.now();
-//        BigDecimal remainingBalance = credit.getLoanAmount();
-//
-//        for (int i = 1; i <= credit.getTermInMonths(); i++) {
-//            PaymentSchedule payment = new PaymentSchedule();
-//            payment.setCredit(credit);
-//            payment.setPaymentDate(currentDate.plusMonths(i));
-//            payment.setPaymentAmount(credit.getMonthlyPayment());
-//            payment.setPaid(false);
-//
-//            BigDecimal interest = remainingBalance.multiply(BigDecimal.valueOf(credit.getInterestRate() / 12 / 100));
-//            BigDecimal principal = credit.getMonthlyPayment().subtract(interest);
-//            remainingBalance = remainingBalance.subtract(principal);
-//
-//            paymentScheduleRepository.save(payment);
-//        }
-//    }
+
 }

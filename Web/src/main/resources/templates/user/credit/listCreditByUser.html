@@ -29,6 +29,11 @@
             <th>ID</th>
             <th>Сумма кредита</th>
             <th>Цель кредита</th>
+            <th>Дата создания</th>
+            <th>Процентная ставка</th>
+            <th>Ежемесячный платеж</th>
+            <th>Срок в месяцах</th>
+
             <!-- Добавьте другие заголовки по необходимости -->
         </tr>
         </thead>
@@ -37,6 +42,12 @@
             <td th:text="${credit.id}"></td>
             <td th:text="${credit.amount}"></td>
             <td th:text="${credit.purpose}"></td>
+            <td th:text="${credit.createdAt}"></td>
+            <td th:text="${credit.interestRate}"></td>
+            <td th:text="${credit.monthlyPayment}"></td>
+            <td th:text="${credit.termInMonths}"></td>
+
+
             <!-- Добавьте другие столбцы по необходимости -->
         </tr>
         <tr th:if="${#lists.isEmpty(list)}">
