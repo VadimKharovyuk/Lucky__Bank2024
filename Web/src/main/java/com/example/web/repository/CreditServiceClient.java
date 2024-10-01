@@ -24,6 +24,7 @@ public interface CreditServiceClient {
     CreditDto approveCredit(@PathVariable Long creditId);
 
 
+
     // Оплата кредита
     @PostMapping("/api/credits/makePayment/{creditId}")
     void makePayment(@PathVariable Long creditId, @RequestParam BigDecimal paymentAmount);

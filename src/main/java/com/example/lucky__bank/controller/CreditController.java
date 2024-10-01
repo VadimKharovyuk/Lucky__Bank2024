@@ -1,5 +1,7 @@
 package com.example.lucky__bank.controller;
 
+import com.example.lucky__bank.Exception.CreditNotFoundException;
+import com.example.lucky__bank.Exception.InsufficientFundsException;
 import com.example.lucky__bank.Request.CreditRequestDto;
 import com.example.lucky__bank.dto.CardDTO;
 import com.example.lucky__bank.dto.CreditDto;
@@ -15,6 +17,7 @@ import com.example.lucky__bank.service.CreditService;
 import com.example.lucky__bank.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +28,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/credits")
 @RequiredArgsConstructor
+@Slf4j
 public class CreditController {
 
     private final CreditCreationService creditCreationService;
@@ -65,15 +69,22 @@ public class CreditController {
 
     // Оплата кредита
     @PostMapping("/makePayment/{creditId}")
-    public ResponseEntity<Void> makePayment(@PathVariable Long creditId, @RequestParam BigDecimal paymentAmount) {
+    public ResponseEntity<?> makePayment(@PathVariable Long creditId, @RequestParam BigDecimal paymentAmount) {
         try {
             creditCreationService.makePayment(creditId, paymentAmount);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok().body("Payment processed successfully");
+        } catch (InsufficientFundsException e) {
+            log.warn("Insufficient funds for payment on credit ID: {}", creditId, e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Insufficient funds on the linked card");
+        } catch (CreditNotFoundException e) {
+            log.error("Credit not found or error processing payment for credit ID: {}", creditId, e);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
         } catch (Exception e) {
-            // Логируем ошибку
-            System.err.println("Ошибка при обработке платежа: " + e.getMessage());
-            e.printStackTrace();
-            return ResponseEntity.badRequest().build();
+            log.error("Unexpected error when processing payment for credit ID: {}", creditId, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An unexpected error occurred");
         }
     }
 

@@ -42,6 +42,7 @@ public class EmailService {
         message.setText("Уважаемый(ая) " + user.getUsername() + ",\n\n" +
                 "Ваш платеж на сумму " + payment.getPaymentAmount() + " был успешно обработан.\n" +
                 "Дата платежа: " + payment.getPaymentDate() + "\n" +
+                "На : " + payment.getCredit().getPurpose() + "\n" +
                 "С уважением,\nВаш банк.");
 
         // Отправляем сообщение

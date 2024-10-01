@@ -5,6 +5,7 @@ import com.example.web.dto.CardDTO;
 import com.example.web.dto.CreditDto;
 import com.example.web.dto.PaymentScheduleDto;
 import com.example.web.dto.UserDTO;
+
 import com.example.web.service.CardService;
 import com.example.web.service.CreditService;
 import com.example.web.service.UserService;
@@ -29,6 +30,21 @@ public class CreditWebController {
     private final CreditService creditService;
     private final UserService userService;
     private final CardService cardService;
+
+
+    //оплата кредита
+    @PostMapping("/{creditId}/payment")
+    public String makePayment(@PathVariable Long creditId,
+                              @RequestParam BigDecimal paymentAmount,
+                              RedirectAttributes redirectAttributes) {
+        try {
+            creditService.makePayment(creditId, paymentAmount);
+            redirectAttributes.addFlashAttribute("message", "Платеж выполнен успешно");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Произошла ошибка при выполнении платежа");
+        }
+        return "redirect:/credits/list";
+    }
 
 
     @GetMapping("/create")
@@ -74,18 +90,6 @@ public class CreditWebController {
         return "redirect:/credits";
     }
 
-    @PostMapping("/{creditId}/payment")
-    public String makePayment(@PathVariable Long creditId,
-                              @RequestParam BigDecimal paymentAmount,
-                              RedirectAttributes redirectAttributes) {
-        UserDTO currentUser = getCurrentUser();
-        if (currentUser == null) {
-            return "redirect:/login";
-        }
-        creditService.makePayment(creditId, paymentAmount);
-        redirectAttributes.addFlashAttribute("message", "Платеж выполнен успешно");
-        return "redirect:/credits";
-    }
 
     @PostMapping("/{creditId}/delete")
     public String deleteCredit(@PathVariable Long creditId, RedirectAttributes redirectAttributes) {
