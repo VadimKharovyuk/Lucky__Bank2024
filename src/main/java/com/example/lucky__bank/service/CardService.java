@@ -1,11 +1,13 @@
 package com.example.lucky__bank.service;
 
+import com.example.lucky__bank.Exception.InsufficientFundsException;
 import com.example.lucky__bank.dto.CardDTO;
 import com.example.lucky__bank.maper.CardMapper;
 import com.example.lucky__bank.model.Card;
 import com.example.lucky__bank.model.User;
 import com.example.lucky__bank.repository.CardRepository;
 import com.example.lucky__bank.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -88,5 +90,19 @@ public class CardService {
     public Card findEntityById(Long id) {
         return cardRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Card not found with ID: " + id));
+    }
+
+    //снимать деньги с карты на кредит
+    @Transactional
+    public void withdrawMoney(Long cardId, BigDecimal amount) throws InsufficientFundsException {
+        Card card = cardRepository.findById(cardId)
+                .orElseThrow(() -> new RuntimeException("Card not found for ID: " + cardId));
+
+        if (card.getBalance().compareTo(amount) < 0) {
+            throw new InsufficientFundsException("Insufficient funds on the card");
+        }
+
+        card.setBalance(card.getBalance().subtract(amount));
+        cardRepository.save(card);
     }
 }

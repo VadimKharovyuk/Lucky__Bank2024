@@ -1,5 +1,7 @@
 package com.example.lucky__bank.service;
 
+import com.example.lucky__bank.Exception.CreditNotFoundException;
+import com.example.lucky__bank.Exception.InsufficientFundsException;
 import com.example.lucky__bank.dto.CreditDto;
 import com.example.lucky__bank.maper.CreditMapper;
 import com.example.lucky__bank.model.Card;
@@ -12,6 +14,7 @@ import com.example.lucky__bank.repository.PaymentScheduleRepository;
 import com.example.lucky__bank.repository.UserRepository;
 import com.example.lucky__bank.service.Schedule.PaymentService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +25,7 @@ import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CreditCreationService {
 
     private final CreditRepository creditRepository;
@@ -32,9 +36,19 @@ public class CreditCreationService {
     private final CardRepository cardRepository;
 
 
-    public void makePayment(Long creditId, BigDecimal paymentAmount) {
-        paymentService.processPayment(creditId, paymentAmount);
+
+    public void makePayment(Long creditId, BigDecimal paymentAmount) throws InsufficientFundsException, CreditNotFoundException {
+        try {
+            paymentService.processPayment(creditId, paymentAmount);
+        } catch (InsufficientFundsException e) {
+            log.error("Insufficient funds for payment on credit ID: {}", creditId, e);
+            throw e;
+        } catch (RuntimeException e) {
+            log.error("Error processing payment for credit ID: {}", creditId, e);
+            throw new CreditNotFoundException("Credit not found or error processing payment: " + e.getMessage());
+        }
     }
+
     @Transactional
     public CreditDto createCredit(Long userId, Long cardId, BigDecimal loanAmount, double interestRate, int termInMonths, String purpose) {
         User user = userRepository.findById(userId)
