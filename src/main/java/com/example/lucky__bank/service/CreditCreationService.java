@@ -35,8 +35,6 @@ public class CreditCreationService {
     public void makePayment(Long creditId, BigDecimal paymentAmount) {
         paymentService.processPayment(creditId, paymentAmount);
     }
-
-
     @Transactional
     public CreditDto createCredit(Long userId, Long cardId, BigDecimal loanAmount, double interestRate, int termInMonths, String purpose) {
         User user = userRepository.findById(userId)
@@ -48,64 +46,66 @@ public class CreditCreationService {
         credit.setInterestRate(interestRate);
         credit.setTermInMonths(termInMonths);
         credit.setPurpose(purpose);
-        credit.setApproved(false); // По умолчанию кредит не одобрен
+        credit.setApproved(false);
         credit.setCreatedAt(LocalDateTime.now());
         credit.setUpdatedAt(LocalDateTime.now());
 
-        // Расчет ежемесячного платежа
         BigDecimal monthlyInterestRate = BigDecimal.valueOf(interestRate / 12 / 100);
         BigDecimal monthlyPayment = calculateMonthlyPayment(loanAmount, monthlyInterestRate, termInMonths);
         credit.setMonthlyPayment(monthlyPayment);
 
         Credit savedCredit = creditRepository.save(credit);
 
-        // Создание графика платежей
         createPaymentSchedule(savedCredit);
-        // Логирование для отладки
         System.out.println("Saved Credit: " + savedCredit);
-        // Используем CreditMapper для преобразования сущности в DTO
         return creditMapper.toDto(savedCredit);
     }
+
+
 
     private BigDecimal calculateMonthlyPayment(BigDecimal loanAmount, BigDecimal monthlyInterestRate, int termInMonths) {
         BigDecimal onePlusRate = monthlyInterestRate.add(BigDecimal.ONE);
         BigDecimal powerFactor = onePlusRate.pow(termInMonths);
         BigDecimal numerator = loanAmount.multiply(monthlyInterestRate).multiply(powerFactor);
         BigDecimal denominator = powerFactor.subtract(BigDecimal.ONE);
-        return numerator.divide(denominator, 2, RoundingMode.HALF_UP);
+        return numerator.divide(denominator, 10, RoundingMode.HALF_UP);
     }
+
 
 
     private void createPaymentSchedule(Credit credit) {
         LocalDate currentDate = LocalDate.now();
         BigDecimal remainingBalance = credit.getLoanAmount();
+        BigDecimal monthlyInterestRate = BigDecimal.valueOf(credit.getInterestRate() / 12 / 100);
 
         for (int i = 1; i <= credit.getTermInMonths(); i++) {
             PaymentSchedule payment = new PaymentSchedule();
             payment.setCredit(credit);
             payment.setPaymentDate(currentDate.plusMonths(i));
 
-            // Рассчитываем процент на остаток кредита
-            BigDecimal interest = remainingBalance.multiply(BigDecimal.valueOf(credit.getInterestRate() / 12 / 100));
+            BigDecimal interest = remainingBalance.multiply(monthlyInterestRate)
+                    .setScale(10, RoundingMode.HALF_UP);
 
-            // Основная часть платежа
             BigDecimal principal = credit.getMonthlyPayment().subtract(interest);
 
-            // Устанавливаем сумму платежа
-            payment.setPaymentAmount(credit.getMonthlyPayment());
+            if (i == credit.getTermInMonths()) {
+                payment.setPaymentAmount(remainingBalance.add(interest));
+            } else {
+                payment.setPaymentAmount(credit.getMonthlyPayment());
+            }
 
-            // Устанавливаем процентную часть и основную часть (для более точного учета)
-            payment.setInterestAmount(interest);  // нужно добавить это поле в PaymentSchedule
-            payment.setPrincipalAmount(principal);  // нужно добавить это поле в PaymentSchedule
+            payment.setInterestAmount(interest);
+            payment.setPrincipalAmount(principal);
 
-            // Уменьшаем остаток по кредиту
             remainingBalance = remainingBalance.subtract(principal);
+            if (remainingBalance.compareTo(BigDecimal.ZERO) < 0) {
+                remainingBalance = BigDecimal.ZERO;
+            }
 
             payment.setPaid(false);
 
             paymentScheduleRepository.save(payment);
         }
     }
-
 
 }

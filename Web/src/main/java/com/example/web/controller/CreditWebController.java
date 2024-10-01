@@ -3,6 +3,7 @@ package com.example.web.controller;
 import com.example.web.Request.CreditRequestDto;
 import com.example.web.dto.CardDTO;
 import com.example.web.dto.CreditDto;
+import com.example.web.dto.PaymentScheduleDto;
 import com.example.web.dto.UserDTO;
 import com.example.web.service.CardService;
 import com.example.web.service.CreditService;
@@ -130,6 +131,23 @@ public class CreditWebController {
         return "user/credit/listCreditByUser";
     }
 
+    @GetMapping("/listSchedule/{creditId}")
+    public String getAllCreditSchedule(@PathVariable Long creditId, Model model) {
+        // Получаем список всех графиков платежей через сервис
+        List<PaymentScheduleDto> scheduleDtos = creditService.getPaymentSchedulesByCreditId(creditId);
+
+//        // Получаем информацию о кредите (предположим, что у вас есть метод getCreditById)
+//        CreditDto credit = creditService.getCreditById(creditId);
+
+        // Добавляем список графиков платежей в модель
+        model.addAttribute("schedules", scheduleDtos);
+
+        // Добавляем информацию о кредите в модель
+//        model.addAttribute("credit", credit);
+
+        // Возвращаем название страницы для отображения
+        return "/user/credit/listSchedule";
+    }
 
 
     private UserDTO getCurrentUser() {

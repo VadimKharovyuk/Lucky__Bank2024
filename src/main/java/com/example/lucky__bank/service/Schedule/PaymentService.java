@@ -24,6 +24,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,33 +34,32 @@ public class PaymentService {
     private final CreditMapper creditMapper;
     private final CreditRepository creditRepository ;
     private final  EmailService emailService ;
-
+    private final PaymentScheduleRepository paymentScheduleRepository;
     public void processPayment(Long creditId, BigDecimal paymentAmount) {
         Credit credit = creditRepository.findById(creditId)
                 .orElseThrow(() -> new RuntimeException("Credit not found for ID: " + creditId));
 
         boolean paymentProcessed = false;
 
-        // Работаем напрямую с коллекцией PaymentSchedule
         for (PaymentSchedule payment : credit.getPaymentSchedules()) {
             if (!payment.isPaid() && paymentAmount.compareTo(BigDecimal.ZERO) > 0) {
-                BigDecimal paymentToApply = payment.getPaymentAmount().min(paymentAmount); // Определяем сумму, которая будет использована
+                BigDecimal paymentToApply = payment.getPaymentAmount().min(paymentAmount);
 
                 payment.setPaid(true);
-                payment.setPaymentAmount(paymentToApply); // Обновляем сумму платежа
+                payment.setPaymentAmount(paymentToApply);
 
                 BigDecimal newLoanAmount = credit.getLoanAmount().subtract(paymentToApply);
+                if (newLoanAmount.compareTo(BigDecimal.ZERO) < 0) {
+                    newLoanAmount = BigDecimal.ZERO;
+                }
                 credit.setLoanAmount(newLoanAmount);
 
-                paymentAmount = paymentAmount.subtract(paymentToApply); // Уменьшаем сумму оставшегося платежа
+                paymentAmount = paymentAmount.subtract(paymentToApply);
                 paymentProcessed = true;
-
-                // Здесь можно добавить логику отправки уведомления
-                // emailService.sendPaymentNotification(user, payment);
             }
 
             if (paymentAmount.compareTo(BigDecimal.ZERO) <= 0) {
-                break; // Если весь платёж обработан, выходим из цикла
+                break;
             }
         }
 
@@ -67,9 +67,21 @@ public class PaymentService {
             throw new RuntimeException("Не найдено неоплаченных платежей для обработки");
         }
 
+        if (credit.getLoanAmount().compareTo(BigDecimal.ZERO) < 0) {
+            credit.setLoanAmount(BigDecimal.ZERO);
+        }
+
         credit.setUpdatedAt(LocalDateTime.now());
-        creditRepository.save(credit); // Сохраняем изменения в кредите и связанных платежах
+        creditRepository.save(credit);
     }
+
+    public List<PaymentScheduleDto> getPaymentSchedulesByCreditId(Long creditId) {
+        List<PaymentSchedule> schedule = paymentScheduleRepository.findAllByCreditId(creditId);
+        return schedule.stream()
+                .map(PaymentScheduleMapper::toDto)  // Используем ссылку на статический метод
+                .collect(Collectors.toList());
+    }
+
 
 
     // Проверка всех кредитов

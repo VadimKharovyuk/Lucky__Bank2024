@@ -175,4 +175,13 @@ public class CreditService {
                 .map(PaymentScheduleMapper::toDto)
                 .collect(Collectors.toList());
     }
+
+    public PaymentScheduleDto getSchdulerByid(Long creditId) {
+        // Получаем график платежей по идентификатору
+        PaymentSchedule schedule = paymentRepository.findById(creditId)
+                .orElseThrow(() -> new RuntimeException("Payment schedule not found"));
+
+        // Преобразуем сущность PaymentSchedule в DTO
+        return PaymentScheduleMapper.toDto(schedule);
+    }
 }

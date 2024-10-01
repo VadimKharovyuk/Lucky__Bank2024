@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru"> <!-- Изменил язык на русский -->
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Добавлено для адаптивности -->
+    <title>Список кредитов</title> <!-- Заголовок изменен на более информативный -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -33,8 +34,7 @@
             <th>Процентная ставка</th>
             <th>Ежемесячный платеж</th>
             <th>Срок в месяцах</th>
-
-            <!-- Добавьте другие заголовки по необходимости -->
+            <th>Действия</th>
         </tr>
         </thead>
         <tbody>
@@ -46,15 +46,21 @@
             <td th:text="${credit.interestRate}"></td>
             <td th:text="${credit.monthlyPayment}"></td>
             <td th:text="${credit.termInMonths}"></td>
-
-
-            <!-- Добавьте другие столбцы по необходимости -->
+            <td>
+                <a th:href="@{/credits/listSchedule/{creditId}(creditId=${credit.id})}" class="btn btn-primary">
+                    Посмотреть расписание
+                </a>
+            </td>
         </tr>
         <tr th:if="${#lists.isEmpty(list)}">
-            <td colspan="3" class="text-center">Нет доступных кредитов.</td>
+            <td colspan="8" class="text-center">Нет доступных кредитов.</td>
         </tr>
         </tbody>
     </table>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

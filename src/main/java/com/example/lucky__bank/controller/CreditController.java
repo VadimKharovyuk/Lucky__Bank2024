@@ -103,6 +103,7 @@ public class CreditController {
         return ResponseEntity.ok(credits);
     }
 
+
     @GetMapping("/schedule")
     public ResponseEntity<List<PaymentScheduleDto>> getAllByCredit(@RequestParam Long creditId) {
         CreditDto creditDto = new CreditDto();
@@ -110,6 +111,12 @@ public class CreditController {
 
         List<PaymentScheduleDto> schedules = creditService.getAllByCredit(creditDto);
         return ResponseEntity.ok(schedules);
+    }
+
+    @GetMapping("/schedule/{creditId}")
+    public ResponseEntity<PaymentScheduleDto> getCreditById(@PathVariable Long creditId){
+       PaymentScheduleDto scheduleDto = creditService.getSchdulerByid(creditId);
+        return ResponseEntity.ok(scheduleDto);
     }
 
 
