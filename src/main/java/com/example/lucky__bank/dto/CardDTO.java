@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -23,4 +24,5 @@ public class CardDTO {
     private LocalDateTime createdAt;
     private LocalDateTime expirationDate;
     private String cvv;
+    private LocalDate lastBonusDate ;
 }

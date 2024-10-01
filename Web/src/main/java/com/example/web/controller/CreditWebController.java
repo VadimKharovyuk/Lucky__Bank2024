@@ -103,7 +103,7 @@ public class CreditWebController {
     }
 
 
-
+///исправить метод получание кредита по 1 карте
     @GetMapping("/list")
     public String getCreditsByUserId(Model model, @RequestParam(required = false) Long cardId) {
         UserDTO currentUser = getCurrentUser();
@@ -124,6 +124,7 @@ public class CreditWebController {
         if (cardId == null && !userCards.isEmpty()) {
             cardId = userCards.get(0).getId(); // Получаем ID первой карты
         }
+
 
         // Получаем кредиты для пользователя и карты
         List<CreditDto> creditList = creditService.getCreditsByUserAndCard(currentUser.getId(), cardId);

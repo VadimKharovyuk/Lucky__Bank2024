@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
@@ -18,6 +19,7 @@ public class CardDTO {
     private LocalDateTime createdAt;
     private LocalDateTime expirationDate;
     private String cvv;
+    private LocalDate lastBonusDate ;
 
     public enum CardType {
         DEBIT,

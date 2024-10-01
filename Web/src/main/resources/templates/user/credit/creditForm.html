@@ -73,6 +73,7 @@
     </div>
 </nav>
 
+
 <div class="container">
     <h1>Создание кредита</h1>
     <form th:action="@{/credits/create}" th:object="${creditForm}" method="post" id="creditForm">
@@ -82,7 +83,9 @@
             <select id="cardId" th:field="*{cardId}" class="form-select">
                 <option th:each="card : ${cards}"
                         th:value="${card.id}"
-                        th:text="${card.cardNumber}">
+                        th:text="${card.cardNumber + ' - Баланс: ' + card.balance}">
+<!--                        th:text="${card.cardNumber + ' - Баланс: ' + card.balance}">-->
+
                 </option>
             </select>
         </div>

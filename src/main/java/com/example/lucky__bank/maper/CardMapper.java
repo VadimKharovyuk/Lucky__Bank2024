@@ -17,6 +17,7 @@ public class CardMapper {
                 .createdAt(card.getCreatedAt())
                 .expirationDate(card.getExpirationDate())
                 .cvv(card.getCvv())
+                .lastBonusDate(card.getLastBonusDate())
                 .build();
     }
 

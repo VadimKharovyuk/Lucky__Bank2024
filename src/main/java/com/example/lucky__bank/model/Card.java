@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -45,6 +46,11 @@ public class Card {
 
     @Column(name = "cvv", nullable = false)
     private String cvv;
+
+    @Column(nullable = false)
+    private LocalDate lastBonusDate = LocalDate.now().minusDays(1);
+
+
 
 
     public enum CardType {
