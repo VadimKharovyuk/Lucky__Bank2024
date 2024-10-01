@@ -14,4 +14,6 @@ public interface CardRepository extends JpaRepository<Card,Long> {
 
     // Правильное имя метода
     Optional<Card> findByCardNumber(String cardNumber);
+
+
 }
