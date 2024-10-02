@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Интересные факты</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        select {
+            font-size: 16px;
+            padding: 10px;
+            margin: 20px 0;
+        }
+        button {
+            font-size: 16px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #factDisplay {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+<h1>Интересные факты</h1>
+<select id="factType">
+    <option value="JAVA">Java</option>
+    <option value="UKRAINE">Украина</option>
+    <option value="MISC">Разное</option>
+</select>
+<button onclick="getRandomFact()">Получить случайный факт</button>
+<div id="factDisplay"></div>
+
+<script>
+    function getRandomFact() {
+        const factType = document.getElementById('factType').value;
+        const factDisplay = document.getElementById('factDisplay');
+
+        axios.get(`/facts/random?type=${factType}`)
+            .then(response => {
+                factDisplay.innerHTML = `<p>${response.data.content}</p>`;
+            })
+            .catch(error => {
+                console.error('Ошибка при получении факта:', error);
+                factDisplay.innerHTML = '<p>Произошла ошибка при получении факта. Пожалуйста, попробуйте еще раз.</p>';
+            });
+    }
+</script>
+</body>
+</html>
