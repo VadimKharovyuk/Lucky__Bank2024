@@ -184,4 +184,12 @@ public class CreditService {
         // Преобразуем сущность PaymentSchedule в DTO
         return PaymentScheduleMapper.toDto(schedule);
     }
+
+
+    public List<CreditDto> getCreditsByUser(Long userId) {
+        List<Credit> credits = creditRepository.findByUserId(userId);
+        return credits.stream()
+                .map(creditMapper::toDto)
+                .collect(Collectors.toList());
+    }
 }

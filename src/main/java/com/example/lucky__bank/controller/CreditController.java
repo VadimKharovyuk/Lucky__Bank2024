@@ -130,6 +130,13 @@ public class CreditController {
         return ResponseEntity.ok(scheduleDto);
     }
 
+    @GetMapping("/creditsByUser/{userId}")
+    public ResponseEntity<List<CreditDto>> getCreditsByUser(@PathVariable Long userId){
+       List<CreditDto> creditDto = creditService.getCreditsByUser(userId);
+       return ResponseEntity.ok(creditDto);
+
+    }
+
 
 
     // Обработка исключений

@@ -40,12 +40,6 @@ public class CreditService {
         return creditServiceClient.getCreditsByUserAndCard(userId, cardId);
     }
 
-
-    public List<PaymentScheduleDto> getAllCreditSchedule(Long creditId){
-        return creditServiceClient.getAllByCredit(creditId);
-    }
-
-
     public CreditDto getCreditById(Long creditId) {
       return   creditServiceClient.getCreditById(creditId);
     }
@@ -53,6 +47,11 @@ public class CreditService {
 
     public List<PaymentScheduleDto> getPaymentSchedulesByCreditId(Long creditId){
       return   paymentScheduleClient.getPaymentSchedulesByCreditId(creditId);
+
+    }
+
+    public List<CreditDto> getCreditsByUser(Long userId) {
+    return creditServiceClient.getCreditsByUser(userId);
 
     }
 }

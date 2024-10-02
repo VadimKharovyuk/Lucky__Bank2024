@@ -12,6 +12,9 @@ import java.util.List;
 
 @FeignClient(name = "CreditService", url = "http://localhost:1000")
 public interface CreditServiceClient {
+    @GetMapping("/api/credits/creditsByUser/{userId}")
+    List<CreditDto> getCreditsByUser(@PathVariable Long userId);
+
 
     @PostMapping("/api/credits")
     CreditDto create(@RequestBody CreditRequestDto creditRequestDto);
@@ -22,7 +25,6 @@ public interface CreditServiceClient {
     // Метод для одобрения кредита
     @PutMapping("/api/credits/{creditId}/approve")
     CreditDto approveCredit(@PathVariable Long creditId);
-
 
 
     // Оплата кредита

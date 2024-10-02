@@ -104,37 +104,70 @@ public class CreditWebController {
 
 
 ///исправить метод получание кредита по 1 карте
-    @GetMapping("/list")
-    public String getCreditsByUserId(Model model, @RequestParam(required = false) Long cardId) {
-        UserDTO currentUser = getCurrentUser();
-        if (currentUser == null) {
-            return "redirect:/login";
-        }
+@GetMapping("/list")
+public String getCreditsByUserId(Model model, @RequestParam(required = false) Long cardId) {
+    UserDTO currentUser = getCurrentUser();
+    if (currentUser == null) {
+        return "redirect:/login";
+    }
 
-        // Получаем список карт пользователя
-        List<CardDTO> userCards = cardService.getCardsByUserId(currentUser.getId());
+    // Получаем список карт пользователя
+    List<CardDTO> userCards = cardService.getCardsByUserId(currentUser.getId());
 
-        // Проверяем, есть ли карты у пользователя
-        if (userCards.isEmpty()) {
-            model.addAttribute("errorMessage", "У вас нет карт для получения кредитов.");
-            return "user/credit/listCreditByUser"; // Верните на страницу с сообщением об ошибке
-        }
-
-        // Если карта не выбрана, используем первую карту
-        if (cardId == null && !userCards.isEmpty()) {
-            cardId = userCards.get(0).getId(); // Получаем ID первой карты
-        }
-
-
-        // Получаем кредиты для пользователя и карты
-        List<CreditDto> creditList = creditService.getCreditsByUserAndCard(currentUser.getId(), cardId);
-        model.addAttribute("cards", userCards);
-        model.addAttribute("selectedCardId", cardId);
-        model.addAttribute("list", creditList);
-        model.addAttribute("user", currentUser);
-
+    // Проверяем, есть ли карты у пользователя
+    if (userCards.isEmpty()) {
+        model.addAttribute("errorMessage", "У вас нет карт для получения кредитов.");
         return "user/credit/listCreditByUser";
     }
+
+    // Если cardId не указан, не выбираем карту по умолчанию
+    List<CreditDto> creditList;
+    if (cardId == null) {
+        // Получаем кредиты для всех карт пользователя
+        creditList = creditService.getCreditsByUser(currentUser.getId());
+    } else {
+        // Получаем кредиты для конкретной карты
+        creditList = creditService.getCreditsByUserAndCard(currentUser.getId(), cardId);
+    }
+
+    model.addAttribute("cards", userCards);
+    model.addAttribute("selectedCardId", cardId);
+    model.addAttribute("list", creditList);
+    model.addAttribute("user", currentUser);
+
+    return "user/credit/listCreditByUser";
+}
+//    @GetMapping("/list")
+//    public String getCreditsByUserId(Model model, @RequestParam(required = false) Long cardId) {
+//        UserDTO currentUser = getCurrentUser();
+//        if (currentUser == null) {
+//            return "redirect:/login";
+//        }
+//
+//        // Получаем список карт пользователя
+//        List<CardDTO> userCards = cardService.getCardsByUserId(currentUser.getId());
+//
+//        // Проверяем, есть ли карты у пользователя
+//        if (userCards.isEmpty()) {
+//            model.addAttribute("errorMessage", "У вас нет карт для получения кредитов.");
+//            return "user/credit/listCreditByUser"; // Верните на страницу с сообщением об ошибке
+//        }
+//
+//        // Если карта не выбрана, используем первую карту
+//        if (cardId == null && !userCards.isEmpty()) {
+//            cardId = userCards.get(0).getId(); // Получаем ID первой карты
+//        }
+//
+//
+//        // Получаем кредиты для пользователя и карты
+//        List<CreditDto> creditList = creditService.getCreditsByUserAndCard(currentUser.getId(), cardId);
+//        model.addAttribute("cards", userCards);
+//        model.addAttribute("selectedCardId", cardId);
+//        model.addAttribute("list", creditList);
+//        model.addAttribute("user", currentUser);
+//
+//        return "user/credit/listCreditByUser";
+//    }
 
     @GetMapping("/listSchedule/{creditId}")
     public String getAllCreditSchedule(@PathVariable Long creditId, Model model) {

@@ -7,6 +7,7 @@ import com.example.lucky__bank.model.Card;
 import com.example.lucky__bank.model.Replenishment;
 import com.example.lucky__bank.repository.CardRepository;
 import com.example.lucky__bank.repository.ReplenishmentRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -51,15 +52,27 @@ public class ReplenishmentService {
 
         replenishmentRepository.save(replenishment);
     }
-
-// список пополнений по карте
     public List<ReplenishmentDto> getReplenishmentsByCard(Long cardId) {
         List<Replenishment> replenishments = replenishmentRepository.findAllByCardId(cardId);
-        if (replenishments.isEmpty()) {
-            throw new RuntimeException("Пополнения для данной карты не найдены");
+
+        // Проверяем, были ли найдены пополнения
+        if (replenishments == null || replenishments.isEmpty()) {
+            throw new EntityNotFoundException("Пополнения для данной карты не найдены");
         }
+
+        // Преобразуем список пополнений в DTO
         return replenishments.stream()
                 .map(replenishmentMapper::toDto)
                 .collect(Collectors.toList());
     }
+// список пополнений по карте
+//    public List<ReplenishmentDto> getReplenishmentsByCard(Long cardId) {
+//        List<Replenishment> replenishments = replenishmentRepository.findAllByCardId(cardId);
+//        if (replenishments.isEmpty()) {
+//            throw new RuntimeException("Пополнения для данной карты не найдены");
+//        }
+//        return replenishments.stream()
+//                .map(replenishmentMapper::toDto)
+//                .collect(Collectors.toList());
+//    }
 }

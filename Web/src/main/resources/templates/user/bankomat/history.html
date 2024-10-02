@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>История пополнений</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h2>История пополнений</h2>
+
+    <div th:if="${history.isEmpty()}" class="alert alert-info">
+        По вашей карте нет пополнений.
+    </div>
+
+    <table class="table" th:if="${!history.isEmpty()}">
+        <thead>
+        <tr>
+            <th>Сумма</th>
+            <th>Дата</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="entry : ${history}">
+            <td th:text="${entry.amount}"></td>
+            <td th:text="${entry.createdAt}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a href="/replenish" class="btn btn-secondary">Назад</a>
+</div>
+</body>
+</html>

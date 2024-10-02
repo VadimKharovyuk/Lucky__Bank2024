@@ -51,12 +51,20 @@
                             <p class="card-text">Balance: <span th:text="${card.balance}"></span></p>
                             <p class="card-text">Expiration Date: <span th:text="${card.expirationDate}"></span></p>
                             <p class="card-text">CVV: <span th:text="${card.cvv}"></span></p>
-                            <!-- Delete Button -->
+
+                            <!-- Удалить Кнопка -->
                             <form th:action="@{'/cards/delete/' + ${card.id}}" method="post" class="mt-2">
                                 <button type="submit" class="btn btn-danger">Удалить</button>
                             </form>
+
+                            <!-- Перевести Кнопка -->
                             <form th:action="@{/transfer}" method="get" class="mt-2">
                                 <button type="submit" class="btn btn-success">Перевести</button>
+                            </form>
+
+                            <!-- Кнопка для просмотра истории пополнений -->
+                            <form th:action="@{/replenish/history/{cardId}(cardId=${card.id})}" method="get" class="mt-2">
+                                <button type="submit" class="btn btn-info">История пополнений</button>
                             </form>
                         </div>
                     </div>
