@@ -26,7 +26,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/users/register", "/api/users/login", "/blocked","/login").permitAll()
                         .requestMatchers("/register", "/", "/pic/**").permitAll()
                         .requestMatchers("/projects","/api/document").permitAll()
-                        .requestMatchers("/dashboard", "/account/**", "/transfer", "/cart","/projects/new","/cards").authenticated()
+                        .requestMatchers("/dashboard", "/account/**", "/transfer", "/cart","/projects/new","/cards","/support").authenticated()
                         .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
