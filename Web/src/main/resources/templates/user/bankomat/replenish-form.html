@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Пополнение карты</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .pic {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .pic img {
+            max-width: 70%;
+            height: auto;
+            border-radius: 8px; /* Закругленные углы для изображения */
+        }
+    </style>
 </head>
 <body>
 <div class="container mt-5">
@@ -26,6 +38,11 @@
         </div>
         <button type="submit" class="btn btn-primary">Пополнить</button>
     </form>
+
+    <!-- Централизованное изображение -->
+    <div class="pic">
+        <img src="/pexels-karolina-grabowska-4386370.jpg" alt="pic">
+    </div>
 </div>
 </body>
 </html>

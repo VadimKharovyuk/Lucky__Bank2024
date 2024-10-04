@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Карьера в нашем банке</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        .job-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .job-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        .job-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        .job-title {
+            font-size: 1.2em;
+            color: #3498db;
+            margin-bottom: 10px;
+        }
+        .job-description {
+            color: #555;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+        .apply-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 8px 15px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .apply-btn:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Карьера в нашем банке</h1>
+    <div class="job-list" id="jobList">
+        <!-- Вакансии будут добавлены через JavaScript -->
+    </div>
+</div>
+
+<script>
+    const jobs = [
+        {
+            title: "Специалист по кредитованию",
+            description: "Анализ кредитных заявок, оценка платежеспособности клиентов, консультирование по кредитным продуктам."
+        },
+        {
+            title: "Менеджер по работе с VIP-клиентами",
+            description: "Обслуживание состоятельных клиентов, предоставление персонализированных финансовых решений и консультаций."
+        },
+        {
+            title: "Аналитик по управлению рисками",
+            description: "Оценка и анализ финансовых рисков, разработка стратегий по их минимизации, составление отчетов."
+        },
+        {
+            title: "Специалист по информационной безопасности",
+            description: "Обеспечение защиты банковских систем и данных, мониторинг угроз, разработка политик безопасности."
+        },
+        {
+            title: "Менеджер по развитию цифровых продуктов",
+            description: "Разработка и внедрение новых цифровых банковских продуктов и сервисов, анализ рынка и потребностей клиентов."
+        },
+        {
+            title: "Специалист по комплаенсу",
+            description: "Обеспечение соответствия деятельности банка законодательству и внутренним политикам, проведение проверок."
+        },
+        {
+            title: "Финансовый консультант",
+            description: "Консультирование клиентов по финансовым вопросам, помощь в выборе инвестиционных продуктов и стратегий."
+        },
+        {
+            title: "Специалист по маркетингу",
+            description: "Разработка и реализация маркетинговых кампаний, анализ эффективности, управление брендом банка."
+        },
+        {
+            title: "Бизнес-аналитик",
+            description: "Анализ бизнес-процессов, разработка рекомендаций по оптимизации, поддержка в реализации проектов."
+        },
+        {
+            title: "Специалист службы поддержки клиентов",
+            description: "Обработка запросов клиентов, решение проблем, обеспечение высокого уровня обслуживания."
+        }
+    ];
+
+    const jobList = document.getElementById('jobList');
+
+    jobs.forEach(job => {
+        const jobCard = document.createElement('div');
+        jobCard.className = 'job-card';
+        jobCard.innerHTML = `
+                <h2 class="job-title">${job.title}</h2>
+                <p class="job-description">${job.description}</p>
+                <a href="/job/form" class="apply-btn">Подать заявку</a>
+            `;
+        jobList.appendChild(jobCard);
+    });
+
+    // В будущем здесь можно добавить обработчик для формы подачи заявки
+</script>
+</body>
+</html>

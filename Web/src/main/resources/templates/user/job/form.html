@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Форма заявки на работу</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h2 class="mb-4">Форма заявки на работу</h2>
+    <form th:action="@{/job}" th:object="${form}" method="post">
+        <div class="mb-3">
+            <label for="firstName" class="form-label">Имя</label>
+            <input type="text" class="form-control" id="firstName" th:field="*{firstName}" required>
+        </div>
+        <div class="mb-3">
+            <label for="lastName" class="form-label">Фамилия</label>
+            <input type="text" class="form-control" id="lastName" th:field="*{lastName}" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" th:field="*{email}" required>
+        </div>
+        <div class="mb-3">
+            <label for="phone" class="form-label">Телефон</label>
+            <input type="tel" class="form-control" id="phone" th:field="*{phone}" required>
+        </div>
+        <div class="mb-3">
+            <label for="dateOfBirth" class="form-label">Дата рождения</label>
+            <input type="date" class="form-control" id="dateOfBirth" th:field="*{dateOfBirth}" required>
+        </div>
+        <div class="mb-3">
+            <label for="educationLevel" class="form-label">Уровень образования</label>
+            <select class="form-select" id="educationLevel" th:field="*{educationLevel}" required>
+                <option value="">Выберите уровень образования</option>
+                <option th:each="level : ${T(com.example.web.dto.JobApplicationDto.EducationLevel).values()}"
+                        th:value="${level}" th:text="${level}"></option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="university" class="form-label">Университет</label>
+            <input type="text" class="form-control" id="university" th:field="*{university}">
+        </div>
+        <div class="mb-3">
+            <label for="degree" class="form-label">Степень</label>
+            <input type="text" class="form-control" id="degree" th:field="*{degree}">
+        </div>
+        <div class="mb-3">
+            <label for="graduationYear" class="form-label">Год выпуска</label>
+            <input type="number" class="form-control" id="graduationYear" th:field="*{graduationYear}">
+        </div>
+        <div class="mb-3">
+            <label for="currentPosition" class="form-label">Текущая должность</label>
+            <input type="text" class="form-control" id="currentPosition" th:field="*{currentPosition}">
+        </div>
+        <div class="mb-3">
+            <label for="currentCompany" class="form-label">Текущая компания</label>
+            <input type="text" class="form-control" id="currentCompany" th:field="*{currentCompany}">
+        </div>
+        <div class="mb-3">
+            <label for="workExperience" class="form-label">Опыт работы</label>
+            <textarea class="form-control" id="workExperience" th:field="*{workExperience}" rows="3"></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="skills" class="form-label">Навыки (разделите запятыми)</label>
+            <input type="text" class="form-control" id="skills" th:field="*{skills}">
+        </div>
+        <div class="mb-3">
+            <label for="appliedPosition" class="form-label">Желаемая должность</label>
+            <select class="form-select" id="appliedPosition" th:field="*{appliedPosition}" required>
+                <option value="">Выберите должность</option>
+                <option th:each="position : ${positions}"
+                        th:value="${position.id}"
+                        th:text="${position.position}"></option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="availableStartDate" class="form-label">Дата возможного начала работы</label>
+            <input type="date" class="form-control" id="availableStartDate" th:field="*{availableStartDate}" required>
+        </div>
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="willingToRelocate" th:field="*{willingToRelocate}">
+            <label class="form-check-label" for="willingToRelocate">Готов к переезду</label>
+        </div>
+        <div class="mb-3">
+            <label for="additionalInfo" class="form-label">Дополнительная информация</label>
+            <textarea class="form-control" id="additionalInfo" th:field="*{additionalInfo}" rows="3"></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="linkedinProfile" class="form-label">Профиль LinkedIn</label>
+            <input type="url" class="form-control" id="linkedinProfile" th:field="*{linkedinProfile}">
+        </div>
+        <div class="mb-3">
+            <label for="preferredContactMethod" class="form-label">Предпочтительный метод связи</label>
+            <select class="form-select" id="preferredContactMethod" th:field="*{preferredContactMethod}" required>
+                <option value="">Выберите метод связи</option>
+                <option th:each="method : ${T(com.example.web.dto.JobApplicationDto.PreferredContactMethod).values()}"
+                        th:value="${method}" th:text="${method}"></option>
+            </select>
+        </div>
+
+
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="agreedToTerms" th:field="*{agreedToTerms}" required>
+            <label class="form-check-label" for="agreedToTerms">Я согласен с условиями</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Отправить заявку</button>
+    </form>
+</div>
+<script>
+    document.getElementById('jobApplicationForm').addEventListener('submit', function(event) {
+        const resumeInput = document.getElementById('resume');
+        const resumeError = document.getElementById('resumeError');
+
+        if (resumeInput.files.length > 0) {
+            const file = resumeInput.files[0];
+
+            // Проверка размера файла (5 МБ = 5 * 1024 * 1024 байт)
+            if (file.size > 5 * 1024 * 1024) {
+                event.preventDefault();
+                resumeError.textContent = 'Размер файла превышает 5 МБ';
+                resumeInput.classList.add('is-invalid');
+                return;
+            }
+
+            // Проверка типа файла
+            const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+            if (!allowedTypes.includes(file.type)) {
+                event.preventDefault();
+                resumeError.textContent = 'Пожалуйста, загрузите файл в формате PDF, DOC или DOCX';
+                resumeInput.classList.add('is-invalid');
+                return;
+            }
+
+            resumeInput.classList.remove('is-invalid');
+        }
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
