@@ -4,6 +4,7 @@ import com.example.web.dto.JobApplicationDto;
 import com.example.web.dto.JobPositionDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -18,4 +19,11 @@ public interface JobApplicationServiceClient {
 
     @GetMapping("/api/job-applications")
     List<JobPositionDto> getAllPosition ();
+
+    @GetMapping("/api/job-applications/all")
+    List<JobApplicationDto> listJob();
+
+    @GetMapping("/api/job-applications/{id}")
+    JobApplicationDto getById(@PathVariable  Long id);
+
 }

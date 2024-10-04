@@ -32,4 +32,16 @@ public class JobApplicationController {
         List<JobPositionDto> getAll = jobApplicationService.getAll();
         return ResponseEntity.ok(getAll);
     }
+
+    //поиск всех заявок
+    @GetMapping("/all")
+    public ResponseEntity<List<JobApplicationDto>> listJob(){
+       List<JobApplicationDto> applicationDto = jobApplicationService.applicationDtoList();
+       return ResponseEntity.ok(applicationDto);
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<JobApplicationDto> getById(@PathVariable Long id){
+        JobApplicationDto getBYid =  jobApplicationService.getById(id);
+        return ResponseEntity.ok(getBYid);
+    }
 }

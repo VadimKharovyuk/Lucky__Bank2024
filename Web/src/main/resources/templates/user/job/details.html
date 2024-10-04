@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Детали заявки на работу</title>
+    <link rel="stylesheet" href="/css/styles.css"> <!-- Добавьте ваши стили здесь -->
+</head>
+<body>
+<div class="container">
+    <h1>Детали заявки на работу</h1>
+
+    <div class="details">
+        <p><strong>ID:</strong> <span th:text="${id.id}"></span></p>
+        <p><strong>Имя:</strong> <span th:text="${id.firstName}"></span></p>
+        <p><strong>Фамилия:</strong> <span th:text="${id.lastName}"></span></p>
+        <p><strong>Email:</strong> <span th:text="${id.email}"></span></p>
+        <p><strong>Телефон:</strong> <span th:text="${id.phone}"></span></p>
+        <p><strong>Дата рождения:</strong> <span th:text="${id.dateOfBirth}"></span></p>
+        <p><strong>Образование:</strong> <span th:text="${id.educationLevel}"></span></p>
+        <p><strong>Университет:</strong> <span th:text="${id.university}"></span></p>
+        <p><strong>Степень:</strong> <span th:text="${id.degree}"></span></p>
+        <p><strong>Год выпуска:</strong> <span th:text="${id.graduationYear}"></span></p>
+        <p><strong>Текущая позиция:</strong> <span th:text="${id.currentPosition}"></span></p>
+        <p><strong>Текущая компания:</strong> <span th:text="${id.currentCompany}"></span></p>
+        <p><strong>Опыт работы:</strong> <span th:text="${id.workExperience}"></span></p>
+        <p><strong>Навыки:</strong>
+            <span th:each="skill : ${id.skills}" th:text="${skill} + ', '"></span>
+        </p>
+        <p><strong>Заявленная должность:</strong> <span th:text="${id.appliedPosition}"></span></p>
+        <p><strong>Дата доступности:</strong> <span th:text="${id.availableStartDate}"></span></p>
+        <p><strong>Готовность к переезду:</strong> <span th:text="${id.willingToRelocate} ? 'Да' : 'Нет'"></span></p>
+        <p><strong>Дополнительная информация:</strong> <span th:text="${id.additionalInfo}"></span></p>
+        <p><strong>Дата подачи заявки:</strong> <span th:text="${id.applicationDate}"></span></p>
+        <p><strong>Профиль в LinkedIn:</strong> <a th:href="${id.linkedinProfile}" th:text="${id.linkedinProfile}"></a></p>
+        <p><strong>Согласие с условиями:</strong> <span th:text="${id.agreedToTerms} ? 'Да' : 'Нет'"></span></p>
+        <p><strong>Метод контакта:</strong> <span th:text="${id.preferredContactMethod}"></span></p>
+    </div>
+
+    <a href="/job/all" class="btn">Вернуться к списку заявок</a>
+</div>
+
+</body>
+</html>

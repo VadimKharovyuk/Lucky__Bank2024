@@ -28,7 +28,7 @@ public class JobApplicationDto {
 
     private List<String> skills;
 
-    private String appliedPosition; // Можно использовать String, если должность будет идентифицироваться по названию
+    private String appliedPosition;
 
     private LocalDate availableStartDate;
 

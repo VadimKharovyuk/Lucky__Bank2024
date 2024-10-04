@@ -24,4 +24,12 @@ public class JobApplicationService {
         return jobApplicationServiceClient.getAllPosition();
 
     }
+    public List<JobApplicationDto> listJob(){
+        return jobApplicationServiceClient.listJob();
+    }
+
+    public JobApplicationDto getById(Long id) {
+        return jobApplicationServiceClient.getById(id);
+
+    }
 }

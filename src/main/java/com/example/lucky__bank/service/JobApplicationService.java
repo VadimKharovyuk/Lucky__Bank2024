@@ -26,6 +26,12 @@ public class JobApplicationService {
     private final JobPositionMapper jobPositionMapper;
 
 
+    public List<JobApplicationDto> applicationDtoList(){
+        List<JobApplication> list = jobApplicationRepository.findAll();
+        return list.stream()
+                .map(jobApplicationMapper::toDto)
+                .collect(Collectors.toList());
+    }
 
     public List<JobPositionDto> getAll(){
         List<JobPosition> jobPosition = jobPositionRepository.findAll();
@@ -35,30 +41,6 @@ public class JobApplicationService {
 
 
     }
-//    public void create(JobApplicationDto jobApplicationDto, MultipartFile resume) throws IOException {
-//        JobApplication jobApplication = jobApplicationMapper.toEntity(jobApplicationDto);
-//
-//        if (resume != null && !resume.isEmpty()) {
-//            // Проверка размера файла
-//            if (resume.getSize() > 5 * 1024 * 1024) { // например, ограничение в 5 МБ
-//                throw new IllegalArgumentException("Размер файла превышает допустимый лимит");
-//            }
-//
-//            // Проверка типа файла
-//            String contentType = resume.getContentType();
-//            if (contentType == null || !(contentType.equals("application/pdf") ||
-//                    contentType.equals("application/msword") ||
-//                    contentType.equals("application/vnd.openxmlformats-officedocument.wordprocessingml.document"))) {
-//                throw new IllegalArgumentException("Недопустимый формат файла");
-//            }
-//
-//            byte[] resumeBytes = resume.getBytes();
-//            jobApplication.setResume(resumeBytes);
-//        }
-//
-//        jobApplication.setApplicationDate(LocalDate.now());
-//        jobApplicationRepository.save(jobApplication);
-//    }
 
     public JobApplicationDto createJobApplication(JobApplicationDto jobApplicationDto) {
         // Находим позицию по ID
@@ -76,5 +58,11 @@ public class JobApplicationService {
 
         // Преобразуем обратно в DTO и возвращаем
         return jobApplicationMapper.toDto(savedJobApplication);
+    }
+
+
+    public JobApplicationDto getById(Long id) {
+        JobApplication getById = jobApplicationRepository.findById(id).orElseThrow(()->new RuntimeException());
+        return jobApplicationMapper.toDto(getById);
     }
 }

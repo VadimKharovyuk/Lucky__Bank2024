@@ -16,10 +16,10 @@ import java.time.LocalDate;
 public class PaymentScheduleDto {
     private Long id;
     private Long creditId;
-    private BigDecimal paymentAmount;  // Сумма платежа
-    private LocalDate paymentDate;  // Дата платежа (заменён тип на LocalDate)
+    private BigDecimal paymentAmount;
+    private LocalDate paymentDate;
     private boolean paid;
 
-    private BigDecimal interestAmount;  // новое поле
-    private BigDecimal principalAmount; // новое поле
+    private BigDecimal interestAmount;
+    private BigDecimal principalAmount;
 }

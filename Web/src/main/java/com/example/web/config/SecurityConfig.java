@@ -29,6 +29,7 @@ public class SecurityConfig {
                         .requestMatchers("/dashboard", "/account/**", "/transfer", "/cart","/projects/new","/cards","/support").authenticated()
                         .anyRequest().permitAll()
                 )
+
                 .formLogin(form -> form
                         .loginPage("/login")
                         .defaultSuccessUrl("/", true)

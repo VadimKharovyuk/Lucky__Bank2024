@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список заявок на работу</title>
+    <link rel="stylesheet" href="/css/styles.css"> <!-- Добавьте ваши стили здесь -->
+</head>
+<body>
+<div class="container">
+    <h1>Список заявок на работу</h1>
+
+    <table>
+        <thead>
+        <tr>
+
+            <th>Имя</th>
+            <th>Фамилия</th>
+            <th>Email</th>
+            <th>Должность</th>
+            <th>Опыт</th>
+            <th>Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="job : ${list}">
+
+            <td th:text="${job.firstName}"></td>
+            <td th:text="${job.lastName}"></td>
+            <td th:text="${job.email}"></td>
+            <td th:text="${job.appliedPosition}"></td>
+            <td th:text="${job.workExperience}"></td>
+            <td>
+                <a th:href="@{/job/{id}(id=${job.id})}" class="btn">Просмотреть</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a href="/job" class="btn">Вернуться на главную</a>
+</div>
+</body>
+</html>

@@ -6,10 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -29,7 +26,7 @@ public class JobController {
         model.addAttribute("positions", jobApplicationService.getAllJobPositions());
         return "user/job/form";
     }
-
+//создать  заявку
     @PostMapping
     public String create( @ModelAttribute JobApplicationDto jobApplicationDto, BindingResult result, Model model){
         if (result.hasErrors()) {
@@ -45,5 +42,21 @@ public class JobController {
     @GetMapping("/success")
     public String success(){
         return "user/job/job_success";
+    }
+
+    //все заявки
+    @GetMapping("/all")
+    public String getAllJob(Model model){
+        var listJob =jobApplicationService.listJob();
+        model.addAttribute("list",listJob);
+        return "user/job/list";
+    }
+
+    //по id
+    @GetMapping("/{id}")
+    public String getById(@PathVariable Long id ,Model model){
+       var  byId = jobApplicationService.getById(id);
+       model.addAttribute("id",byId);
+        return "user/job/details";
     }
 }
