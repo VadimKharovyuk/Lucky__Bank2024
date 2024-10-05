@@ -13,6 +13,7 @@ import lombok.*;
 @Setter
 @Builder
 public class JobApplication {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

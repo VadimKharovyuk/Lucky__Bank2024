@@ -1,17 +1,18 @@
 package com.example.lucky__bank.maper;
-
 import com.example.lucky__bank.dto.JobApplicationDto;
-import com.example.lucky__bank.dto.JobPositionDto;
 import com.example.lucky__bank.model.JobApplication;
 import com.example.lucky__bank.model.JobPosition;
+import com.example.lucky__bank.service.Base64Utils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class JobApplicationMapper {
+    private final Base64Utils base64Utils;
 
-    // Метод для преобразования сущности JobApplication в DTO
     public JobApplicationDto toDto(JobApplication jobApplication) {
-        return JobApplicationDto.builder()
+        JobApplicationDto dto = JobApplicationDto.builder()
                 .id(jobApplication.getId())
                 .firstName(jobApplication.getFirstName())
                 .lastName(jobApplication.getLastName())
@@ -35,17 +36,23 @@ public class JobApplicationMapper {
                 .agreedToTerms(jobApplication.isAgreedToTerms())
                 .preferredContactMethod(jobApplication.getPreferredContactMethod().name())
                 .build();
+
+        if (jobApplication.getResume() != null) {
+            dto.setResume(base64Utils.encodeBase64(jobApplication.getResume()));
+        }
+
+        return dto;
     }
 
     public JobApplication toEntity(JobApplicationDto jobApplicationDto, JobPosition jobPosition) {
-        return JobApplication.builder()
+        JobApplication jobApplication = JobApplication.builder()
                 .id(jobApplicationDto.getId())
                 .firstName(jobApplicationDto.getFirstName())
                 .lastName(jobApplicationDto.getLastName())
                 .email(jobApplicationDto.getEmail())
                 .phone(jobApplicationDto.getPhone())
                 .dateOfBirth(jobApplicationDto.getDateOfBirth())
-                .educationLevel(JobApplication.EducationLevel.valueOf(jobApplicationDto.getEducationLevel())) // Преобразование строки в enum
+                .educationLevel(JobApplication.EducationLevel.valueOf(jobApplicationDto.getEducationLevel()))
                 .university(jobApplicationDto.getUniversity())
                 .degree(jobApplicationDto.getDegree())
                 .graduationYear(jobApplicationDto.getGraduationYear())
@@ -60,7 +67,13 @@ public class JobApplicationMapper {
                 .applicationDate(jobApplicationDto.getApplicationDate())
                 .linkedinProfile(jobApplicationDto.getLinkedinProfile())
                 .agreedToTerms(jobApplicationDto.isAgreedToTerms())
-                .preferredContactMethod(JobApplication.PreferredContactMethod.valueOf(jobApplicationDto.getPreferredContactMethod())) // Преобразование строки в enum
+                .preferredContactMethod(JobApplication.PreferredContactMethod.valueOf(jobApplicationDto.getPreferredContactMethod()))
                 .build();
+
+        if (jobApplicationDto.getResume() != null) {
+            jobApplication.setResume(base64Utils.decodeBase64(jobApplicationDto.getResume()));
+        }
+
+        return jobApplication;
     }
 }

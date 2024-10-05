@@ -7,6 +7,8 @@ import java.util.List;
 @Data
 public class JobApplicationDto {
     private Long id;
+    private byte[] resume;
+    private String appliedPosition;
 
     private String firstName;
     private String lastName;
@@ -26,8 +28,6 @@ public class JobApplicationDto {
     private String workExperience;
 
     private List<String> skills;
-
-    private String appliedPosition; // Можно использовать String, если должность будет идентифицироваться по названию
 
     private LocalDate availableStartDate;
 

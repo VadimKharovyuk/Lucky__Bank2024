@@ -4,10 +4,14 @@ import lombok.*;
 import java.time.LocalDate;
 import java.util.List;
 
+
 @Data
 @Builder
 public class JobApplicationDto {
     private Long id;
+
+    private String resume;
+    private String appliedPosition;
 
     private String firstName;
     private String lastName;
@@ -28,7 +32,6 @@ public class JobApplicationDto {
 
     private List<String> skills;
 
-    private String appliedPosition;
 
     private LocalDate availableStartDate;
 

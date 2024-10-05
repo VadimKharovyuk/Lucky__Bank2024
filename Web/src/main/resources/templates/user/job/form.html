@@ -1,113 +1,234 @@
 <!DOCTYPE html>
 <html lang="ru">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Форма заявки на работу</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f0f2f5;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+        h2 {
+            color: #1e3a8a;
+            border-bottom: 2px solid #1e3a8a;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        .form-label {
+            font-weight: 600;
+            color: #333;
+        }
+        .form-control, .form-select {
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            padding: 10px;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
+        }
+        .btn-primary {
+            background-color: #1e3a8a;
+            border-color: #1e3a8a;
+            padding: 10px 20px;
+            font-weight: 600;
+            transition: background-color 0.15s ease-in-out;
+        }
+        .btn-primary:hover {
+            background-color: #1e40af;
+            border-color: #1e40af;
+        }
+        .form-check-input:checked {
+            background-color: #1e3a8a;
+            border-color: #1e3a8a;
+        }
+        .invalid-feedback {
+            color: #dc2626;
+            font-size: 0.875em;
+            margin-top: 5px;
+        }
+        .form-control.is-invalid, .form-select.is-invalid {
+            border-color: #dc2626;
+        }
+        .form-control.is-invalid:focus, .form-select.is-invalid:focus {
+            border-color: #dc2626;
+            box-shadow: 0 0 0 0.2rem rgba(220, 38, 38, 0.25);
+        }
+        textarea.form-control {
+            min-height: 100px;
+        }
+    </style>
 </head>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="/">Логотип</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="/">Главная</a></li>
+                <li class="nav-item"><a class="nav-link" href="/job">Карьера в нашем банке</a></li>
+                <li class="nav-item"><a class="nav-link" href="/job/form">Форма заявки на работу</a></li>
+                <li class="nav-item"><a class="nav-link" href="/job/all">Список заявок на работу</a></li>
+                <li class="nav-item"><a class="nav-link" href="/logout">Выйти</a></li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
 <body>
-<div class="container mt-5">
+<div class="container">
     <h2 class="mb-4">Форма заявки на работу</h2>
-    <form th:action="@{/job}" th:object="${form}" method="post">
+    <form id="jobApplicationForm" th:action="@{/job}" th:object="${form}" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="resume" class="form-label">Загрузить резюме</label>
+            <input type="file" class="form-control" id="resume" name="resumeFile" required>
+            <div class="invalid-feedback" id="resumeError"></div>
+        </div>
+
         <div class="mb-3">
             <label for="firstName" class="form-label">Имя</label>
             <input type="text" class="form-control" id="firstName" th:field="*{firstName}" required>
+            <div class="invalid-feedback">Пожалуйста, введите ваше имя.</div>
         </div>
+
         <div class="mb-3">
             <label for="lastName" class="form-label">Фамилия</label>
             <input type="text" class="form-control" id="lastName" th:field="*{lastName}" required>
+            <div class="invalid-feedback">Пожалуйста, введите вашу фамилию.</div>
         </div>
+
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
             <input type="email" class="form-control" id="email" th:field="*{email}" required>
+            <div class="invalid-feedback">Пожалуйста, введите корректный email адрес.</div>
         </div>
+
         <div class="mb-3">
             <label for="phone" class="form-label">Телефон</label>
-            <input type="tel" class="form-control" id="phone" th:field="*{phone}" required>
+            <input type="tel" class="form-control" id="phone" th:field="*{phone}">
+            <div class="invalid-feedback">Пожалуйста, введите корректный номер телефона.</div>
         </div>
+
         <div class="mb-3">
             <label for="dateOfBirth" class="form-label">Дата рождения</label>
-            <input type="date" class="form-control" id="dateOfBirth" th:field="*{dateOfBirth}" required>
+            <input type="date" class="form-control" id="dateOfBirth" th:field="*{dateOfBirth}">
+            <div class="invalid-feedback">Пожалуйста, выберите корректную дату рождения.</div>
         </div>
+
         <div class="mb-3">
             <label for="educationLevel" class="form-label">Уровень образования</label>
-            <select class="form-select" id="educationLevel" th:field="*{educationLevel}" required>
+            <select class="form-select" id="educationLevel" th:field="*{educationLevel}">
                 <option value="">Выберите уровень образования</option>
                 <option th:each="level : ${T(com.example.web.dto.JobApplicationDto.EducationLevel).values()}"
                         th:value="${level}" th:text="${level}"></option>
             </select>
+            <div class="invalid-feedback">Пожалуйста, выберите уровень образования.</div>
         </div>
+
         <div class="mb-3">
             <label for="university" class="form-label">Университет</label>
             <input type="text" class="form-control" id="university" th:field="*{university}">
         </div>
+
         <div class="mb-3">
             <label for="degree" class="form-label">Степень</label>
             <input type="text" class="form-control" id="degree" th:field="*{degree}">
         </div>
+
         <div class="mb-3">
             <label for="graduationYear" class="form-label">Год выпуска</label>
             <input type="number" class="form-control" id="graduationYear" th:field="*{graduationYear}">
+            <div class="invalid-feedback">Пожалуйста, введите корректный год выпуска.</div>
         </div>
+
         <div class="mb-3">
             <label for="currentPosition" class="form-label">Текущая должность</label>
             <input type="text" class="form-control" id="currentPosition" th:field="*{currentPosition}">
         </div>
+
         <div class="mb-3">
             <label for="currentCompany" class="form-label">Текущая компания</label>
             <input type="text" class="form-control" id="currentCompany" th:field="*{currentCompany}">
         </div>
+
         <div class="mb-3">
             <label for="workExperience" class="form-label">Опыт работы</label>
             <textarea class="form-control" id="workExperience" th:field="*{workExperience}" rows="3"></textarea>
         </div>
+
         <div class="mb-3">
             <label for="skills" class="form-label">Навыки (разделите запятыми)</label>
             <input type="text" class="form-control" id="skills" th:field="*{skills}">
         </div>
+
         <div class="mb-3">
             <label for="appliedPosition" class="form-label">Желаемая должность</label>
-            <select class="form-select" id="appliedPosition" th:field="*{appliedPosition}" required>
+            <select class="form-select" id="appliedPosition" th:field="*{appliedPosition}">
                 <option value="">Выберите должность</option>
                 <option th:each="position : ${positions}"
                         th:value="${position.id}"
                         th:text="${position.position}"></option>
             </select>
+            <div class="invalid-feedback">Пожалуйста, выберите желаемую должность.</div>
         </div>
+
         <div class="mb-3">
             <label for="availableStartDate" class="form-label">Дата возможного начала работы</label>
-            <input type="date" class="form-control" id="availableStartDate" th:field="*{availableStartDate}" required>
+            <input type="date" class="form-control" id="availableStartDate" th:field="*{availableStartDate}">
+            <div class="invalid-feedback">Пожалуйста, выберите корректную дату начала работы.</div>
         </div>
+
         <div class="mb-3 form-check">
             <input type="checkbox" class="form-check-input" id="willingToRelocate" th:field="*{willingToRelocate}">
             <label class="form-check-label" for="willingToRelocate">Готов к переезду</label>
         </div>
+
         <div class="mb-3">
             <label for="additionalInfo" class="form-label">Дополнительная информация</label>
             <textarea class="form-control" id="additionalInfo" th:field="*{additionalInfo}" rows="3"></textarea>
         </div>
+
         <div class="mb-3">
             <label for="linkedinProfile" class="form-label">Профиль LinkedIn</label>
             <input type="url" class="form-control" id="linkedinProfile" th:field="*{linkedinProfile}">
+            <div class="invalid-feedback">Пожалуйста, введите корректный URL профиля LinkedIn.</div>
         </div>
+
         <div class="mb-3">
             <label for="preferredContactMethod" class="form-label">Предпочтительный метод связи</label>
-            <select class="form-select" id="preferredContactMethod" th:field="*{preferredContactMethod}" required>
+            <select class="form-select" id="preferredContactMethod" th:field="*{preferredContactMethod}">
                 <option value="">Выберите метод связи</option>
                 <option th:each="method : ${T(com.example.web.dto.JobApplicationDto.PreferredContactMethod).values()}"
                         th:value="${method}" th:text="${method}"></option>
             </select>
+            <div class="invalid-feedback">Пожалуйста, выберите предпочтительный метод связи.</div>
         </div>
-
 
         <div class="mb-3 form-check">
             <input type="checkbox" class="form-check-input" id="agreedToTerms" th:field="*{agreedToTerms}" required>
             <label class="form-check-label" for="agreedToTerms">Я согласен с условиями</label>
+            <div class="invalid-feedback">Вы должны согласиться с условиями перед отправкой формы.</div>
         </div>
+
         <button type="submit" class="btn btn-primary">Отправить заявку</button>
     </form>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     document.getElementById('jobApplicationForm').addEventListener('submit', function(event) {
         const resumeInput = document.getElementById('resume');
@@ -137,8 +258,6 @@
         }
     });
 </script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
 
