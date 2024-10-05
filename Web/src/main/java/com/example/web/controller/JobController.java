@@ -109,4 +109,12 @@ public class JobController {
                 .body(resume);
     }
 
+    //удалить завявку по id
+    @PostMapping("/delete/{id}")
+    public String deleteById(@PathVariable Long id){
+        jobApplicationService.deleteById(id);
+        return "redirect:/job/all";
+    }
+
+
 }

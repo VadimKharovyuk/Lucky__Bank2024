@@ -58,6 +58,18 @@
         .btn-secondary:hover {
             background-color: #007B9A;
         }
+        .custom-red-button {
+            background-color: #e75a5a; /* Задаем красный цвет фона */
+            color: white;          /* Задаем цвет текста */
+            border: none;         /* Убираем границу */
+            padding: 10px 20px;   /* Увеличиваем внутренние отступы */
+            border-radius: 5px;   /* Скругляем углы */
+            cursor: pointer;       /* Курсор при наведении */
+        }
+
+        .custom-red-button:hover {
+            background-color: darkred; /* Цвет кнопки при наведении */
+        }
     </style>
 </head>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -103,6 +115,9 @@
             <td>
                 <a th:href="@{/job/{id}(id=${job.id})}" class="btn">Просмотреть</a>
                 <a th:if="${job.resume != null}" th:href="@{/job/{id}/resume(id=${job.id})}" class="btn btn-secondary">Скачать резюме</a>
+                <form th:action="@{/job/delete/{id}(id=${job.id})}" method="post" style="display:inline;">
+                    <button type="submit" class="custom-red-button">Удалить</button>
+                </form>
             </td>
         </tr>
         </tbody>

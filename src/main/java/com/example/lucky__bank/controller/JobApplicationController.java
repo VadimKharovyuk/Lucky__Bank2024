@@ -18,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class JobApplicationController {
 
+
     private final JobApplicationService jobApplicationService;
 
 
@@ -57,6 +58,13 @@ public class JobApplicationController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=resume.pdf")
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(resume);
+    }
+
+    //удалить по id
+    @PostMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable Long id){
+        jobApplicationService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

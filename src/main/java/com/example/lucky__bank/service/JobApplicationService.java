@@ -1,5 +1,6 @@
 package com.example.lucky__bank.service;
 
+import com.example.lucky__bank.Exception.EntityNotFoundException;
 import com.example.lucky__bank.dto.JobApplicationDto;
 import com.example.lucky__bank.dto.JobPositionDto;
 import com.example.lucky__bank.maper.JobApplicationMapper;
@@ -24,6 +25,7 @@ public class JobApplicationService {
     private final JobApplicationRepository jobApplicationRepository;
     private final JobPositionRepository jobPositionRepository;
     private final JobPositionMapper jobPositionMapper;
+
 
     public JobApplicationDto createJobApplication(JobApplicationDto jobApplicationDto) {
         // Проверяем, что appliedPosition не null и не пустая строка
@@ -71,10 +73,20 @@ public class JobApplicationService {
         JobApplication getById = jobApplicationRepository.findById(id).orElseThrow(() -> new RuntimeException());
         return jobApplicationMapper.toDto(getById);
     }
-//резюме по id
+     //резюме по id
     public byte[] getResume(Long applicationId) {
         JobApplication application = jobApplicationRepository.findById(applicationId)
                 .orElseThrow(() -> new RuntimeException("Заявка не найдена"));
         return application.getResume();
     }
+
+    // Удалить заявку по ID
+    public void deleteById(Long id) {
+        if (!jobApplicationRepository.existsById(id)) {
+            throw new EntityNotFoundException("Заявка с ID " + id + " не найдена."); // или используйте свой собственный класс исключений
+        }
+        jobApplicationRepository.deleteById(id);
+    }
+
+
 }

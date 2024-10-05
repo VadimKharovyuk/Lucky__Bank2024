@@ -30,5 +30,6 @@ public interface JobApplicationServiceClient {
     @GetMapping("/api/job-applications/{id}/resume")
     byte[] getResume(@PathVariable Long id);
 
-
+    @PostMapping("/api/job-applications/delete/{id}")
+    void deleteById(@PathVariable Long id);
 }

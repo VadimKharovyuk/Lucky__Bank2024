@@ -39,4 +39,8 @@ public class JobApplicationService {
     public byte[] getResume(Long id) {
         return jobApplicationServiceClient.getResume(id);
     }
+
+    public void deleteById(Long id) {
+        jobApplicationServiceClient.deleteById(id);
+    }
 }
