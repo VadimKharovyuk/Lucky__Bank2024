@@ -2,27 +2,32 @@ package com.example.web.repository;
 
 import com.example.web.Request.ProfileRequest;
 import com.example.web.dto.ProfileDTO;
-import com.example.web.dto.UserDTO;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @FeignClient(name = "ProfileService", url = "http://localhost:1000")
 public interface ProfileServiceClient {
 
 
-    @PostMapping("/api/profiles/update/{userId}")
-    ProfileDTO update(@PathVariable Long userId ,@RequestBody ProfileRequest profileRequest);
+    @PostMapping(value = "/api/profiles/{userId}/photo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    String uploadPhoto(@PathVariable Long userId, @RequestPart("file") MultipartFile file);
 
+    @GetMapping("/api/profiles/{userId}/photo")
+    byte[] getPhoto(@PathVariable Long userId);
+
+
+
+    @PostMapping("/api/profiles/update/{userId}")
+    ProfileDTO update(@PathVariable Long userId, @RequestBody ProfileRequest profileRequest);
 
 
     @GetMapping("/api/profiles/{userId}")
     ProfileDTO getProfileByUserId(@PathVariable Long userId);
 
     @PostMapping("/api/profiles")
-    ProfileDTO createProfile(@RequestBody ProfileRequest profileRequest );
+    ProfileDTO createProfile(@RequestBody ProfileRequest profileRequest);
 
 
 

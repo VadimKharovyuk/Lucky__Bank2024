@@ -1,4 +1,5 @@
 package com.example.web.controller;
+
 import com.example.web.dto.CardDTO;
 import com.example.web.dto.DepositDto;
 import com.example.web.dto.UserDTO;
@@ -103,6 +104,7 @@ public class DepositController {
             return "user/deposit/depositList";
         }
     }
+
     @PostMapping("/withdraw-all")
     public String withdrawAllFromDeposit(@RequestParam Long cardId,
                                          RedirectAttributes redirectAttributes) {
@@ -144,7 +146,6 @@ public class DepositController {
 
         return "redirect:/deposits/find";
     }
-
 
 
     private UserDTO getCurrentUser(Authentication authentication) {

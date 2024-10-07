@@ -25,6 +25,8 @@ public class JobController {
     private final JobApplicationService jobApplicationService ;
 
 
+
+
     //создать  заявку
     @PostMapping
     public String create(@ModelAttribute JobApplicationDto jobApplicationDto,

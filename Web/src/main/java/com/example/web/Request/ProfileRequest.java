@@ -20,6 +20,5 @@ public class ProfileRequest {
     private String citizenship;
 
 
-
 }
 

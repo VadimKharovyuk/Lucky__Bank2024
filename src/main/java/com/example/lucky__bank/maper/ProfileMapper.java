@@ -18,6 +18,7 @@ public class ProfileMapper {
                 .phoneNumber(profile.getPhoneNumber())
                 .employmentWorkPlace(profile.getEmploymentWorkPlace())
                 .citizenship(profile.getCitizenship().toString())
+                .profilePicture(profile.getProfilePicture())
 
                 .build();
     }

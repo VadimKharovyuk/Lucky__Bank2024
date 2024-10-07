@@ -115,6 +115,9 @@
             <td>
                 <a th:href="@{/job/{id}(id=${job.id})}" class="btn">Просмотреть</a>
                 <a th:if="${job.resume != null}" th:href="@{/job/{id}/resume(id=${job.id})}" class="btn btn-secondary">Скачать резюме</a>
+
+
+                <a th:if="${job.resume != null}" th:href="@{/job/{id}/resume(id=${job.id})}" class="btn btn-secondary" target="_blank">Просмотреть резюме</a>
                 <form th:action="@{/job/delete/{id}(id=${job.id})}" method="post" style="display:inline;">
                     <button type="submit" class="custom-red-button">Удалить</button>
                 </form>

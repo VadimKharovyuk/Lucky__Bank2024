@@ -49,8 +49,7 @@ public class JobApplicationController {
         JobApplicationDto getBYid = jobApplicationService.getById(id);
         return ResponseEntity.ok(getBYid);
     }
-
-    //смотреть резюме по id
+    // резюме по id
     @GetMapping("/{id}/resume")
     public ResponseEntity<byte[]> getResume(@PathVariable Long id) {
         byte[] resume = jobApplicationService.getResume(id);

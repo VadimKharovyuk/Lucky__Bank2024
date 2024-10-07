@@ -18,4 +18,6 @@ public class ProfileDTO {
     private String maritalStatus;
     private String  citizenship;
 
+
+    private byte[] profilePicture;
 }

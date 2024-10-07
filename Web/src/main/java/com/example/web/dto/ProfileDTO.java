@@ -8,13 +8,15 @@ public class ProfileDTO {
     private String phoneNumber;
     private String address;
     private String fullName;
-    private  String dateOfBirth;
+    private String dateOfBirth;
     private String passportNumber;
     private String employmentWorkPlace;
 
     private String gender;
     private MaritalStatus maritalStatus;
     private String  citizenship;
+
+    private byte[] profilePicture;
 
 
     public enum MaritalStatus {

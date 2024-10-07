@@ -15,7 +15,9 @@ public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Lob
+    @Column(name = "profile_picture")
+    private byte[] profilePicture;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
