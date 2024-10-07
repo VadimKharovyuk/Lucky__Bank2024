@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/dashboard")
@@ -24,66 +25,47 @@ public class DashboardController {
     private final ProfileService profileService;
     private final UserService userService;
 
-//    @GetMapping
-//    public String showAccount(Model model) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//
-//        UserDTO user = null; // Инициализация переменной
-//
-//        if (authentication.getPrincipal() instanceof OAuth2User) {
-//            OAuth2User oauthUser = (OAuth2User) authentication.getPrincipal();
-//            String username = oauthUser.getAttribute("name");
-//            String email = oauthUser.getAttribute("email");
-//
-//
-//            // Поищите пользователя в базе данных по email или username
-//            user = userService.findByEmail(email);
-//        } else {
-//            String username = authentication.getName();
-//            user = userService.findByUsername(username); // Получаем пользователя из БД
-//        }
-//
-//
-//        // Проверьте, что объект user не null
-//        if (user != null) {
-//            model.addAttribute("user", user);
-//        } else {
-//            // Обработка случая, когда пользователь не найден
-//            model.addAttribute("error", "User not found");
-//        }
-//
-//        return "user/dashbord/Personal Bank Account";
-//    }
-
 
     @GetMapping
     public String showAccount(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDTO user = null;
-
-        if (authentication.getPrincipal() instanceof OAuth2User) {
-            OAuth2User oauthUser = (OAuth2User) authentication.getPrincipal();
-            String email = oauthUser.getAttribute("email");
-            user = userService.findByEmail(email);
-        } else {
-            String username = authentication.getName();
-            user = userService.findByUsername(username);
-        }
+        UserDTO user = getUserFromAuthentication(authentication);
 
         if (user != null) {
             model.addAttribute("user", user);
-
-            // Получение фото профиля
-            byte[] photo = profileService.getProfilePhoto(user.getId());
-            if (photo != null) {
-                String base64Photo = Base64.getEncoder().encodeToString(photo);
-                model.addAttribute("profilePhoto", base64Photo);
-            }
+            addProfilePhotoToModel(model, user.getId());
+            addBirthdayMessageToModel(model, user.getId());
         } else {
             model.addAttribute("error", "User not found");
+            return "error";
         }
 
         return "user/dashbord/Personal Bank Account";
+    }
+
+    private UserDTO getUserFromAuthentication(Authentication authentication) {
+        if (authentication.getPrincipal() instanceof OAuth2User) {
+            OAuth2User oauthUser = (OAuth2User) authentication.getPrincipal();
+            String email = oauthUser.getAttribute("email");
+            return userService.findByEmail(email);
+        } else {
+            String username = authentication.getName();
+            return userService.findByUsername(username);
+        }
+    }
+
+    private void addProfilePhotoToModel(Model model, Long userId) {
+        byte[] photo = profileService.getProfilePhoto(userId);
+        if (photo != null) {
+            String base64Photo = Base64.getEncoder().encodeToString(photo);
+            model.addAttribute("profilePhoto", base64Photo);
+        }
+    }
+
+    private void addBirthdayMessageToModel(Model model, Long userId) {
+        Optional<String> birthdayMessage = profileService.checkBirthday(userId);
+        birthdayMessage.ifPresent(message -> model.addAttribute("birthdayMessage", message));
+
     }
 }
 

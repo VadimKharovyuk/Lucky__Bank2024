@@ -4,12 +4,19 @@ import com.example.web.Request.ProfileRequest;
 import com.example.web.dto.ProfileDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Optional;
 
 @FeignClient(name = "ProfileService", url = "http://localhost:1000")
 public interface ProfileServiceClient {
 
+
+
+    @GetMapping("/api/profiles/{id}/birthday")
+    Optional<String> getBirthday(@PathVariable Long id);
 
     @PostMapping(value = "/api/profiles/{userId}/photo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     String uploadPhoto(@PathVariable Long userId, @RequestPart("file") MultipartFile file);
@@ -28,8 +35,6 @@ public interface ProfileServiceClient {
 
     @PostMapping("/api/profiles")
     ProfileDTO createProfile(@RequestBody ProfileRequest profileRequest);
-
-
 
 
 

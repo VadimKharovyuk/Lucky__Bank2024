@@ -39,4 +39,5 @@ public class BonusService {
         int bonus = random.nextInt(96) + 5; // От 5 до 100
         return new BigDecimal(bonus);
     }
+
 }

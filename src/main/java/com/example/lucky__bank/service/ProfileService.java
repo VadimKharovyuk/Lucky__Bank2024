@@ -16,6 +16,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
@@ -37,7 +38,7 @@ public class ProfileService {
         profile.setPhoneNumber(request.getPhoneNumber());
         profile.setAddress(request.getAddress());
         profile.setFullName(request.getFullName());
-        profile.setDateOfBirth(String.valueOf(request.getDateOfBirth()));
+        profile.setDateOfBirth(LocalDate.parse(String.valueOf(request.getDateOfBirth())));
         profile.setPassportNumber(request.getPassportNumber());
         profile.setEmploymentWorkPlace(request.getEmploymentWorkPlace());
         profile.setGender(Profile.Gender.valueOf(request.getGender()));
@@ -62,7 +63,7 @@ public class ProfileService {
         profile.setPhoneNumber(request.getPhoneNumber());
         profile.setAddress(request.getAddress());
         profile.setFullName(request.getFullName());
-        profile.setDateOfBirth(String.valueOf(request.getDateOfBirth()));
+        profile.setDateOfBirth(LocalDate.parse(String.valueOf(request.getDateOfBirth())));
         profile.setPassportNumber(request.getPassportNumber());
         profile.setEmploymentWorkPlace(request.getEmploymentWorkPlace());
         profile.setGender(Profile.Gender.valueOf(request.getGender()));

@@ -172,40 +172,40 @@ public class ProfileController {
         }
     }
 
-@GetMapping("/view")
-public String viewProfile(Model model) {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    UserDTO user = null; // Инициализация переменной
+    @GetMapping("/view")
+    public String viewProfile(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDTO user = null; // Инициализация переменной
 
-    // Получаем информацию о текущем пользователе
-    if (authentication.getPrincipal() instanceof OAuth2User) {
-        OAuth2User oauthUser = (OAuth2User) authentication.getPrincipal();
-        String email = oauthUser.getAttribute("email");
+        // Получаем информацию о текущем пользователе
+        if (authentication.getPrincipal() instanceof OAuth2User) {
+            OAuth2User oauthUser = (OAuth2User) authentication.getPrincipal();
+            String email = oauthUser.getAttribute("email");
 
-        // Поищите пользователя в базе данных по email
-        user = userService.findByEmail(email);
-    } else {
-        String username = authentication.getName();
-        user = userService.findByUsername(username); // Получаем пользователя из БД
-    }
-
-    // Проверяем, что объект user не null
-    if (user != null) {
-        Long userId = user.getId(); // Получаем ID пользователя
-        ProfileDTO profile = profileService.getProfileByUserId(userId); // Получаем профиль пользователя по ID
-        model.addAttribute("profile", profile); // Добавляем профиль в модель
-        model.addAttribute("user", user); // Добавьте это, если еще не добавлено
-
-        // Важно добавить проверку на наличие профиля
-        if (profile == null) {
-            model.addAttribute("profile", null); // Устанавливаем профиль как null, если не найден
+            // Поищите пользователя в базе данных по email
+            user = userService.findByEmail(email);
+        } else {
+            String username = authentication.getName();
+            user = userService.findByUsername(username); // Получаем пользователя из БД
         }
 
-        return "/user/profile/profileView"; // Путь к HTML-шаблону для просмотра профиля
-    }
+        // Проверяем, что объект user не null
+        if (user != null) {
+            Long userId = user.getId(); // Получаем ID пользователя
+            ProfileDTO profile = profileService.getProfileByUserId(userId); // Получаем профиль пользователя по ID
+            model.addAttribute("profile", profile); // Добавляем профиль в модель
+            model.addAttribute("user", user); // Добавьте это, если еще не добавлено
 
-    return "redirect:/login"; // Переход на страницу входа, если пользователь не найден
-}
+            // Важно добавить проверку на наличие профиля
+            if (profile == null) {
+                model.addAttribute("profile", null); // Устанавливаем профиль как null, если не найден
+            }
+
+            return "/user/profile/profileView"; // Путь к HTML-шаблону для просмотра профиля
+        }
+
+        return "redirect:/login"; // Переход на страницу входа, если пользователь не найден
+    }
 
 
     // Метод для обработки обновления профиля

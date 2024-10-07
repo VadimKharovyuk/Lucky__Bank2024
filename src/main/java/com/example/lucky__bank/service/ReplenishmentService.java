@@ -52,6 +52,8 @@ public class ReplenishmentService {
 
         replenishmentRepository.save(replenishment);
     }
+
+    // список пополнений по карте
     public List<ReplenishmentDto> getReplenishmentsByCard(Long cardId) {
         List<Replenishment> replenishments = replenishmentRepository.findAllByCardId(cardId);
 
@@ -65,14 +67,5 @@ public class ReplenishmentService {
                 .map(replenishmentMapper::toDto)
                 .collect(Collectors.toList());
     }
-// список пополнений по карте
-//    public List<ReplenishmentDto> getReplenishmentsByCard(Long cardId) {
-//        List<Replenishment> replenishments = replenishmentRepository.findAllByCardId(cardId);
-//        if (replenishments.isEmpty()) {
-//            throw new RuntimeException("Пополнения для данной карты не найдены");
-//        }
-//        return replenishments.stream()
-//                .map(replenishmentMapper::toDto)
-//                .collect(Collectors.toList());
-//    }
+
 }

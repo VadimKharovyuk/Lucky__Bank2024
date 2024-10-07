@@ -4,6 +4,8 @@ import com.example.lucky__bank.model.Profile;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
 @Builder
 public class ProfileDTO {
@@ -11,7 +13,7 @@ public class ProfileDTO {
     private String phoneNumber;
     private String address;
     private String fullName;
-    private  String dateOfBirth;
+    private LocalDate dateOfBirth;
     private String passportNumber;
     private String employmentWorkPlace;
     private String gender;

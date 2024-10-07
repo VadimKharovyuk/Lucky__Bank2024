@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.util.Locale;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,6 +18,8 @@ public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+
     @Lob
     @Column(name = "profile_picture")
     private byte[] profilePicture;
@@ -23,13 +28,13 @@ public class Profile {
     @JoinColumn(name = "user_id")
     private User user;
 
-
+    private LocalDate dateOfBirth;
     private String phoneNumber;
     private String address;
     private String fullName;
-    private  String dateOfBirth;
     private String passportNumber;
     private String employmentWorkPlace;
+
 
 
 

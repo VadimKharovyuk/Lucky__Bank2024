@@ -2,6 +2,7 @@ package com.example.lucky__bank.controller;
 
 import com.example.lucky__bank.Request.ProfileRequest;
 import com.example.lucky__bank.dto.ProfileDTO;
+import com.example.lucky__bank.service.BirthdayService;
 import com.example.lucky__bank.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api/profiles")
@@ -20,6 +22,19 @@ import java.io.IOException;
 public class ProfileController {
 
     private final ProfileService profileService;
+    private final BirthdayService birthdayService;
+
+    @GetMapping("/{id}/birthday")
+    public ResponseEntity<String> birthday(@PathVariable Long id) {
+        try {
+            ProfileDTO profileDTO = profileService.getProfileByUserId(id);
+            return birthdayService.checkBirthday(profileDTO.getDateOfBirth())
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.noContent().build());
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
     @PostMapping("/{userId}/photo")
     public ResponseEntity<String> uploadPhoto(@PathVariable Long userId, @RequestParam("file") MultipartFile file) {
@@ -60,6 +75,8 @@ public class ProfileController {
         ProfileDTO profileDTO = profileService.getProfileByUserId(userId);
         return ResponseEntity.ok(profileDTO);
     }
+
+
 
 
 
