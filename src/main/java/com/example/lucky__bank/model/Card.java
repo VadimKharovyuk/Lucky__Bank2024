@@ -21,6 +21,14 @@ public class Card {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "users_id")
+    private User  user;
+
+    @Column(name = "balance", nullable = false)
+    private BigDecimal balance;
+
+
     @Column(nullable = false, unique = true)
     private String cardNumber;
 
@@ -28,12 +36,9 @@ public class Card {
     @Enumerated(EnumType.STRING)
     private CardType cardType;
 
-    @Column(name = "balance", nullable = false)
-    private BigDecimal balance;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "users_id")
-    private User  user;
+
+
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

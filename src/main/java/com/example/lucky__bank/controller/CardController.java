@@ -1,9 +1,12 @@
 package com.example.lucky__bank.controller;
 
 import com.example.lucky__bank.dto.CardDTO;
+import com.example.lucky__bank.dto.UserDTO;
 import com.example.lucky__bank.maper.CardMapper;
 import com.example.lucky__bank.model.Card;
+import com.example.lucky__bank.model.User;
 import com.example.lucky__bank.service.CardService;
+import com.example.lucky__bank.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,7 @@ public class CardController {
 
 
     private final CardService cardService;
+    private final UserService userService;
 
     //удаление карты
     @PostMapping("/delete/{id}")
@@ -54,8 +58,17 @@ public class CardController {
 
     @GetMapping("/all")
     public ResponseEntity<List<CardDTO>> getAllCards() {
-        List<CardDTO> cards = cardService.getAllCard(); // Убедитесь, что метод в сервисе назван корректно
-        return ResponseEntity.ok(cards); // Возвращаем 200 OK с списком карт
+        List<CardDTO> cards = cardService.getAllCard();
+        return ResponseEntity.ok(cards);
     }
+
+    @GetMapping("/total-balance/user/{userId}")
+    public ResponseEntity<BigDecimal> getTotalBalanceByUser(@PathVariable Long userId) {
+        User user =  userService.findEntityById(userId);
+        BigDecimal totalBalance = cardService.getTotalBalanceByUser(user);
+        return ResponseEntity.ok(totalBalance);
+    }
+
+
 }
 

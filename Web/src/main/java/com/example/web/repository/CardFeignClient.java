@@ -4,11 +4,13 @@ import com.example.web.dto.CardDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @FeignClient(name = "lucky-bank-card-service", url = "http://localhost:1000")
@@ -27,4 +29,9 @@ public interface CardFeignClient {
 
     @PostMapping("/api/cards/delete/{id}")
     void deleteCardById(@PathVariable Long id);
+
+    @GetMapping("/api/cards/total-balance/user/{userId}")
+    BigDecimal getTotalBalance(@PathVariable("userId") Long userId);
 }
+
+

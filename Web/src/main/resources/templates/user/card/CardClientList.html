@@ -1,132 +1,3 @@
-<!--<!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-<!--    <title>Dashboard</title>-->
-<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">-->
-<!--    <style>-->
-<!--        .card {-->
-<!--            transition: box-shadow 0.3s, border 0.3s;-->
-<!--            border: 1px solid transparent; /* Прозрачный ободок по умолчанию */-->
-<!--        }-->
-<!--        .card:hover {-->
-<!--            border: 1px solid #60a2e8; /* Цвет ободка при наведении */-->
-<!--            box-shadow: 0 0 15px rgba(48, 241, 212, 0.9); /* Светящийся эффект */-->
-<!--        }-->
-<!--        .card-create-new {-->
-<!--            cursor: pointer;-->
-<!--        }-->
-<!--    </style>-->
-<!--</head>-->
-<!--<body>-->
-<!--<div class="container">-->
-<!--    <h1 class="text-center mt-5">Мои карты</h1>-->
-<!--    <p class="text-center">Here are your current cards. You can create a new one.</p>-->
-
-<!--    &lt;!&ndash; Add New Card &ndash;&gt;-->
-<!--    <div class="card card-block card-create-new mb-3" onclick="window.location.href='/cards/create'">-->
-<!--        <div class="card-body">-->
-<!--            <h5 class="card-title">+ Create New Card</h5>-->
-<!--        </div>-->
-<!--    </div>-->
-
-
-<!--    &lt;!&ndash; Display User's Cards &ndash;&gt;-->
-<!--    <div class="row">-->
-<!--        <div class="col-12">-->
-<!--            <h2>Your Cards</h2>-->
-<!--            <div class="row">-->
-<!--                &lt;!&ndash; Check if the cards list is empty &ndash;&gt;-->
-<!--                <div th:if="${#lists.isEmpty(cards)}" class="alert alert-warning text-center">-->
-<!--                    У вас нет карт.-->
-<!--                </div>-->
-
-<!--                &lt;!&ndash; Display each card &ndash;&gt;-->
-<!--                <div class="col-md-4" th:each="card : ${cards}">-->
-<!--                    <div class="card mb-3">-->
-<!--                        <div class="card-body">-->
-<!--                            <h5 class="card-title" th:text="${card.cardType}">Card Type</h5>-->
-<!--                            <p class="card-text">Card Number: <span th:text="${card.cardNumber}"></span></p>-->
-<!--                            <p class="card-text">Balance: <span th:text="${card.balance}"></span></p>-->
-<!--                            <p class="card-text">Expiration Date: <span th:text="${card.expirationDate}"></span></p>-->
-<!--                            <p class="card-text">CVV: <span th:text="${card.cvv}"></span></p>-->
-
-<!--                            &lt;!&ndash; Удалить Кнопка &ndash;&gt;-->
-<!--                            <form th:action="@{'/cards/delete/' + ${card.id}}" method="post" class="mt-2">-->
-<!--                                <button type="submit" class="btn btn-danger">Удалить</button>-->
-<!--                            </form>-->
-
-<!--                            &lt;!&ndash; Перевести Кнопка &ndash;&gt;-->
-<!--                            <form th:action="@{/transfer}" method="get" class="mt-2">-->
-<!--                                <button type="submit" class="btn btn-success">Перевести</button>-->
-<!--                            </form>-->
-
-<!--                            &lt;!&ndash; Кнопка для просмотра истории пополнений &ndash;&gt;-->
-<!--                            <form th:action="@{/replenish/history/{cardId}(cardId=${card.id})}" method="get" class="mt-2">-->
-<!--                                <button type="submit" class="btn btn-info">История пополнений</button>-->
-<!--                            </form>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
-
-<!--<div class="container mt-5">-->
-<!--    <div class="card">-->
-<!--        <div class="card-header">-->
-<!--            <h2 class="text-center">Получение ежедневного бонуса</h2>-->
-<!--        </div>-->
-<!--        <div class="card-body">-->
-<!--            &lt;!&ndash; Отображение сообщений об успехе или ошибке &ndash;&gt;-->
-<!--            <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>-->
-<!--            <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>-->
-
-<!--            <form id="bonusForm" method="post">-->
-<!--                <div class="mb-3">-->
-<!--                    <label for="cardSelect" class="form-label">Выберите карту для получения бонуса:</label>-->
-<!--                    <select class="form-select" id="cardSelect" name="cardId" required>-->
-<!--                        <option value="">Выберите карту</option>-->
-<!--                        <option th:each="card : ${cards}"-->
-<!--                                th:value="${card.id}"-->
-<!--                                th:text="${card.cardNumber + ' - Баланс: ' + card.balance}">-->
-<!--                        </option>-->
-<!--                    </select>-->
-<!--                </div>-->
-<!--                <button type="submit" class="btn btn-primary w-100">Получить бонус</button>-->
-<!--            </form>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
-
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>-->
-<!--<script>-->
-<!--    $(document).ready(function() {-->
-<!--        $('#bonusForm').on('submit', function(e) {-->
-<!--            e.preventDefault();-->
-<!--            var cardId = $('#cardSelect').val();-->
-<!--            if (!cardId) {-->
-<!--                alert('Пожалуйста, выберите карту');-->
-<!--                return;-->
-<!--            }-->
-<!--            // Отправляем форму на сервер-->
-<!--            this.action = '/bonus/claim/' + cardId;-->
-<!--            this.submit();-->
-<!--        });-->
-<!--    });-->
-<!--</script>-->
-
-<!--&lt;!&ndash; Bootstrap JS and dependencies &ndash;&gt;-->
-<!--<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>-->
-<!--<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>-->
-<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
-<!--</div>-->
-<!--</body>-->
-<!--</html>-->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -167,13 +38,16 @@
     <!-- Display User's Cards -->
     <div class="row">
         <div class="col-12">
+            <!-- Отображение суммы баланса -->
+            <div th:if="${total != null}" class="alert alert-info text-center">
+                Общая сумма на ваших картах: <span th:text="${total}"></span> UAH
+            </div>
             <h2>Your Cards</h2>
             <div class="row">
                 <!-- Check if the cards list is empty -->
                 <div th:if="${#lists.isEmpty(cards)}" class="alert alert-warning text-center">
                     У вас нет карт.
                 </div>
-
                 <!-- Display each card -->
                 <div class="col-md-4" th:each="card : ${cards}">
                     <div class="card mb-3">

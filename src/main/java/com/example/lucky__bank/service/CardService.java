@@ -2,6 +2,7 @@ package com.example.lucky__bank.service;
 
 import com.example.lucky__bank.Exception.InsufficientFundsException;
 import com.example.lucky__bank.dto.CardDTO;
+import com.example.lucky__bank.dto.UserDTO;
 import com.example.lucky__bank.maper.CardMapper;
 import com.example.lucky__bank.model.Card;
 import com.example.lucky__bank.model.User;
@@ -104,5 +105,13 @@ public class CardService {
 
         card.setBalance(card.getBalance().subtract(amount));
         cardRepository.save(card);
+    }
+
+    public BigDecimal getTotalBalanceByUser(User user) {
+        List<Card> cards = cardRepository.findAll();
+        return cards.stream()
+                .filter(card -> card.getUser().equals(user)) // Фильтруем по пользователю
+                .map(Card::getBalance)                      // Извлекаем баланс из каждой карты
+                .reduce(BigDecimal.ZERO, BigDecimal::add);   // Складываем все балансы
     }
 }

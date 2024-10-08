@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
@@ -41,8 +42,11 @@ public class CardController {
         }
 
         List<CardDTO> cardUsers = cardService.getCardsByUserId(user.getId());
+        BigDecimal total = cardService.getBalance(user.getId());
+        model.addAttribute("total", total);
         model.addAttribute("cards", cardUsers);
         model.addAttribute("user", user);
+
 
         return "/user/card/CardClientList";
     }
@@ -97,6 +101,8 @@ public class CardController {
             return "redirect:/cards/create";
         }
     }
+
+
 
     private UserDTO getCurrentUser(Authentication authentication) {
         if (authentication == null) {

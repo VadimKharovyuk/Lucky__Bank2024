@@ -15,8 +15,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class BirthdayService {
-    private final BonusService bonusService;
-    private final CardRepository cardRepository;
+
 
     public Optional<String> checkBirthday(LocalDate dateOfBirth) {
         if (dateOfBirth == null) {
@@ -32,7 +31,7 @@ public class BirthdayService {
 
         if (daysUntilBirthday == 0) {
             return Optional.of("Поздравляем с Днём Рождения!");
-        } else if (daysUntilBirthday <= 3) {
+        } else if (daysUntilBirthday <= 5) {
             return Optional.of("Ваш День Рождения через " + daysUntilBirthday + " дня(дней)!");
         }
 

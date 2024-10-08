@@ -99,54 +99,13 @@ public class PaymentService {
         creditRepository.save(credit);
     }
 
-
-//    public void processPayment(Long creditId, BigDecimal paymentAmount) {
-//        Credit credit = creditRepository.findById(creditId)
-//                .orElseThrow(() -> new RuntimeException("Credit not found for ID: " + creditId));
-//
-//        boolean paymentProcessed = false;
-//        User user = credit.getUser();
-//
-//        for (PaymentSchedule payment : credit.getPaymentSchedules()) {
-//            if (!payment.isPaid() && paymentAmount.compareTo(BigDecimal.ZERO) > 0) {
-//                BigDecimal paymentToApply = payment.getPaymentAmount().min(paymentAmount);
-//
-//                payment.setPaid(true);
-//                payment.setPaymentAmount(paymentToApply);
-//
-//                BigDecimal newLoanAmount = credit.getLoanAmount().subtract(paymentToApply);
-//                if (newLoanAmount.compareTo(BigDecimal.ZERO) < 0) {
-//                    newLoanAmount = BigDecimal.ZERO;
-//                }
-//                credit.setLoanAmount(newLoanAmount);
-//
-//                paymentAmount = paymentAmount.subtract(paymentToApply);
-//                paymentProcessed = true;
-//            }
-//            emailService.sendPaymentNotification(user, payment);
-//
-//            if (paymentAmount.compareTo(BigDecimal.ZERO) <= 0) {
-//                break;
-//            }
-//        }
-//
-//        if (!paymentProcessed) {
-//            throw new RuntimeException("Не найдено неоплаченных платежей для обработки");
-//        }
-//
-//        if (credit.getLoanAmount().compareTo(BigDecimal.ZERO) < 0) {
-//            credit.setLoanAmount(BigDecimal.ZERO);
-//        }
-//        credit.setUpdatedAt(LocalDateTime.now());
-//        creditRepository.save(credit);
-//    }
-
     public List<PaymentScheduleDto> getPaymentSchedulesByCreditId(Long creditId) {
         List<PaymentSchedule> schedule = paymentScheduleRepository.findAllByCreditId(creditId);
         return schedule.stream()
                 .map(PaymentScheduleMapper::toDto)  // Используем ссылку на статический метод
                 .collect(Collectors.toList());
     }
+
 
 
 

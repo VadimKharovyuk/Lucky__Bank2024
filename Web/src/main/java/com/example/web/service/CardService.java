@@ -6,6 +6,7 @@ import com.example.web.repository.UserFeignClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -36,5 +37,10 @@ public class CardService {
     }
     public void deleteCardById(Long id){
         cardFeignClient.deleteCardById(id);
+    }
+
+
+    public BigDecimal getBalance(Long userId){
+        return cardFeignClient.getTotalBalance(userId);
     }
 }
