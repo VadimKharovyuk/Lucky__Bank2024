@@ -32,7 +32,6 @@ public class CardService {
 
 
     public CardDTO createCard(Long userId, String cardType) {
-        // Найти пользователя по userId
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 

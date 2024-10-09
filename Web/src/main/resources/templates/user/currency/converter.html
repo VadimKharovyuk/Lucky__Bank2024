@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Конвертер валют</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+  <script th:inline="javascript">
+    async function convertCurrency() {
+      const amount = document.getElementById('amount').value;
+      const fromCurrency = document.getElementById('fromCurrency').value;
+      const toCurrency = document.getElementById('toCurrency').value;
+
+      try {
+        const response = await axios.post('/currency/convert', null, {
+          params: { amount, fromCurrency, toCurrency }
+        });
+        document.getElementById('result').innerText = `${amount} ${fromCurrency} = ${response.data} ${toCurrency}`;
+      } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('result').innerText = 'Произошла ошибка при конвертации.';
+      }
+    }
+  </script>
+</head>
+<body>
+<h1>Конвертер валют</h1>
+<div>
+  <label for="amount">Сумма:</label>
+  <input type="number" id="amount" step="0.01" min="0">
+</div>
+<div>
+  <label for="fromCurrency">Из валюты:</label>
+  <select id="fromCurrency">
+    <option th:each="currency : ${currencies}" th:value="${currency}" th:text="${currency}"></option>
+  </select>
+</div>
+<div>
+  <label for="toCurrency">В валюту:</label>
+  <select id="toCurrency">
+    <option th:each="currency : ${currencies}" th:value="${currency}" th:text="${currency}"></option>
+  </select>
+</div>
+<button onclick="convertCurrency()">Конвертировать</button>
+<div id="result"></div>
+</body>
+</html>
