@@ -1,5 +1,6 @@
 package com.example.web.service;
 
+import com.example.web.Request.CreateCardRequest;
 import com.example.web.dto.CardDTO;
 import com.example.web.repository.CardFeignClient;
 import com.example.web.repository.UserFeignClient;
@@ -20,11 +21,13 @@ public class CardService {
 
     public CardDTO findByIdCard(Long id) {
         return cardFeignClient.findByIdCard(id);
+
     }
 
-    public CardDTO createCard(Long userId, String cardType) {
-        userFeignClient.getById(userId);
-        return cardFeignClient.createCard(userId, cardType);
+
+    public CardDTO createCard(CreateCardRequest CreateCardRequest) {
+        userFeignClient.getById(CreateCardRequest.getUserId());
+        return cardFeignClient.createCard(CreateCardRequest);
     }
 
 
@@ -43,4 +46,8 @@ public class CardService {
     public BigDecimal getBalance(Long userId){
         return cardFeignClient.getTotalBalance(userId);
     }
+
+
+
+
 }

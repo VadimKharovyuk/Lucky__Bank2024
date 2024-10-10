@@ -31,7 +31,7 @@ public class DashboardController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDTO user = getUserFromAuthentication(authentication);
 
-        List<CurrencyRate> rates = currencyService.getCurrencyRates();
+        List<String> rates = currencyService.getCurrencyRates();
         model.addAttribute("rates", rates);
         model.addAttribute("currencies", Arrays.asList("UAH", "USD", "EUR"));
 

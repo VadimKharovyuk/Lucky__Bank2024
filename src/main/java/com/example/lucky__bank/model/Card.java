@@ -37,9 +37,6 @@ public class Card {
     private CardType cardType;
 
 
-
-
-
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
@@ -56,13 +53,13 @@ public class Card {
     @Column(nullable = false)
     private LocalDate lastBonusDate = LocalDate.now().minusDays(1);
 
-
-
-
     public enum CardType {
         DEBIT,
         CREDIT,
-        PREPAID
+        PREPAID ,
+        USD,
+        EUR,
+        UAH
     }
 
 }

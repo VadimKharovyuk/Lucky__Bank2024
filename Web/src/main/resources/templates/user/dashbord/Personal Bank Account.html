@@ -145,7 +145,7 @@
         <h1>Конвертер валют</h1>
         <div>
             <label for="amount">Сумма:</label>
-            <input type="number" id="amount" step="0.01" min="0">
+            <input type="number" id="amount" step="0.01" min="0" required>
         </div>
         <div>
             <label for="fromCurrency">Из валюты:</label>
@@ -171,6 +171,8 @@
         <p><a href="/deposits/find" class="btn">Мои депозиты</a></p>
         <p><a href="/cards/create" class="btn">Заказать новую карту</a></p>
         <p><a href="/credits/create" class="btn">Оформить кредит</a></p>
+        <p><a href="/buy-currency/form" class="btn">Покупка валюты</a></p>
+
     </section>
 </div>
 </body>
@@ -183,7 +185,7 @@
         const toCurrency = document.getElementById('toCurrency').value;
 
         try {
-            const response = await axios.post('/currency/convert', null, {
+            const response = await axios.post('/api/currency/convert', null, {
                 params: { amount, fromCurrency, toCurrency }
             });
             document.getElementById('result').innerText = `${amount} ${fromCurrency} = ${response.data} ${toCurrency}`;

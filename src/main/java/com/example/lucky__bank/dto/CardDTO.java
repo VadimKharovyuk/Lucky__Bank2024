@@ -1,5 +1,6 @@
 package com.example.lucky__bank.dto;
 
+import com.example.lucky__bank.model.Card;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

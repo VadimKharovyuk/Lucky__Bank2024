@@ -13,20 +13,11 @@ import java.util.Arrays;
 import java.util.List;
 
 @Controller
-@RequestMapping("/currency")
+@RequestMapping("/api/currency")
 @RequiredArgsConstructor
 public class CurrencyController {
 
     private final CurrencyService currencyService;
-
-//
-//    @GetMapping
-//    public String showCurrencyConverter(Model model) {
-//        List<CurrencyRate> rates = currencyService.getCurrencyRates();
-//        model.addAttribute("rates", rates);
-//        model.addAttribute("currencies", Arrays.asList("UAH", "USD", "EUR"));
-//        return "user/currency/converter";
-//    }
 
     @PostMapping("/convert")
     @ResponseBody
@@ -36,4 +27,15 @@ public class CurrencyController {
             @RequestParam String toCurrency) {
         return currencyService.convert(amount, fromCurrency, toCurrency);
     }
+//
+//    @GetMapping
+//    public String showCurrencyConverter(Model model) {
+//        List<CurrencyRate> rates = currencyService.getCurrencyRates();
+//        model.addAttribute("rates", rates);
+//        model.addAttribute("currencies", Arrays.asList("UAH", "USD", "EUR"));
+//        return "user/currency/converter";
+//    }
+
+
+
 }

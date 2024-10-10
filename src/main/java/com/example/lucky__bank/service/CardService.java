@@ -8,12 +8,15 @@ import com.example.lucky__bank.model.Card;
 import com.example.lucky__bank.model.User;
 import com.example.lucky__bank.repository.CardRepository;
 import com.example.lucky__bank.repository.UserRepository;
+import com.example.lucky__bank.service.api.CurrencyService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -24,34 +27,82 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CardService {
 
     private  final  CardRepository cardRepository;
     private  final  UserRepository userRepository;
     private final CardMapper cardMapper;
+    private final CurrencyService currencyService;
 
 
+    @Transactional
+    public CardDTO buyCurrency(Long userId, Long cardId, BigDecimal amount, String fromCurrency, String toCurrency)
+            throws InsufficientFundsException, IllegalArgumentException {
+        log.info("Starting currency purchase: userId={}, cardId={}, amount={}, fromCurrency={}, toCurrency={}",
+                userId, cardId, amount, fromCurrency, toCurrency);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        Card card = cardRepository.findById(cardId)
+                .orElseThrow(() -> new IllegalArgumentException("Card not found"));
+
+        if (!card.getUser().getId().equals(userId)) {
+            throw new IllegalArgumentException("Card does not belong to the user");
+        }
+
+        BigDecimal convertedAmount = currencyService.convert(amount, fromCurrency, toCurrency);
+        log.info("Initial card balance: {}", card.getBalance());
+        log.info("Converted amount: {}", convertedAmount);
+        if (card.getBalance().compareTo(amount) < 0) {
+            throw new InsufficientFundsException("Insufficient funds for currency purchase");
+        }
+
+        // Уменьшаем баланс исходной карты
+        card.setBalance(card.getBalance().subtract(amount));
+        cardRepository.save(card);
+        log.info("Updated source card balance: {}", card.getBalance());
+
+        // Находим или создаем карту для целевой валюты
+        Card targetCard = (Card) cardRepository.findByUserAndCardType(user, Card.CardType.valueOf(toCurrency))
+                .orElseGet(() -> {
+                    CardDTO newCardDTO = createCard(userId, toCurrency);
+                    return cardRepository.findById(newCardDTO.getId())
+                            .orElseThrow(() -> new RuntimeException("Failed to create new currency card"));
+                });
+
+        // Увеличиваем баланс целевой карты
+        targetCard.setBalance(targetCard.getBalance().add(convertedAmount));
+        cardRepository.save(targetCard);
+        log.info("Updated target card balance: {}", targetCard.getBalance());
+
+        CardDTO result = cardMapper.toDTO(targetCard);
+        log.info("Returning result: {}", result);
+        return result;
+    }
+
+
+    @Transactional
     public CardDTO createCard(Long userId, String cardType) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Создать новую карту
         Card card = new Card();
         card.setCardNumber(generateCardNumber());
         card.setCardType(Card.CardType.valueOf(cardType));
-        card.setBalance(BigDecimal.ZERO); // Устанавливаем баланс по умолчанию на 0
+        card.setBalance(BigDecimal.ZERO);
         card.setCreatedAt(LocalDateTime.now());
-        card.setExpirationDate(LocalDateTime.now().plus(5, ChronoUnit.YEARS));
+        card.setUpdatedAt(LocalDateTime.now());
+        card.setExpirationDate(LocalDateTime.now().plusYears(5));
         card.setCvv(generateCvv());
-        card.setUser(user); // Устанавливаем связь с пользователем
+        card.setUser(user);
+        card.setLastBonusDate(LocalDate.now().minusDays(1));
 
-
-        // Сохранить карту в базе данных
         cardRepository.save(card);
 
-        // Возвращаем DTO карты
         return cardMapper.toDTO(card);
     }
+
 
     private String generateCardNumber() {
         // Пример генерации 16-значного номера карты
@@ -113,4 +164,6 @@ public class CardService {
                 .map(Card::getBalance)                      // Извлекаем баланс из каждой карты
                 .reduce(BigDecimal.ZERO, BigDecimal::add);   // Складываем все балансы
     }
+
+
 }

@@ -1,5 +1,8 @@
 package com.example.lucky__bank.controller;
 
+import com.example.lucky__bank.Exception.InsufficientFundsException;
+import com.example.lucky__bank.Request.BuyCurrencyRequest;
+import com.example.lucky__bank.Request.CreateCardRequest;
 import com.example.lucky__bank.dto.CardDTO;
 import com.example.lucky__bank.dto.UserDTO;
 import com.example.lucky__bank.maper.CardMapper;
@@ -26,6 +29,13 @@ public class CardController {
     private final CardService cardService;
     private final UserService userService;
 
+    //создание карты
+    @PostMapping
+    public ResponseEntity<CardDTO> createCard(@RequestBody CreateCardRequest request) {
+        CardDTO card = cardService.createCard(request.getUserId(), request.getCardType());
+        return ResponseEntity.ok(card);
+    }
+
     //удаление карты
     @PostMapping("/delete/{id}")
     public ResponseEntity<Void> deleteCard(@PathVariable Long id) {
@@ -47,14 +57,15 @@ public class CardController {
         return ResponseEntity.ok(cardDTO);
     }
 
-    @PostMapping
-    public ResponseEntity<CardDTO> createCard(
-            @RequestParam Long userId,
-            @RequestParam String cardType) {
 
-        CardDTO cardDTO = cardService.createCard(userId, cardType);
-        return ResponseEntity.ok(cardDTO);
-    }
+//    @PostMapping
+//    public ResponseEntity<CardDTO> createCard(
+//            @RequestParam Long userId,
+//            @RequestParam String cardType) {
+//
+//        CardDTO cardDTO = cardService.createCard(userId, cardType);
+//        return ResponseEntity.ok(cardDTO);
+//    }
 
     @GetMapping("/all")
     public ResponseEntity<List<CardDTO>> getAllCards() {

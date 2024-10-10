@@ -24,6 +24,9 @@ public class CardDTO {
     public enum CardType {
         DEBIT,
         CREDIT,
-        PREPAID
+        PREPAID,
+        USD,
+        EUR,
+        UAH
     }
 }

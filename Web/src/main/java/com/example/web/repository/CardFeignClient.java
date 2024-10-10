@@ -1,14 +1,13 @@
 package com.example.web.repository;
 
+import com.example.web.Request.CreateCardRequest;
 import com.example.web.dto.CardDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -24,8 +23,11 @@ public interface CardFeignClient {
     @GetMapping("/api/cards/{id}")
     CardDTO findByIdCard(@PathVariable("id") Long id);
 
-    @PostMapping("/api/cards")
-    CardDTO createCard(@RequestParam("userId") Long userId, @RequestParam("cardType") String cardType);
+
+    @PostMapping(value = "/api/cards", consumes = MediaType.APPLICATION_JSON_VALUE)
+    CardDTO createCard(@RequestBody CreateCardRequest createCardRequest);
+
+
 
     @PostMapping("/api/cards/delete/{id}")
     void deleteCardById(@PathVariable Long id);

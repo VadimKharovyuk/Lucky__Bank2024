@@ -1,6 +1,7 @@
 package com.example.lucky__bank.repository;
 
 import com.example.lucky__bank.model.Card;
+import com.example.lucky__bank.model.User;
 import org.hibernate.type.descriptor.converter.spi.JpaAttributeConverter;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -15,5 +16,7 @@ public interface CardRepository extends JpaRepository<Card,Long> {
     // Правильное имя метода
     Optional<Card> findByCardNumber(String cardNumber);
 
+
+    <T> Optional<T> findByUserAndCardType(User user, Card.CardType cardType);
 
 }
